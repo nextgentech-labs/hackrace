@@ -621,42 +621,54 @@ footer{position:relative;z-index:2;border-top:1px solid var(--bdr);padding:64px 
       </div>
       <a href="https://wa.me/918511565780?text=Hi%20HackRace!%20I%27d%20like%20to%20discuss%20a%20project." class="btn-p" style="display:inline-block;margin-top:8px" target="_blank">💬 WhatsApp Us Now</a>
     </div>
-    <div class="ct-form" id="ctForm">
-      <div class="form-title">Send Us a Message</div>
-      <div class="form-sub">We respond to all inquiries within 24 hours.</div>
-      <div id="formFields">
-        <div class="frow">
-          <div class="fg"><label>Full Name</label><input type="text" placeholder="Your name" id="fn"></div>
-          <div class="fg"><label>Email</label><input type="email" placeholder="your@email.com" id="fe"></div>
-        </div>
-        <div class="frow">
-          <div class="fg"><label>Phone</label><input type="tel" placeholder="+91 00000 00000" id="fp"></div>
-          <div class="fg"><label>Service Needed</label>
-            <select id="fs">
-              <option value="">Select a service</option>
-              <option>VAPT / Penetration Testing</option>
-              <option>SOC Training</option>
-              <option>Vulnerability Assessment</option>
-              <option>Web Development</option>
-              <option>Skill Training / Workshop</option>
-              <option>POSH Compliance</option>
-              <option>Career / Placement Support</option>
-              <option>Other</option>
-            </select>
-          </div>
-        </div>
-        <div class="frow full">
-          <div class="fg"><label>Message</label><textarea placeholder="Tell us about your project or requirement..." id="fm"></textarea></div>
-        </div>
-        <button class="form-btn" onclick="submitForm()">Send Message →</button>
-        <p class="form-note">🔒 Your information is confidential and never shared.</p>
+ <form class="ct-form" id="ctForm" action="https://formspree.io/f/mwvwzbgz" method="POST">
+
+  <div class="form-title">Send Us a Message</div>
+  <div class="form-sub">We respond to all inquiries within 24 hours.</div>
+
+  <div id="formFields">
+    <div class="frow">
+      <div class="fg">
+        <label>Full Name</label>
+        <input type="text" id="fn" name="name" placeholder="Your name" required>
       </div>
-      <div class="form-success" id="formSuccess">
-        <div class="fs-icon">✅</div>
-        <h4>Message Sent!</h4>
-        <p>Thank you for reaching out. We'll get back to you within 24 hours.</p>
+
+      <div class="fg">
+        <label>Email</label>
+        <input type="email" id="fe" name="email" placeholder="your@email.com" required>
       </div>
     </div>
+
+    <div class="frow">
+      <div class="fg">
+        <label>Phone</label>
+        <input type="tel" id="fp" name="phone" placeholder="+91 00000 00000">
+      </div>
+
+      <div class="fg">
+        <label>Service Needed</label>
+        <select id="fs" name="service" required>
+          <option value="">Select a service</option>
+          <option>VAPT / Penetration Testing</option>
+          <option>SOC Training</option>
+          <option>Vulnerability Assessment</option>
+          <option>Web Development</option>
+          <option>Skill Training / Workshop</option>
+          <option>POSH Compliance</option>
+          <option>Career / Placement Support</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Hidden subject (pro touch) -->
+    <input type="hidden" name="_subject" value="🚀 New HackRace Lead">
+
+    <button type="submit">Send Message</button>
+
+  </div>
+
+</form>
   </div>
 </section>
 
@@ -874,31 +886,25 @@ document.onkeydown=function(e){
   if(e.ctrlKey&&e.keyCode=='S'.charCodeAt(0))return false;
   if(e.ctrlKey&&e.keyCode=='A'.charCodeAt(0))return false;
 };
-const form = document.getElementById("ctForm");
-const status = document.getElementById("form-status");
 
-form.addEventListener("submit", async function (e) {
+const form = document.getElementById("ctForm");
+
+form.addEventListener("submit", async function(e) {
   e.preventDefault();
 
   const data = new FormData(form);
 
-  try {
-    const response = await fetch(form.action, {
-      method: "POST",
-      body: data,
-      headers: {
-        "Accept": "application/json"
-      }
-    });
+  const res = await fetch(form.action, {
+    method: "POST",
+    body: data,
+    headers: { 'Accept': 'application/json' }
+  });
 
-    if (response.ok) {
-      status.innerHTML = "✅ Message sent! We’ll contact you within 24 hours.";
-      form.reset();
-    } else {
-      status.innerHTML = "❌ Something went wrong. Try again.";
-    }
-  } catch (error) {
-    status.innerHTML = "⚠️ Network error. Please try later.";
+  if (res.ok) {
+    alert("✅ Message sent! We'll contact you soon.");
+    form.reset();
+  } else {
+    alert("❌ Error sending message.");
   }
 });
 
