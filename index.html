@@ -3,559 +3,658 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HackRace — The Future of Skill Training</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='black'/><text y='70' x='10' font-family='sans-serif' font-weight='bold' font-size='60' fill='%2339FF14'>HR</text></svg>">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>HackRace — Cybersecurity & Digital Solutions</title>
+<meta name="description" content="HackRace delivers enterprise-grade cybersecurity, penetration testing, VAPT, web development, and skill training solutions across India.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%230a0a14'/><text y='72' x='8' font-family='sans-serif' font-weight='900' font-size='56' fill='%2300e5ff'>H</text><text y='72' x='48' font-family='sans-serif' font-weight='900' font-size='56' fill='%23ffffff'>R</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --g:#00ff88;--g2:#00ffcc;--b:#0088ff;--p:#a855f7;
-  --bg:#03030a;--bg2:#07070f;--bg3:#0d0d1a;--bg4:#12121f;
-  --bdr:#ffffff0d;--bdr2:#ffffff15;
-  --txt:#f0f0ff;--muted:#484868;--sub:#888aaa;
-  --glow:0 0 60px #00ff8830;--glow2:0 0 120px #00ff8818;
+  --c:#00e5ff;--c2:#0099ff;--c3:#7c3aed;
+  --bg:#04040d;--bg2:#080815;--bg3:#0c0c1e;--bg4:#111128;
+  --bdr:#ffffff08;--bdr2:#ffffff12;--bdr3:#00e5ff20;
+  --txt:#eeeeff;--sub:#6b6b9a;--muted:#3a3a5c;
+  --glow:0 0 40px #00e5ff25;
 }
 html{scroll-behavior:smooth;}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);overflow-x:hidden;cursor:none;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);overflow-x:hidden;cursor:none;}
 
-/* CUSTOM CURSOR */
-#cursor{position:fixed;width:12px;height:12px;background:var(--g);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s;mix-blend-mode:difference;}
-#cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid var(--g);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:all .12s ease;opacity:0.6;}
-body:hover #cursor{opacity:1;}
-
-/* SCROLLBAR */
-::-webkit-scrollbar{width:4px;}
-::-webkit-scrollbar-track{background:var(--bg);}
-::-webkit-scrollbar-thumb{background:linear-gradient(var(--g),var(--b));border-radius:4px;}
-
-/* CANVAS BG */
-#bgCanvas{position:fixed;inset:0;z-index:0;opacity:0.6;}
-
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:70px;padding:0 5%;display:flex;align-items:center;justify-content:space-between;background:rgba(3,3,10,0.7);backdrop-filter:blur(24px);border-bottom:1px solid var(--bdr);transition:all .3s;}
-nav.scrolled{background:rgba(3,3,10,0.95);border-color:var(--bdr2);}
-.logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;text-decoration:none;letter-spacing:2px;color:var(--g);display:flex;align-items:center;gap:10px;}
-.logo-dot{width:8px;height:8px;background:var(--g);border-radius:50%;animation:logoPulse 2s infinite;}
-.logo em{color:var(--txt);font-style:normal;}
-.nav-links{display:flex;align-items:center;gap:32px;}
-.nav-links a{color:var(--sub);text-decoration:none;font-size:14px;font-weight:500;letter-spacing:.3px;transition:color .2s;position:relative;}
-.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1.5px;background:var(--g);transition:width .25s;}
-.nav-links a:hover{color:var(--g);}
-.nav-links a:hover::after{width:100%;}
-.nav-btn{background:linear-gradient(135deg,var(--g),var(--g2));color:#000!important;padding:10px 22px;border-radius:6px;font-weight:700!important;font-size:13px!important;letter-spacing:.5px;}
-.nav-btn::after{display:none!important;}
-.nav-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px #00ff8840;}
-.hbg{display:none;flex-direction:column;gap:5px;cursor:none;background:none;border:none;}
-.hbg span{display:block;width:22px;height:1.5px;background:var(--txt);}
-
-/* HERO */
-.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:100px 5% 60px;}
-.hero-orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;}
-.orb1{width:600px;height:600px;background:radial-gradient(circle,#00ff8818,transparent 70%);top:-100px;left:-100px;}
-.orb2{width:500px;height:500px;background:radial-gradient(circle,#0088ff12,transparent 70%);bottom:-80px;right:-80px;}
-.orb3{width:400px;height:400px;background:radial-gradient(circle,#a855f715,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);}
-
-.hero-inner{position:relative;z-index:1;max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
-.hero-left{}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;background:#00ff8810;border:1px solid #00ff8830;color:var(--g);padding:7px 18px;border-radius:100px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;margin-bottom:28px;animation:fadeUp .8s ease both;}
-.blink{animation:blink 1s infinite;}
-h1{font-family:'Syne',sans-serif;font-size:clamp(40px,5vw,64px);font-weight:800;line-height:1.08;margin-bottom:24px;animation:fadeUp .8s .1s ease both;}
-.h1-line1{display:block;color:var(--txt);}
-.h1-line2{display:block;background:linear-gradient(135deg,var(--g) 0%,var(--g2) 50%,var(--b) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200%;animation:gradShift 4s ease infinite;}
-.h1-line3{display:block;color:var(--txt);}
-.hero-sub{font-size:17px;color:var(--sub);line-height:1.8;margin-bottom:38px;animation:fadeUp .8s .2s ease both;max-width:480px;}
-.hero-btns{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp .8s .3s ease both;}
-.btn-main{background:linear-gradient(135deg,var(--g),var(--g2));color:#000;padding:14px 30px;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;transition:all .25s;box-shadow:0 0 30px #00ff8840;}
-.btn-main:hover{transform:translateY(-3px);box-shadow:0 0 60px #00ff8860;}
-.btn-out{border:1px solid var(--bdr2);color:var(--txt);padding:14px 30px;border-radius:8px;font-weight:600;font-size:14px;text-decoration:none;transition:all .25s;backdrop-filter:blur(8px);}
-.btn-out:hover{border-color:var(--g);color:var(--g);}
-
-/* HERO RIGHT - TERMINAL */
-.hero-right{animation:fadeUp .8s .2s ease both;}
-.terminal{background:#08080f;border:1px solid var(--bdr2);border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px var(--bdr);}
-.term-bar{background:#0f0f1c;padding:14px 18px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--bdr);}
-.term-dot{width:11px;height:11px;border-radius:50%;}
-.term-dot.r{background:#ff5f57;}
-.term-dot.y{background:#febc2e;}
-.term-dot.g{background:#28c840;}
-.term-title{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin-left:8px;}
-.term-body{padding:20px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2;min-height:280px;}
-.tl{display:block;opacity:0;}
-.tl.show{opacity:1;animation:typeIn .3s ease forwards;}
-.tc-g{color:var(--g);}
-.tc-b{color:var(--b);}
-.tc-p{color:var(--p);}
-.tc-y{color:#fbbf24;}
-.tc-m{color:var(--muted);}
-.cursor-blink{display:inline-block;width:8px;height:14px;background:var(--g);animation:blink .8s infinite;vertical-align:middle;margin-left:2px;}
-
-/* STATS BAR */
-.stats-bar{position:relative;z-index:1;border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);padding:40px 5%;display:grid;grid-template-columns:repeat(5,1fr);}
-.sstat{text-align:center;padding:12px;border-right:1px solid var(--bdr);}
-.sstat:last-child{border-right:none;}
-.sstat-num{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;line-height:1;margin-bottom:6px;background:linear-gradient(135deg,var(--g),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.sstat p{color:var(--muted);font-size:12px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;}
-
-/* WHO WE SERVE */
-.serve{position:relative;z-index:1;padding:100px 5%;}
-.sec-eye{text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--g);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;}
-.sec-h{text-align:center;font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,46px);font-weight:800;margin-bottom:16px;line-height:1.2;}
-.sec-sub{text-align:center;color:var(--sub);font-size:16px;max-width:560px;margin:0 auto 60px;line-height:1.75;}
-
-.serve-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;max-width:1140px;margin:0 auto;}
-.serve-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:14px;padding:28px 20px;text-align:center;cursor:pointer;transition:all .35s;position:relative;overflow:hidden;}
-.serve-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--g)08,var(--b)05);opacity:0;transition:opacity .3s;}
-.serve-card:hover{border-color:var(--g);transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,255,136,.12);}
-.serve-card:hover::before{opacity:1;}
-.serve-icon{font-size:36px;margin-bottom:14px;display:block;}
-.serve-card h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:8px;}
-.serve-card p{color:var(--muted);font-size:13px;line-height:1.6;}
-.serve-tag{display:inline-block;background:#00ff8815;color:var(--g);border:1px solid #00ff8828;font-size:10px;font-weight:700;letter-spacing:1px;padding:3px 10px;border-radius:100px;margin-top:12px;}
-
-/* SERVICES MEGA */
-.services{position:relative;z-index:1;padding:100px 5%;background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);}
-.srv-tabs{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:50px;}
-.srv-tab{background:var(--bg3);border:1px solid var(--bdr);color:var(--sub);padding:10px 22px;border-radius:100px;font-size:13px;font-weight:600;cursor:pointer;transition:all .25s;}
-.srv-tab.active,.srv-tab:hover{background:#00ff8815;border-color:var(--g);color:var(--g);}
-.srv-content{max-width:1140px;margin:0 auto;display:none;}
-.srv-content.active{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;animation:fadeUp .4s ease;}
-
-.srv-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:14px;padding:30px;transition:all .3s;position:relative;overflow:hidden;group:true;}
-.srv-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--g),transparent);opacity:0;transition:.3s;}
-.srv-card:hover{border-color:#ffffff18;transform:translateY(-4px);box-shadow:0 16px 50px rgba(0,0,0,.4);}
-.srv-card:hover::after{opacity:1;}
-.srv-icon{width:48px;height:48px;background:#00ff8812;border:1px solid #00ff8828;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px;}
-.srv-card h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:10px;}
-.srv-card p{color:var(--sub);font-size:14px;line-height:1.75;}
-.srv-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;}
-.stag{background:var(--bg4);border:1px solid var(--bdr);color:var(--muted);font-size:11px;padding:3px 10px;border-radius:100px;}
-
-/* CORPORATE SECTION */
-.corporate{position:relative;z-index:1;padding:100px 5%;}
-.corp-grid{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
-.corp-left{}
-.corp-left .sec-eye{text-align:left;}
-.corp-left .sec-h{text-align:left;}
-.corp-left p{color:var(--sub);font-size:15px;line-height:1.8;margin-bottom:24px;}
-.corp-services{display:flex;flex-direction:column;gap:12px;margin-bottom:28px;}
-.corp-item{display:flex;align-items:center;gap:14px;background:var(--bg3);border:1px solid var(--bdr);border-radius:10px;padding:14px 18px;transition:.25s;}
-.corp-item:hover{border-color:var(--g);background:#00ff8808;}
-.corp-badge{background:linear-gradient(135deg,var(--g),var(--g2));color:#000;font-size:10px;font-weight:800;padding:3px 9px;border-radius:100px;letter-spacing:1px;white-space:nowrap;}
-.corp-item-txt h4{font-size:14px;font-weight:600;margin-bottom:2px;}
-.corp-item-txt p{font-size:12px;color:var(--muted);}
-
-.corp-right{position:relative;}
-.cyber-visual{background:var(--bg3);border:1px solid var(--bdr2);border-radius:16px;padding:28px;position:relative;overflow:hidden;}
-.cyber-visual::before{content:'SECURE';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'JetBrains Mono',monospace;font-size:72px;font-weight:700;color:#ffffff03;pointer-events:none;white-space:nowrap;}
-.scan-line{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--g),transparent);animation:scan 3s linear infinite;}
-.cyber-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
-.cyber-item{background:var(--bg4);border:1px solid var(--bdr);border-radius:10px;padding:16px;transition:.25s;}
-.cyber-item:hover{border-color:var(--g);box-shadow:0 0 20px #00ff8818;}
-.cyber-item-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-.cyber-dot{width:8px;height:8px;border-radius:50%;background:var(--g);animation:pulse 2s infinite;}
-.cyber-item h4{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--g);}
-.cyber-item p{font-size:12px;color:var(--muted);line-height:1.6;}
-
-/* ROADMAP */
-.roadmap{position:relative;z-index:1;padding:100px 5%;background:var(--bg2);}
-.rm-timeline{max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--bdr);border-radius:16px;overflow:hidden;}
-.rm-item{padding:36px 28px;background:var(--bg3);border-right:1px solid var(--bdr);position:relative;transition:.3s;}
-.rm-item:last-child{border-right:none;}
-.rm-item:hover{background:var(--bg4);}
-.rm-num{font-family:'JetBrains Mono',monospace;font-size:48px;font-weight:700;color:#ffffff05;position:absolute;top:16px;right:20px;}
-.rm-phase{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--g);letter-spacing:2px;margin-bottom:10px;}
-.rm-tit{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:16px;}
-.rm-list{list-style:none;display:flex;flex-direction:column;gap:9px;}
-.rm-list li{font-size:13px;color:var(--sub);padding-left:16px;position:relative;}
-.rm-list li::before{content:'▸';position:absolute;left:0;color:var(--g);font-size:10px;}
-
-/* TOPICS */
-.topics{position:relative;z-index:1;padding:100px 5%;}
-.topic-cloud{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:900px;margin:0 auto;}
-.ttag{background:var(--bg3);border:1px solid var(--bdr);color:#ccc;padding:11px 24px;border-radius:100px;font-size:14px;font-weight:500;transition:all .25s;cursor:default;}
-.ttag:hover{border-color:var(--g);color:var(--g);background:#00ff8810;transform:scale(1.05) translateY(-2px);}
-
-/* CONTACT */
-.contact{position:relative;z-index:1;padding:100px 5%;background:var(--bg2);}
-.contact-wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
-.contact-left h3{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;margin-bottom:14px;}
-.contact-left>p{color:var(--sub);font-size:15px;line-height:1.8;margin-bottom:30px;}
-.cinfo{display:flex;flex-direction:column;gap:11px;}
-.ci{display:flex;align-items:center;gap:14px;background:var(--bg3);border:1px solid var(--bdr);border-radius:10px;padding:14px 16px;transition:.25s;}
-.ci:hover{border-color:var(--bdr2);background:var(--bg4);}
-.ci-ico{width:38px;height:38px;background:#00ff8812;border:1px solid #00ff8828;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
-.ci-lbl{font-size:10px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:2px;}
-.ci-val{font-size:14px;font-weight:600;}
-.ci-val a{color:var(--txt);text-decoration:none;}
-.ci-val a:hover{color:var(--g);}
-
-/* CONTACT CARD */
-.coord-wrap{display:flex;flex-direction:column;gap:18px;}
-.coord-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:16px;padding:28px;position:relative;overflow:hidden;transition:.3s;}
-.coord-card:hover{border-color:var(--bdr2);}
-.coord-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:linear-gradient(90deg,var(--g),var(--b),var(--p));}
-.coord-badge{display:inline-block;background:#00ff8812;color:var(--g);border:1px solid #00ff8828;font-size:10px;font-weight:700;letter-spacing:2px;padding:3px 12px;border-radius:100px;margin-bottom:16px;}
-.coord-row{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
-.coord-av{width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--g),var(--b));display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:#000;flex-shrink:0;}
-.coord-name{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;}
-.coord-role{color:var(--muted);font-size:12px;margin-top:2px;}
-.coord-contacts{display:flex;flex-direction:column;gap:9px;margin-bottom:16px;}
-.cc{display:flex;align-items:center;gap:10px;font-size:13px;}
-.cc-icon{color:var(--g);width:16px;flex-shrink:0;}
-.cc-lbl{font-size:10px;color:var(--muted);letter-spacing:.3px;}
-.cc a{color:var(--txt);text-decoration:none;font-weight:500;}
-.cc a:hover{color:var(--g);}
-.coord-btns{display:flex;flex-direction:column;gap:9px;}
-.cbtn{display:block;width:100%;text-align:center;padding:12px;border-radius:8px;font-weight:700;font-size:13px;text-decoration:none;transition:.2s;}
-.cbtn-main{background:linear-gradient(135deg,var(--g),var(--g2));color:#000;}
-.cbtn-main:hover{opacity:.85;transform:translateY(-1px);}
-.cbtn-ghost{background:var(--bg4);color:var(--g);border:1px solid #00ff8828;}
-.cbtn-ghost:hover{background:#00ff8815;}
-
-/* FOOTER */
-footer{position:relative;z-index:1;border-top:1px solid var(--bdr);padding:56px 5% 28px;background:var(--bg);}
-.foot-grid{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:40px;}
-.foot-brand .logo{display:flex;font-size:20px;margin-bottom:14px;}
-.foot-brand p{color:var(--muted);font-size:14px;line-height:1.8;max-width:260px;}
-.foot-col h4{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--sub);margin-bottom:16px;}
-.foot-col a{display:block;color:var(--muted);text-decoration:none;font-size:14px;margin-bottom:10px;transition:color .2s;}
-.foot-col a:hover{color:var(--g);}
-.foot-bot{max-width:1140px;margin:0 auto;padding-top:22px;border-top:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--muted);}
-.foot-bot span{color:var(--g);}
-
-/* WA FLOAT */
-.wa-float{position:fixed;bottom:106px;right:26px;z-index:990;display:flex;flex-direction:column;align-items:flex-end;gap:10px;}
-.wa-menu{display:none;flex-direction:column;gap:8px;align-items:flex-end;}
-.wa-menu.open{display:flex;}
-.wa-opt{display:flex;align-items:center;gap:10px;background:rgba(7,7,15,.95);border:1px solid var(--bdr2);border-radius:10px;padding:10px 14px;text-decoration:none;color:var(--txt);font-size:13px;font-weight:600;white-space:nowrap;transition:.2s;animation:slideR .2s ease;backdrop-filter:blur(16px);box-shadow:0 8px 30px rgba(0,0,0,.5);}
-.wa-opt:hover{border-color:#25D366;color:#25D366;}
-.wa-dot{width:30px;height:30px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.wa-dot svg{width:15px;height:15px;fill:#fff;}
-.wa-fab{width:52px;height:52px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:none;border:none;box-shadow:0 4px 22px rgba(37,211,102,.45);transition:.3s;}
-.wa-fab:hover{transform:scale(1.1);box-shadow:0 8px 36px rgba(37,211,102,.55);}
-.wa-fab svg{width:26px;height:26px;fill:#fff;}
-
-/* CHATBOT - THE MAGIC */
-.chat-float{position:fixed;bottom:26px;right:26px;z-index:991;}
-.chat-btn{width:52px;height:52px;background:linear-gradient(135deg,var(--g),var(--b));border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:none;border:none;box-shadow:0 0 0 0 #00ff8840;transition:.3s;animation:chatPulse 3s ease infinite;font-size:20px;}
-.chat-btn:hover{transform:scale(1.1);}
-
-.chat-win{position:absolute;bottom:66px;right:0;width:370px;background:rgba(7,7,15,.97);border:1px solid var(--bdr2);border-radius:20px;overflow:hidden;display:none;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,.7),0 0 0 1px var(--bdr);backdrop-filter:blur(20px);animation:slideUp .3s ease;}
-.chat-win.open{display:flex;}
-
-.chat-hdr{background:linear-gradient(135deg,#0a0a18,#0f0f20);padding:16px 18px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:12px;position:relative;overflow:hidden;}
-.chat-hdr::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#00ff8808,transparent,#0088ff08);pointer-events:none;}
-.chat-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--g),var(--b));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;animation:rotate 8s linear infinite;}
-.chat-hdr-info h4{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;}
-.chat-status{font-size:11px;color:var(--g);display:flex;align-items:center;gap:5px;}
-.status-dot{width:6px;height:6px;background:var(--g);border-radius:50%;animation:pulse 1.5s infinite;}
-.chat-close{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:var(--bdr);border:none;color:var(--sub);width:24px;height:24px;border-radius:50%;cursor:none;font-size:13px;display:flex;align-items:center;justify-content:center;transition:.2s;}
-.chat-close:hover{background:var(--bdr2);color:var(--txt);}
-
-.chat-body{padding:16px;height:290px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:var(--bdr) transparent;}
-.chat-msg{max-width:85%;padding:11px 14px;border-radius:14px;font-size:13px;line-height:1.65;}
-.chat-msg.bot{background:var(--bg4);border:1px solid var(--bdr);color:var(--txt);align-self:flex-start;border-bottom-left-radius:4px;}
-.chat-msg.user{background:linear-gradient(135deg,var(--g),var(--g2));color:#000;align-self:flex-end;font-weight:600;border-bottom-right-radius:4px;}
-.chat-typing{display:flex;align-items:center;gap:5px;padding:12px 14px;background:var(--bg4);border:1px solid var(--bdr);border-radius:14px;border-bottom-left-radius:4px;align-self:flex-start;}
-.typing-dot{width:7px;height:7px;background:var(--muted);border-radius:50%;animation:typingBounce 1.2s ease infinite;}
-.typing-dot:nth-child(2){animation-delay:.2s;}
-.typing-dot:nth-child(3){animation-delay:.4s;}
-
-.chat-qs-wrap{padding:0 14px 12px;}
-.chat-qs-label{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;font-family:'JetBrains Mono',monospace;}
-.chat-qs{display:flex;flex-wrap:wrap;gap:7px;}
-.chat-q{background:var(--bg4);border:1px solid var(--bdr);color:var(--sub);padding:7px 13px;border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;transition:.2s;font-family:'DM Sans',sans-serif;}
-.chat-q:hover{border-color:var(--g);color:var(--g);background:#00ff8810;}
-
-/* MAGIC PARTICLE ON MSG */
-@keyframes particlePop{0%{transform:scale(0) translateY(0);opacity:1;}100%{transform:scale(1) translateY(-30px);opacity:0;}}
-
-/* MATRIX RAIN EFFECT */
-#matrixCanvas{position:fixed;inset:0;z-index:0;opacity:0.03;pointer-events:none;}
+/* CURSOR */
+#cur{position:fixed;width:10px;height:10px;background:var(--c);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .15s,height .15s;}
+#cur-r{position:fixed;width:32px;height:32px;border:1px solid var(--c);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:all .1s;opacity:.5;}
+#cur.big{width:18px;height:18px;}
+#cur-r.big{width:48px;height:48px;opacity:.3;}
 
 /* SCROLL PROGRESS */
-#progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--g),var(--b),var(--p));z-index:2000;transition:width .1s;}
+#prog{position:fixed;top:0;left:0;height:1.5px;background:linear-gradient(90deg,var(--c),var(--c2),var(--c3));z-index:3000;transition:width .08s;}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--c),var(--c3));border-radius:4px;}
+
+/* CANVAS */
+#bgC{position:fixed;inset:0;z-index:0;opacity:.5;pointer-events:none;}
+#matC{position:fixed;inset:0;z-index:0;opacity:.025;pointer-events:none;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:68px;padding:0 6%;display:flex;align-items:center;justify-content:space-between;background:rgba(4,4,13,0.6);backdrop-filter:blur(28px);border-bottom:1px solid var(--bdr);transition:.3s;}
+nav.sc{background:rgba(4,4,13,0.92);border-color:var(--bdr2);}
+.logo{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;text-decoration:none;letter-spacing:3px;display:flex;align-items:center;gap:8px;}
+.logo-h{color:var(--c);}
+.logo-r{color:#fff;}
+.logo-tag{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--sub);letter-spacing:2px;border:1px solid var(--bdr2);padding:2px 7px;border-radius:3px;margin-left:4px;}
+.nav-links{display:flex;align-items:center;gap:28px;}
+.nav-links a{color:var(--sub);text-decoration:none;font-size:13px;font-weight:500;letter-spacing:.3px;transition:.2s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--c);transition:.25s;}
+.nav-links a:hover{color:var(--c);}
+.nav-links a:hover::after{width:100%;}
+.nav-cta{background:transparent!important;border:1px solid var(--c)!important;color:var(--c)!important;padding:9px 20px!important;border-radius:5px!important;font-size:12px!important;font-weight:600!important;letter-spacing:.5px!important;transition:all .25s!important;}
+.nav-cta::after{display:none!important;}
+.nav-cta:hover{background:#00e5ff15!important;box-shadow:0 0 20px #00e5ff25!important;}
+.hbg{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:none;}
+.hbg span{display:block;width:20px;height:1.5px;background:var(--txt);}
+
+/* NOISE OVERLAY */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:.4;pointer-events:none;z-index:1;}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:120px 6% 80px;}
+.h-orb{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none;}
+.o1{width:700px;height:700px;background:radial-gradient(circle,#00e5ff0a,transparent 65%);top:-200px;right:-150px;}
+.o2{width:500px;height:500px;background:radial-gradient(circle,#7c3aed08,transparent 65%);bottom:-100px;left:-100px;}
+.o3{width:300px;height:300px;background:radial-gradient(circle,#0099ff0a,transparent 65%);top:40%;left:30%;}
+
+.hero-inner{position:relative;z-index:2;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.1fr .9fr;gap:80px;align-items:center;width:100%;}
+.hero-eye{display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--c);letter-spacing:3px;background:#00e5ff08;border:1px solid var(--bdr3);padding:7px 16px;border-radius:3px;margin-bottom:28px;animation:fu .7s ease both;}
+.eye-dot{width:6px;height:6px;background:var(--c);border-radius:50%;animation:pulse 1.5s infinite;}
+h1{font-family:'Syne',sans-serif;font-size:clamp(38px,4.5vw,62px);font-weight:800;line-height:1.1;margin-bottom:22px;animation:fu .7s .1s ease both;}
+.h1-g{background:linear-gradient(135deg,var(--c) 0%,var(--c2) 60%,var(--c3) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-p{font-size:16px;color:var(--sub);line-height:1.85;margin-bottom:36px;max-width:500px;animation:fu .7s .2s ease both;font-weight:400;}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;animation:fu .7s .3s ease both;}
+.btn-p{background:var(--c);color:#000;padding:13px 28px;border-radius:5px;font-weight:700;font-size:13px;text-decoration:none;letter-spacing:.3px;transition:.25s;box-shadow:0 0 30px #00e5ff30;}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 0 50px #00e5ff45;}
+.btn-g{border:1px solid var(--bdr2);color:var(--txt);padding:13px 28px;border-radius:5px;font-size:13px;font-weight:500;text-decoration:none;transition:.25s;backdrop-filter:blur(8px);}
+.btn-g:hover{border-color:var(--c);color:var(--c);}
+
+.hero-badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:32px;animation:fu .7s .4s ease both;}
+.hbadge{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--sub);}
+.hbadge-dot{width:5px;height:5px;background:var(--c);border-radius:50%;opacity:.7;}
+
+/* HERO RIGHT — TERMINAL */
+.hero-r{animation:fu .7s .15s ease both;}
+.terminal{background:#07071a;border:1px solid var(--bdr2);border-radius:12px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.7),0 0 0 1px var(--bdr);}
+.t-bar{background:#0a0a20;padding:14px 18px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--bdr);}
+.td{width:10px;height:10px;border-radius:50%;}
+.td.r{background:#ff5f57;}.td.y{background:#febc2e;}.td.g{background:#28c840;}
+.t-title{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-left:8px;}
+.t-body{padding:22px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:2.1;min-height:300px;}
+.tl{display:block;opacity:0;}
+.tl.show{opacity:1;animation:ti .3s ease forwards;}
+.cg{color:var(--c);}.cb{color:var(--c2);}.cp{color:var(--c3);}.cy{color:#fbbf24;}.cm{color:var(--muted);}
+.cb-blink{display:inline-block;width:7px;height:13px;background:var(--c);animation:blink .8s infinite;vertical-align:middle;}
+
+/* MARQUEE */
+.marquee-wrap{position:relative;z-index:2;border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);padding:16px 0;overflow:hidden;background:var(--bg2);}
+.marquee-inner{display:flex;gap:0;white-space:nowrap;animation:marquee 30s linear infinite;}
+.marquee-item{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--sub);letter-spacing:2px;padding:0 40px;display:flex;align-items:center;gap:12px;}
+.marquee-sep{color:var(--c);opacity:.4;}
+
+/* STATS */
+.stats{position:relative;z-index:2;padding:80px 6%;display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--bdr);}
+.stat{text-align:center;padding:20px;border-right:1px solid var(--bdr);position:relative;}
+.stat:last-child{border-right:none;}
+.stat-n{font-family:'Syne',sans-serif;font-size:44px;font-weight:800;line-height:1;margin-bottom:6px;background:linear-gradient(135deg,var(--c),var(--c2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stat p{color:var(--muted);font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;}
+
+/* SECTION BASE */
+section{position:relative;z-index:2;}
+.sec-eye{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--c);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;display:block;}
+.sec-h{font-family:'Syne',sans-serif;font-size:clamp(26px,3.5vw,44px);font-weight:800;margin-bottom:14px;line-height:1.2;}
+.sec-sub{color:var(--sub);font-size:15px;line-height:1.8;max-width:580px;margin-bottom:60px;}
+.text-c{text-align:center;}
+.text-c .sec-sub{margin:0 auto 60px;}
+
+/* SERVICES */
+.services{padding:110px 6%;background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);}
+.srv-tabs{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:50px;}
+.srv-tab{background:var(--bg3);border:1px solid var(--bdr);color:var(--sub);padding:10px 24px;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;transition:.2s;letter-spacing:.3px;}
+.srv-tab.active,.srv-tab:hover{background:#00e5ff10;border-color:var(--c);color:var(--c);}
+.srv-grid{max-width:1200px;margin:0 auto;display:none;grid-template-columns:repeat(3,1fr);gap:18px;animation:fu .4s ease;}
+.srv-grid.active{display:grid;}
+.srv-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:10px;padding:32px;transition:.3s;position:relative;overflow:hidden;cursor:default;}
+.srv-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent,var(--c),transparent);opacity:0;transition:.3s;}
+.srv-card:hover{border-color:var(--bdr2);transform:translateY(-3px);box-shadow:0 20px 60px rgba(0,0,0,.5);}
+.srv-card:hover::before{opacity:1;}
+.srv-ico{width:44px;height:44px;background:#00e5ff0c;border:1px solid var(--bdr3);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:18px;}
+.srv-card h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:10px;}
+.srv-card p{color:var(--sub);font-size:13.5px;line-height:1.8;}
+.srv-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;}
+.stag{background:var(--bg4);border:1px solid var(--bdr);color:var(--muted);font-size:10px;padding:3px 10px;border-radius:3px;font-family:'JetBrains Mono',monospace;letter-spacing:.5px;}
+
+/* ABOUT/PILLARS */
+.pillars{padding:110px 6%;background:var(--bg2);}
+.pillars-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.pillars-left .sec-sub{margin-bottom:32px;}
+.pill-list{display:flex;flex-direction:column;gap:14px;}
+.pill{display:flex;align-items:flex-start;gap:16px;padding:18px 20px;background:var(--bg3);border:1px solid var(--bdr);border-radius:8px;transition:.25s;}
+.pill:hover{border-color:var(--bdr3);background:var(--bg4);}
+.pill-ico{width:36px;height:36px;background:#00e5ff0c;border:1px solid var(--bdr3);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;margin-top:2px;}
+.pill-t{font-size:14px;font-weight:600;margin-bottom:3px;}
+.pill-d{font-size:12.5px;color:var(--sub);line-height:1.7;}
+
+.pillars-right{position:relative;}
+.code-visual{background:var(--bg3);border:1px solid var(--bdr2);border-radius:12px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5);}
+.cv-bar{background:#0a0a20;padding:12px 18px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;}
+.cv-dots{display:flex;gap:7px;}
+.cv-dot{width:10px;height:10px;border-radius:50%;}
+.cv-file{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);}
+.cv-body{padding:24px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:2;}
+.ln{display:block;color:var(--muted);}
+.lk{color:var(--c3);}.lv{color:var(--c);}.ls{color:var(--sub);}.lc{color:#22c55e;}.lf{color:#fbbf24;}
+.cv-badge{position:absolute;top:-16px;right:20px;background:linear-gradient(135deg,var(--c),var(--c2));color:#000;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:6px 16px;border-radius:4px;letter-spacing:1px;}
+
+/* SECURITY */
+.security{padding:110px 6%;}
+.sec-wrap{max-width:1200px;margin:0 auto;}
+.sec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.sec-item{background:var(--bg3);border:1px solid var(--bdr);border-radius:10px;padding:28px;transition:.3s;position:relative;overflow:hidden;}
+.sec-item::after{content:'';position:absolute;top:0;left:0;width:3px;height:0;background:linear-gradient(var(--c),var(--c3));transition:.4s;}
+.sec-item:hover{border-color:var(--bdr2);background:var(--bg4);}
+.sec-item:hover::after{height:100%;}
+.si-top{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.si-icon{font-size:22px;}
+.si-badge{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:1.5px;padding:3px 10px;border-radius:3px;background:#00e5ff12;color:var(--c);border:1px solid var(--bdr3);}
+.sec-item h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:10px;}
+.sec-item p{color:var(--sub);font-size:13px;line-height:1.75;}
+.sec-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;}
+.sm{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);background:var(--bg4);border:1px solid var(--bdr);padding:3px 10px;border-radius:3px;}
+
+/* TRAINING */
+.training{padding:110px 6%;background:var(--bg2);}
+.tr-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.tr-right .sec-sub{margin-bottom:28px;}
+.topic-flow{display:flex;flex-wrap:wrap;gap:9px;}
+.tf{background:var(--bg3);border:1px solid var(--bdr);color:#ccc;padding:10px 18px;border-radius:4px;font-size:12.5px;font-weight:500;transition:.25s;cursor:default;}
+.tf:hover{border-color:var(--c);color:var(--c);background:#00e5ff08;}
+.tr-card{background:var(--bg3);border:1px solid var(--bdr2);border-radius:12px;padding:32px;position:relative;overflow:hidden;}
+.tr-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#00e5ff06,#7c3aed06);pointer-events:none;}
+.tr-scan{position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent,var(--c),transparent);animation:scan 4s linear infinite;}
+.tr-stat{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:24px;}
+.trs{text-align:center;flex:1;min-width:80px;}
+.trs-n{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--c);line-height:1;}
+.trs-l{font-size:11px;color:var(--sub);margin-top:4px;}
+.tr-features{display:flex;flex-direction:column;gap:10px;}
+.trf{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--sub);}
+.trf::before{content:'▸';color:var(--c);font-size:10px;flex-shrink:0;}
+
+/* PLACEMENT */
+.placement{padding:110px 6%;}
+.pl-wrap{max-width:1200px;margin:0 auto;}
+.pl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:40px;}
+.pl-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:10px;padding:28px;transition:.3s;}
+.pl-card:hover{border-color:var(--bdr3);transform:translateY(-3px);}
+.pl-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--c);letter-spacing:2px;margin-bottom:14px;}
+.pl-card h3{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:10px;}
+.pl-card p{color:var(--sub);font-size:13px;line-height:1.75;}
+.pl-cta{background:linear-gradient(135deg,#00e5ff08,#7c3aed08);border:1px solid var(--bdr2);border-radius:10px;padding:36px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+.pl-cta-txt h3{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:8px;}
+.pl-cta-txt p{color:var(--sub);font-size:14px;max-width:500px;}
+
+/* CONTACT */
+.contact{padding:110px 6%;background:var(--bg2);}
+.ct-wrap{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
+.ct-left h3{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;margin-bottom:14px;line-height:1.25;}
+.ct-left>p{color:var(--sub);font-size:14px;line-height:1.85;margin-bottom:32px;}
+.ct-info{display:flex;flex-direction:column;gap:10px;margin-bottom:32px;}
+.ci{display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--bg3);border:1px solid var(--bdr);border-radius:8px;transition:.2s;}
+.ci:hover{border-color:var(--bdr2);}
+.ci-i{width:36px;height:36px;background:#00e5ff0c;border:1px solid var(--bdr3);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.ci-l{font-size:10px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:2px;font-family:'JetBrains Mono',monospace;}
+.ci-v{font-size:13.5px;font-weight:600;}
+.ci-v a{color:var(--txt);text-decoration:none;transition:.2s;}
+.ci-v a:hover{color:var(--c);}
+
+/* CONTACT FORM */
+.ct-form{background:var(--bg3);border:1px solid var(--bdr2);border-radius:12px;padding:36px;position:relative;overflow:hidden;}
+.ct-form::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--c),var(--c2),var(--c3));}
+.form-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:6px;}
+.form-sub{font-size:13px;color:var(--sub);margin-bottom:24px;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.frow.full{grid-template-columns:1fr;}
+.fg{display:flex;flex-direction:column;gap:6px;}
+.fg label{font-size:11px;color:var(--sub);font-weight:500;letter-spacing:.5px;text-transform:uppercase;font-family:'JetBrains Mono',monospace;}
+.fg input,.fg select,.fg textarea{background:var(--bg4);border:1px solid var(--bdr2);color:var(--txt);padding:11px 14px;border-radius:6px;font-size:13px;font-family:'Inter',sans-serif;transition:.2s;outline:none;-webkit-appearance:none;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--c);box-shadow:0 0 0 3px #00e5ff10;}
+.fg textarea{resize:vertical;min-height:90px;}
+.fg select option{background:var(--bg4);}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--muted);}
+.form-btn{width:100%;background:var(--c);color:#000;border:none;padding:14px;border-radius:6px;font-weight:700;font-size:14px;cursor:pointer;transition:.25s;margin-top:6px;letter-spacing:.3px;font-family:'Inter',sans-serif;}
+.form-btn:hover{opacity:.85;transform:translateY(-1px);}
+.form-note{text-align:center;font-size:11px;color:var(--muted);margin-top:12px;}
+.form-success{display:none;text-align:center;padding:30px;color:var(--c);}
+.form-success .fs-icon{font-size:40px;margin-bottom:12px;}
+.form-success h4{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:6px;}
+.form-success p{font-size:13px;color:var(--sub);}
+
+/* FOOTER */
+footer{position:relative;z-index:2;border-top:1px solid var(--bdr);padding:64px 6% 28px;background:var(--bg);}
+.foot-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px;}
+.foot-logo{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;letter-spacing:3px;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+.fl-h{color:var(--c);}
+.fl-r{color:#fff;}
+.foot-brand p{color:var(--muted);font-size:13.5px;line-height:1.85;max-width:250px;margin-bottom:20px;}
+.foot-social{display:flex;gap:10px;}
+.fsoc{width:34px;height:34px;background:var(--bg3);border:1px solid var(--bdr);border-radius:6px;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:14px;transition:.2s;}
+.fsoc:hover{border-color:var(--c);background:#00e5ff0c;}
+.foot-col h4{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--sub);margin-bottom:18px;font-family:'JetBrains Mono',monospace;}
+.foot-col a{display:block;color:var(--muted);text-decoration:none;font-size:13.5px;margin-bottom:10px;transition:.2s;}
+.foot-col a:hover{color:var(--c);}
+.foot-bot{max-width:1200px;margin:0 auto;padding-top:24px;border-top:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--muted);}
+.foot-bot span{color:var(--c);}
+
+/* WA FLOAT */
+.wa-float{position:fixed;bottom:100px;right:24px;z-index:990;display:flex;flex-direction:column;align-items:flex-end;gap:10px;}
+.wa-menu{display:none;flex-direction:column;gap:8px;align-items:flex-end;}
+.wa-menu.open{display:flex;}
+.wa-opt{display:flex;align-items:center;gap:10px;background:rgba(8,8,21,.97);border:1px solid var(--bdr2);border-radius:8px;padding:10px 14px;text-decoration:none;color:var(--txt);font-size:13px;font-weight:500;white-space:nowrap;transition:.2s;animation:sr .2s ease;backdrop-filter:blur(20px);}
+.wa-opt:hover{border-color:#25D366;color:#25D366;}
+.wa-dot{width:28px;height:28px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.wa-dot svg{width:14px;height:14px;fill:#fff;}
+.wa-fab{width:48px;height:48px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:none;border:none;box-shadow:0 4px 20px rgba(37,211,102,.4);transition:.3s;}
+.wa-fab:hover{transform:scale(1.08);}
+.wa-fab svg{width:24px;height:24px;fill:#fff;}
+
+/* CHAT */
+.chat-float{position:fixed;bottom:24px;right:24px;z-index:991;}
+.chat-btn{width:48px;height:48px;background:linear-gradient(135deg,var(--c),var(--c2));border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:none;border:none;box-shadow:0 0 0 0 #00e5ff35;animation:cp 3s ease infinite;font-size:18px;transition:.3s;}
+.chat-btn:hover{transform:scale(1.08);}
+.chat-win{position:absolute;bottom:62px;right:0;width:360px;background:rgba(8,8,21,.98);border:1px solid var(--bdr2);border-radius:16px;overflow:hidden;display:none;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,.8);backdrop-filter:blur(20px);animation:su .25s ease;}
+.chat-win.open{display:flex;}
+.chat-hdr{background:#0a0a1f;padding:16px 18px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:12px;position:relative;}
+.chat-av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--c),var(--c2));display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.chat-hdr-info h4{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;}
+.chat-status{font-size:10px;color:var(--c);display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;}
+.sdot{width:5px;height:5px;background:var(--c);border-radius:50%;animation:pulse 1.5s infinite;}
+.chat-x{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:var(--bdr);border:none;color:var(--sub);width:22px;height:22px;border-radius:50%;cursor:none;font-size:11px;display:flex;align-items:center;justify-content:center;transition:.2s;}
+.chat-x:hover{background:var(--bdr2);color:var(--txt);}
+.chat-body{padding:14px;height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:var(--bdr) transparent;}
+.chat-msg{max-width:88%;padding:11px 14px;border-radius:12px;font-size:13px;line-height:1.65;}
+.chat-msg.bot{background:var(--bg4);border:1px solid var(--bdr);color:var(--txt);align-self:flex-start;border-bottom-left-radius:3px;}
+.chat-msg.usr{background:linear-gradient(135deg,var(--c),var(--c2));color:#000;align-self:flex-end;font-weight:600;border-bottom-right-radius:3px;}
+.typing{display:flex;align-items:center;gap:5px;padding:12px 14px;background:var(--bg4);border:1px solid var(--bdr);border-radius:12px;border-bottom-left-radius:3px;align-self:flex-start;}
+.tdot{width:6px;height:6px;background:var(--muted);border-radius:50%;animation:tb 1.2s ease infinite;}
+.tdot:nth-child(2){animation-delay:.2s;}
+.tdot:nth-child(3){animation-delay:.4s;}
+.chat-qs-wrap{padding:0 12px 12px;}
+.chat-qs-l{font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;font-family:'JetBrains Mono',monospace;}
+.chat-qs{display:flex;flex-wrap:wrap;gap:6px;}
+.chat-q{background:var(--bg4);border:1px solid var(--bdr);color:var(--sub);padding:6px 12px;border-radius:4px;font-size:11.5px;font-weight:500;cursor:pointer;transition:.2s;font-family:'Inter',sans-serif;}
+.chat-q:hover{border-color:var(--c);color:var(--c);background:#00e5ff08;}
+
+/* REVEAL */
+.rev{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease;}
+.rev.vis{opacity:1;transform:translateY(0);}
 
 /* KEYFRAMES */
-@keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
-@keyframes slideR{from{opacity:0;transform:translateX(14px);}to{opacity:1;transform:translateX(0);}}
-@keyframes slideUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
-@keyframes gradShift{0%,100%{background-position:0%;}50%{background-position:100%;}}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}50%{transform:scale(1.2);}}
+@keyframes fu{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes sr{from{opacity:0;transform:translateX(12px);}to{opacity:1;transform:translateX(0);}}
+@keyframes su{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
-@keyframes logoPulse{0%,100%{box-shadow:0 0 0 0 #00ff8860;}50%{box-shadow:0 0 0 6px #00ff8800;}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.3);}}
 @keyframes scan{0%{top:-2px;}100%{top:100%;}}
-@keyframes typeIn{from{opacity:0;transform:translateX(-8px);}to{opacity:1;transform:translateX(0);}}
-@keyframes chatPulse{0%,100%{box-shadow:0 0 0 0 #00ff8840;}50%{box-shadow:0 0 0 12px #00ff8800;}}
-@keyframes rotate{from{filter:hue-rotate(0deg);}to{filter:hue-rotate(360deg);}}
-@keyframes typingBounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
-@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
-@keyframes gridMove{0%{background-position:0 0;}100%{background-position:60px 60px;}}
-
-/* SCROLL REVEAL */
-.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease;}
-.reveal.visible{opacity:1;transform:translateY(0);}
-
-/* GLOW TEXT */
-.glow-txt{text-shadow:0 0 30px #00ff8840;}
+@keyframes ti{from{opacity:0;transform:translateX(-6px);}to{opacity:1;transform:translateX(0);}}
+@keyframes cp{0%,100%{box-shadow:0 0 0 0 #00e5ff35;}50%{box-shadow:0 0 0 10px #00e5ff00;}}
+@keyframes tb{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+@keyframes marquee{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+@keyframes gradShift{0%,100%{background-position:0%;}50%{background-position:100%;}}
 
 /* RESPONSIVE */
-@media(max-width:1000px){
-  .hero-inner{grid-template-columns:1fr;}
-  .hero-right{display:none;}
-  .serve-grid{grid-template-columns:repeat(3,1fr);}
-  .corp-grid{grid-template-columns:1fr;}
-  .contact-wrap{grid-template-columns:1fr;}
+@media(max-width:1024px){
+  .hero-inner{grid-template-columns:1fr;}.hero-r{display:none;}
+  .pillars-grid{grid-template-columns:1fr;}
+  .tr-grid{grid-template-columns:1fr;}
+  .ct-wrap{grid-template-columns:1fr;}
   .foot-grid{grid-template-columns:1fr 1fr;}
-  .rm-timeline{grid-template-columns:1fr;}
-  .rm-item{border-right:none;border-bottom:1px solid var(--bdr);}
-  .rm-item:last-child{border-bottom:none;}
+  .stats{grid-template-columns:repeat(2,1fr);}
 }
 @media(max-width:768px){
-  nav{padding:0 20px;}
-  .nav-links{display:none;}
-  .hbg{display:flex;}
-  .nav-links.open{display:flex;flex-direction:column;position:fixed;top:70px;left:0;right:0;background:rgba(3,3,10,.98);padding:24px 28px;gap:18px;border-bottom:1px solid var(--bdr);z-index:999;backdrop-filter:blur(20px);}
-  .srv-content.active{grid-template-columns:1fr;}
-  .serve-grid{grid-template-columns:repeat(2,1fr);}
-  .stats-bar{grid-template-columns:repeat(3,1fr);}
-  .cyber-grid{grid-template-columns:1fr;}
-  .chat-win{width:300px;right:-10px;}
+  nav{padding:0 20px;}.nav-links{display:none;}.hbg{display:flex;}
+  .nav-links.open{display:flex;flex-direction:column;position:fixed;top:68px;left:0;right:0;background:rgba(4,4,13,.98);padding:24px;gap:18px;border-bottom:1px solid var(--bdr);z-index:999;backdrop-filter:blur(20px);}
+  .srv-grid.active{grid-template-columns:1fr;}
+  .sec-grid{grid-template-columns:1fr;}
+  .pl-grid{grid-template-columns:1fr;}
+  .frow{grid-template-columns:1fr;}
+  .chat-win{width:300px;right:-8px;}
   .foot-grid{grid-template-columns:1fr;}
   .foot-bot{flex-direction:column;gap:8px;text-align:center;}
 }
 </style>
 </head>
 <body>
-
-<div id="cursor"></div>
-<div id="cursor-ring"></div>
-<div id="progress"></div>
-<canvas id="matrixCanvas"></canvas>
-<canvas id="bgCanvas"></canvas>
+<div id="cur"></div>
+<div id="cur-r"></div>
+<div id="prog"></div>
+<canvas id="matC"></canvas>
+<canvas id="bgC"></canvas>
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="#home" class="logo"><span class="logo-dot"></span>HACK<em>RACE</em></a>
+  <a href="#home" class="logo"><span class="logo-h">HACK</span><span class="logo-r">RACE</span><span class="logo-tag">v2.0</span></a>
   <div class="nav-links" id="navLinks">
-    <a href="#serve">Who We Serve</a>
     <a href="#services">Services</a>
-    <a href="#corporate">Corporate</a>
-    <a href="#topics">Topics</a>
+    <a href="#security">Security</a>
+    <a href="#training">Training</a>
+    <a href="#placement">Placement</a>
     <a href="#contact">Contact</a>
-    <a href="#contact" class="nav-btn">Get Started Free →</a>
+    <a href="#contact" class="nav-cta">Get a Free Audit →</a>
   </div>
   <button class="hbg" id="hbg" onclick="toggleNav()"><span></span><span></span><span></span></button>
 </nav>
 
 <!-- HERO -->
 <section class="hero" id="home">
-  <div class="hero-orb orb1"></div>
-  <div class="hero-orb orb2"></div>
-  <div class="hero-orb orb3"></div>
+  <div class="h-orb o1"></div><div class="h-orb o2"></div><div class="h-orb o3"></div>
   <div class="hero-inner">
     <div class="hero-left">
-      <div class="hero-eyebrow"><span class="blink">▮</span> NEXT-GEN SKILL ECOSYSTEM</div>
+      <div class="hero-eye"><span class="eye-dot"></span>CYBERSECURITY · DEVELOPMENT · TRAINING</div>
       <h1>
-        <span class="h1-line1">The Future of</span>
-        <span class="h1-line2">Skill Training</span>
-        <span class="h1-line3">Starts Here.</span>
+        Secure. Build.<br>
+        <span class="h1-g">Empower.</span>
       </h1>
-      <p class="hero-sub">HackRace is India's most ambitious skill training ecosystem — empowering colleges, corporates, ed-tech platforms, institutions &amp; individuals with industry-grade expertise from verified professionals.</p>
+      <p class="hero-p">HackRace delivers enterprise-grade cybersecurity, cutting-edge digital solutions, and industry-aligned skill training — trusted by businesses and institutions across India.</p>
       <div class="hero-btns">
-        <a href="#contact" class="btn-main">Book Free Session →</a>
-        <a href="#serve" class="btn-out">Who We Serve</a>
+        <a href="#contact" class="btn-p">Get Free Consultation →</a>
+        <a href="#services" class="btn-g">Explore Services</a>
+      </div>
+      <div class="hero-badges">
+        <span class="hbadge"><span class="hbadge-dot"></span>VAPT Certified</span>
+        <span class="hbadge"><span class="hbadge-dot"></span>SOC Trained</span>
+        <span class="hbadge"><span class="hbadge-dot"></span>OWASP Compliant</span>
+        <span class="hbadge"><span class="hbadge-dot"></span>Pan-India</span>
       </div>
     </div>
-    <div class="hero-right">
+    <div class="hero-r">
       <div class="terminal">
-        <div class="term-bar">
-          <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
-          <span class="term-title">hackrace@terminal ~ skill-engine</span>
+        <div class="t-bar">
+          <div class="td r"></div><div class="td y"></div><div class="td g"></div>
+          <span class="t-title">hackrace@sec-engine:~$</span>
         </div>
-        <div class="term-body" id="termBody">
-          <span class="tl"><span class="tc-g">$</span> <span class="tc-b">hackrace</span> <span class="tc-y">--init</span></span>
-          <span class="tl"><span class="tc-m">// Initializing HackRace Skill Engine...</span></span>
-          <span class="tl"><span class="tc-g">✓</span> Colleges connected: <span class="tc-y">10+</span></span>
-          <span class="tl"><span class="tc-g">✓</span> Corporate clients: <span class="tc-y">Active</span></span>
-          <span class="tl"><span class="tc-g">✓</span> Students trained: <span class="tc-y">500+</span></span>
-          <span class="tl"><span class="tc-g">✓</span> VAPT modules: <span class="tc-p">Loaded</span></span>
-          <span class="tl"><span class="tc-g">✓</span> SOC training: <span class="tc-p">Loaded</span></span>
-          <span class="tl"><span class="tc-g">✓</span> AI/ML workshops: <span class="tc-b">Ready</span></span>
-          <span class="tl"><span class="tc-m">// All systems operational.</span></span>
-          <span class="tl"><span class="tc-g">$</span> <span class="cursor-blink"></span></span>
+        <div class="t-body" id="tBody">
+          <span class="tl"><span class="cg">$</span> <span class="cb">./hackrace</span> <span class="cy">--scan-init</span></span>
+          <span class="tl"><span class="cm">// Initializing HackRace Security Engine...</span></span>
+          <span class="tl"><span class="cg">✓</span> VAPT modules: <span class="cy">Operational</span></span>
+          <span class="tl"><span class="cg">✓</span> Pentest suite: <span class="cy">Ready</span></span>
+          <span class="tl"><span class="cg">✓</span> SOC training: <span class="cp">Active</span></span>
+          <span class="tl"><span class="cg">✓</span> Web dev stack: <span class="cb">Loaded</span></span>
+          <span class="tl"><span class="cg">✓</span> Skill modules: <span class="cp">14 topics</span></span>
+          <span class="tl"><span class="cg">✓</span> Clients secured: <span class="cg">Active</span></span>
+          <span class="tl"><span class="cm">// All systems go. Awaiting target.</span></span>
+          <span class="tl"><span class="cg">$</span> <span class="cb-blink"></span></span>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- STATS -->
-<div class="stats-bar reveal">
-  <div class="sstat"><div class="sstat-num" data-target="500">0</div><p>Students Trained</p></div>
-  <div class="sstat"><div class="sstat-num" data-target="10">0</div><p>College Partners</p></div>
-  <div class="sstat"><div class="sstat-num" data-target="8">0</div><p>Industry Trainers</p></div>
-  <div class="sstat"><div class="sstat-num" data-target="14">0</div><p>Topics Covered</p></div>
-  <div class="sstat"><div class="sstat-num" data-target="5">0</div><p>Cities Reached</p></div>
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-inner" id="marquee">
+    <span class="marquee-item">VAPT <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">PENETRATION TESTING <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">SOC TRAINING <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">WEB DEVELOPMENT <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">ETHICAL HACKING <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">VULNERABILITY ASSESSMENT <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">SKILL TRAINING <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">POSH COMPLIANCE <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">BUG BOUNTY <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">NETWORK SECURITY <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">VAPT <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">PENETRATION TESTING <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">SOC TRAINING <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">WEB DEVELOPMENT <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">ETHICAL HACKING <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">VULNERABILITY ASSESSMENT <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">SKILL TRAINING <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">POSH COMPLIANCE <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">BUG BOUNTY <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">NETWORK SECURITY <span class="marquee-sep">◆</span></span>
+  </div>
 </div>
 
-<!-- WHO WE SERVE -->
-<section class="serve" id="serve">
-  <p class="sec-eye reveal">Who We Serve</p>
-  <h2 class="sec-h reveal">Built for <span style="background:linear-gradient(135deg,var(--g),var(--b));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Everyone</span> in the Ecosystem</h2>
-  <p class="sec-sub reveal">From college students to Fortune 500 teams — we have a tailored program for every learning need.</p>
-  <div class="serve-grid reveal">
-    <div class="serve-card">
-      <span class="serve-icon">🎓</span>
-      <h3>Colleges &amp; Universities</h3>
-      <p>Hands-on workshops, NAAC docs, placement support, hackathons.</p>
-      <span class="serve-tag">CORE FOCUS</span>
-    </div>
-    <div class="serve-card">
-      <span class="serve-icon">🏢</span>
-      <h3>Corporates &amp; Enterprises</h3>
-      <p>VAPT, SOC, penetration testing, upskilling programs for teams.</p>
-      <span class="serve-tag">HIGH VALUE</span>
-    </div>
-    <div class="serve-card">
-      <span class="serve-icon">💻</span>
-      <h3>Ed-Tech Platforms</h3>
-      <p>Content partnerships, trainer network access, course collaborations.</p>
-      <span class="serve-tag">GROWING</span>
-    </div>
-    <div class="serve-card">
-      <span class="serve-icon">🏛️</span>
-      <h3>Institutions &amp; NGOs</h3>
-      <p>Government skill schemes, NSDC-aligned programs, POSH compliance.</p>
-      <span class="serve-tag">IMPACT</span>
-    </div>
-    <div class="serve-card">
-      <span class="serve-icon">👤</span>
-      <h3>Individuals</h3>
-      <p>Career switchers, freshers, professionals — personalized skill paths.</p>
-      <span class="serve-tag">OPEN</span>
-    </div>
-  </div>
-</section>
+<!-- STATS -->
+<div class="stats rev">
+  <div class="stat"><div class="stat-n" data-t="500">0</div><p>Students Trained</p></div>
+  <div class="stat"><div class="stat-n" data-t="30">0</div><p>Clients Served</p></div>
+  <div class="stat"><div class="stat-n" data-t="15">0</div><p>Industry Trainers</p></div>
+  <div class="stat"><div class="stat-n" data-t="14">0</div><p>Service Verticals</p></div>
+</div>
 
 <!-- SERVICES -->
 <section class="services" id="services">
-  <p class="sec-eye reveal">Our Services</p>
-  <h2 class="sec-h reveal">Everything You Need to <span style="color:var(--g)">Level Up</span></h2>
-  <p class="sec-sub reveal">Switch between what you're looking for.</p>
-  <div class="srv-tabs">
-    <button class="srv-tab active" onclick="switchTab('college')">🎓 For Colleges</button>
-    <button class="srv-tab" onclick="switchTab('corporate')">🏢 For Corporates</button>
-    <button class="srv-tab" onclick="switchTab('individual')">👤 For Individuals</button>
+  <p class="sec-eye text-c rev">What We Do</p>
+  <h2 class="sec-h text-c rev">End-to-End <span style="color:var(--c)">Digital Services</span></h2>
+  <p class="sec-sub text-c rev">From securing your infrastructure to building your digital presence — HackRace is your single partner for growth and security.</p>
+  <div class="srv-tabs rev">
+    <button class="srv-tab active" onclick="tab('sec')">🔐 Cybersecurity</button>
+    <button class="srv-tab" onclick="tab('dev')">💻 Development</button>
+    <button class="srv-tab" onclick="tab('train')">🎯 Training</button>
   </div>
-
-  <div class="srv-content active" id="tab-college">
-    <div class="srv-card"><div class="srv-icon">🎯</div><h3>Industry Workshops</h3><p>Hands-on sessions by working professionals. Real tools, real projects, real experience — not just theory.</p><div class="srv-tags"><span class="stag">On-Campus</span><span class="stag">Certified</span><span class="stag">NAAC Ready</span></div></div>
-    <div class="srv-card"><div class="srv-icon">🏆</div><h3>Hackathons &amp; CTFs</h3><p>We organise inter-college cybersecurity CTFs and coding hackathons that put your institution on the map.</p><div class="srv-tags"><span class="stag">Sponsored</span><span class="stag">Prizes</span><span class="stag">Brand Visibility</span></div></div>
-    <div class="srv-card"><div class="srv-icon">💼</div><h3>Placement Support</h3><p>We connect trained students directly with hiring companies — boosting your placement percentage.</p><div class="srv-tags"><span class="stag">Resume Prep</span><span class="stag">Mock Interviews</span><span class="stag">Job Connects</span></div></div>
-    <div class="srv-card"><div class="srv-icon">📋</div><h3>NAAC Documentation</h3><p>Every session includes attendance sheets, feedback reports, photographs, and formatted certificates.</p><div class="srv-tags"><span class="stag">NAAC Compliant</span><span class="stag">Instant Reports</span></div></div>
-    <div class="srv-card"><div class="srv-icon">🛡️</div><h3>POSH Compliance</h3><p>Free POSH awareness during first engagement. Annual contracts available — legally mandatory for all.</p><div class="srv-tags"><span class="stag">Free First Session</span><span class="stag">Annual Contract</span></div></div>
-    <div class="srv-card"><div class="srv-icon">🚀</div><h3>Startup Incubation</h3><p>We mentor final-year students on entrepreneurship, pitching, and building real companies.</p><div class="srv-tags"><span class="stag">Mentorship</span><span class="stag">Pitch Prep</span><span class="stag">Network</span></div></div>
+  <div class="srv-grid active" id="tab-sec">
+    <div class="srv-card"><div class="srv-ico">🔍</div><h3>VAPT Services</h3><p>Full-scope Vulnerability Assessment and Penetration Testing — web, mobile, network, and API. We find weaknesses before attackers do.</p><div class="srv-tags"><span class="stag">WEB APP</span><span class="stag">NETWORK</span><span class="stag">MOBILE</span><span class="stag">API</span></div></div>
+    <div class="srv-card"><div class="srv-ico">🎯</div><h3>Penetration Testing</h3><p>Ethical hacking engagements — black box, grey box, white box. Full report with proof-of-concept exploits and remediation steps.</p><div class="srv-tags"><span class="stag">BLACK BOX</span><span class="stag">GREY BOX</span><span class="stag">WHITE BOX</span></div></div>
+    <div class="srv-card"><div class="srv-ico">🛡️</div><h3>SOC Training</h3><p>Security Operations Center training for enterprise teams — threat detection, SIEM tools, incident response, and threat intelligence.</p><div class="srv-tags"><span class="stag">SIEM</span><span class="stag">THREAT INTEL</span><span class="stag">IR</span></div></div>
+    <div class="srv-card"><div class="srv-ico">📋</div><h3>Vulnerability Assessment</h3><p>Systematic scanning and analysis of your entire infrastructure. CVE tracking, CVSS risk scoring, and prioritised fix roadmap.</p><div class="srv-tags"><span class="stag">CVE TRACKING</span><span class="stag">RISK SCORE</span></div></div>
+    <div class="srv-card"><div class="srv-ico">🔎</div><h3>Bug Bounty Support</h3><p>We help organisations set up and manage bug bounty programmes — policy creation, researcher communication, and triage support.</p><div class="srv-tags"><span class="stag">POLICY</span><span class="stag">TRIAGE</span><span class="stag">PLATFORM</span></div></div>
+    <div class="srv-card"><div class="srv-ico">📜</div><h3>Compliance Audits</h3><p>ISO 27001, GDPR, POSH, and custom compliance audit reports. Documentation, gap analysis, and remediation planning.</p><div class="srv-tags"><span class="stag">ISO 27001</span><span class="stag">GDPR</span><span class="stag">POSH</span></div></div>
   </div>
-
-  <div class="srv-content" id="tab-corporate">
-    <div class="srv-card"><div class="srv-icon">🔐</div><h3>VAPT Services</h3><p>Vulnerability Assessment &amp; Penetration Testing — full scope, grey box, black box, web app and network VAPT.</p><div class="srv-tags"><span class="stag">Web App</span><span class="stag">Network</span><span class="stag">Mobile</span><span class="stag">API</span></div></div>
-    <div class="srv-card"><div class="srv-icon">🛡️</div><h3>SOC Training</h3><p>Security Operations Center training for enterprise teams — threat detection, SIEM tools, incident response.</p><div class="srv-tags"><span class="stag">SIEM</span><span class="stag">Threat Intel</span><span class="stag">IR</span></div></div>
-    <div class="srv-card"><div class="srv-icon">🎯</div><h3>Penetration Testing</h3><p>Ethical hacking engagements — identify weaknesses before attackers do. Full report with remediation steps.</p><div class="srv-tags"><span class="stag">Recon</span><span class="stag">Exploit</span><span class="stag">Report</span></div></div>
-    <div class="srv-card"><div class="srv-icon">🔎</div><h3>Vulnerability Assessment</h3><p>Systematic scanning and analysis of your infrastructure. CVE tracking, risk scoring, and prioritised fixes.</p><div class="srv-tags"><span class="stag">CVE Tracking</span><span class="stag">Risk Score</span></div></div>
-    <div class="srv-card"><div class="srv-icon">💻</div><h3>Development Services</h3><p>Custom software development — web apps, internal tools, automation platforms, dashboards.</p><div class="srv-tags"><span class="stag">Web</span><span class="stag">Automation</span><span class="stag">Dashboards</span></div></div>
-    <div class="srv-card"><div class="srv-icon">👥</div><h3>Corporate Upskilling</h3><p>We provide skilled trainers to your company for internal team training — tech, cyber, soft skills.</p><div class="srv-tags"><span class="stag">On-site</span><span class="stag">Virtual</span><span class="stag">Custom</span></div></div>
+  <div class="srv-grid" id="tab-dev">
+    <div class="srv-card"><div class="srv-ico">🌐</div><h3>Web Development</h3><p>Custom websites and web applications — from landing pages to full-stack platforms. Fast, secure, and scalable.</p><div class="srv-tags"><span class="stag">HTML/CSS</span><span class="stag">REACT</span><span class="stag">NODE</span><span class="stag">FULL STACK</span></div></div>
+    <div class="srv-card"><div class="srv-ico">⚙️</div><h3>Automation Tools</h3><p>Custom automation scripts, bots, and internal tools that eliminate repetitive work and save hundreds of hours monthly.</p><div class="srv-tags"><span class="stag">PYTHON</span><span class="stag">BASH</span><span class="stag">API</span></div></div>
+    <div class="srv-card"><div class="srv-ico">📊</div><h3>Dashboards & Analytics</h3><p>Real-time dashboards for security monitoring, business intelligence, and operational visibility. Custom-built to your requirements.</p><div class="srv-tags"><span class="stag">REAL-TIME</span><span class="stag">CUSTOM</span><span class="stag">BI</span></div></div>
+    <div class="srv-card"><div class="srv-ico">📱</div><h3>UI/UX Design</h3><p>Clean, professional interface design for web and mobile. From wireframes to pixel-perfect implementations.</p><div class="srv-tags"><span class="stag">FIGMA</span><span class="stag">RESPONSIVE</span><span class="stag">MOBILE</span></div></div>
+    <div class="srv-card"><div class="srv-ico">🔐</div><h3>Secure Development</h3><p>Security-first development practices — OWASP guidelines, secure code review, and penetration-tested deployments.</p><div class="srv-tags"><span class="stag">OWASP</span><span class="stag">CODE REVIEW</span><span class="stag">SECURE</span></div></div>
+    <div class="srv-card"><div class="srv-ico">☁️</div><h3>Cloud & DevOps</h3><p>Cloud infrastructure setup, CI/CD pipelines, containerisation, and DevSecOps integration for modern teams.</p><div class="srv-tags"><span class="stag">AWS</span><span class="stag">DOCKER</span><span class="stag">CI/CD</span></div></div>
   </div>
-
-  <div class="srv-content" id="tab-individual">
-    <div class="srv-card"><div class="srv-icon">🎓</div><h3>1-on-1 Mentorship</h3><p>Personal sessions with industry professionals — build skills on your schedule and at your pace.</p><div class="srv-tags"><span class="stag">Flexible</span><span class="stag">Personalised</span></div></div>
-    <div class="srv-card"><div class="srv-icon">🏅</div><h3>Skill Certifications</h3><p>Earn HackRace-verified certificates in tech, cybersecurity, AI, marketing, and more.</p><div class="srv-tags"><span class="stag">Industry Recognised</span><span class="stag">Shareable</span></div></div>
-    <div class="srv-card"><div class="srv-icon">💼</div><h3>Career Launchpad</h3><p>From CV building to mock interviews and job connects — we help you land your first or next role.</p><div class="srv-tags"><span class="stag">Resume</span><span class="stag">Mock Interviews</span><span class="stag">Referrals</span></div></div>
+  <div class="srv-grid" id="tab-train">
+    <div class="srv-card"><div class="srv-ico">🎓</div><h3>Industry Workshops</h3><p>Hands-on sessions delivered by working professionals. Real tools, real scenarios — aligned with what companies actually use.</p><div class="srv-tags"><span class="stag">ON-SITE</span><span class="stag">VIRTUAL</span><span class="stag">CERTIFIED</span></div></div>
+    <div class="srv-card"><div class="srv-ico">🏆</div><h3>Hackathons & CTFs</h3><p>We organise and manage cybersecurity CTFs and coding hackathons for institutions and companies.</p><div class="srv-tags"><span class="stag">SPONSORED</span><span class="stag">PRIZES</span><span class="stag">COMPETITIVE</span></div></div>
+    <div class="srv-card"><div class="srv-ico">🏅</div><h3>Skill Certifications</h3><p>HackRace-verified certificates in cybersecurity, AI, web development, digital marketing, and more.</p><div class="srv-tags"><span class="stag">VERIFIED</span><span class="stag">SHAREABLE</span><span class="stag">LINKEDIN</span></div></div>
+    <div class="srv-card"><div class="srv-ico">👥</div><h3>Corporate Upskilling</h3><p>Custom training programs for company teams — on-site or virtual, designed around your tech stack and skill gaps.</p><div class="srv-tags"><span class="stag">CUSTOM</span><span class="stag">ON-SITE</span><span class="stag">VIRTUAL</span></div></div>
+    <div class="srv-card"><div class="srv-ico">🛡️</div><h3>POSH Compliance</h3><p>Free POSH awareness session on first engagement. Annual compliance contracts with full documentation support.</p><div class="srv-tags"><span class="stag">FREE FIRST</span><span class="stag">ANNUAL</span><span class="stag">MANDATORY</span></div></div>
+    <div class="srv-card"><div class="srv-ico">🚀</div><h3>1-on-1 Mentorship</h3><p>Personal sessions with industry professionals. Build skills at your pace with someone who does this for a living.</p><div class="srv-tags"><span class="stag">PERSONALISED</span><span class="stag">FLEXIBLE</span><span class="stag">INDUSTRY</span></div></div>
   </div>
 </section>
 
-<!-- CORPORATE SECURITY -->
-<section class="corporate" id="corporate">
-  <div class="corp-grid">
-    <div class="corp-left">
-      <p class="sec-eye" style="text-align:left">Enterprise Security</p>
-      <h2 class="sec-h" style="text-align:left;margin-bottom:16px">Protecting Businesses.<br><span style="color:var(--g)">Securing Futures.</span></h2>
-      <p>We offer full-spectrum cybersecurity and development services for businesses of all sizes — from startups to enterprises. Our team of certified professionals delivers results, not just reports.</p>
-      <div class="corp-services reveal">
-        <div class="corp-item"><div class="corp-badge">VAPT</div><div class="corp-item-txt"><h4>Vulnerability Assessment &amp; Penetration Testing</h4><p>Web, mobile, network, API — full-scope testing</p></div></div>
-        <div class="corp-item"><div class="corp-badge">SOC</div><div class="corp-item-txt"><h4>Security Operations Center Training</h4><p>Threat detection, SIEM, incident response</p></div></div>
-        <div class="corp-item"><div class="corp-badge">PT</div><div class="corp-item-txt"><h4>Penetration Testing</h4><p>Ethical hacking with full remediation report</p></div></div>
-        <div class="corp-item"><div class="corp-badge">VA</div><div class="corp-item-txt"><h4>Vulnerability Assessment</h4><p>CVE tracking, risk scoring, priority fixes</p></div></div>
-        <div class="corp-item"><div class="corp-badge">DEV</div><div class="corp-item-txt"><h4>Custom Development</h4><p>Web apps, tools, dashboards, automation</p></div></div>
+<!-- ABOUT / PILLARS -->
+<section class="pillars rev" id="about">
+  <div class="pillars-grid" style="max-width:1200px;margin:0 auto;">
+    <div class="pillars-left">
+      <span class="sec-eye">Why HackRace</span>
+      <h2 class="sec-h">Built Different.<br><span style="color:var(--c)">Built to Last.</span></h2>
+      <p class="sec-sub">We are not a generic IT company. Every service we deliver is backed by practitioners who have done this in the real world — not just in classrooms or theory.</p>
+      <div class="pill-list">
+        <div class="pill"><div class="pill-ico">⚡</div><div><div class="pill-t">Practitioner-Led</div><div class="pill-d">Every trainer and consultant is an active industry professional — not just a teacher.</div></div></div>
+        <div class="pill"><div class="pill-ico">🎯</div><div><div class="pill-t">Outcome Focused</div><div class="pill-d">We measure success by your results — secured systems, deployed products, hired talent.</div></div></div>
+        <div class="pill"><div class="pill-ico">🔒</div><div><div class="pill-t">Security-First</div><div class="pill-d">Everything we build and teach is designed with security at its core from day one.</div></div></div>
+        <div class="pill"><div class="pill-ico">📍</div><div><div class="pill-t">Pan-India Operations</div><div class="pill-d">Remote-first with on-site capability across India. We come to you.</div></div></div>
       </div>
-      <a href="#contact" class="btn-main" style="display:inline-block">Request Security Audit →</a>
     </div>
-    <div class="corp-right reveal">
-      <div class="cyber-visual">
-        <div class="scan-line"></div>
-        <div class="cyber-grid">
-          <div class="cyber-item"><div class="cyber-item-top"><div class="cyber-dot"></div><h4>THREAT INTEL</h4></div><p>Real-time monitoring &amp; analysis of emerging vulnerabilities</p></div>
-          <div class="cyber-item"><div class="cyber-item-top"><div class="cyber-dot" style="background:var(--b)"></div><h4>NETWORK SEC</h4></div><p>Full perimeter testing — internal, external, cloud</p></div>
-          <div class="cyber-item"><div class="cyber-item-top"><div class="cyber-dot" style="background:var(--p)"></div><h4>APP SECURITY</h4></div><p>OWASP Top 10 — web, mobile &amp; API coverage</p></div>
-          <div class="cyber-item"><div class="cyber-item-top"><div class="cyber-dot" style="background:#fbbf24"></div><h4>COMPLIANCE</h4></div><p>ISO 27001, POSH, GDPR-aligned audit reports</p></div>
+    <div class="pillars-right">
+      <div class="cv-badge">SECURE · SCAN · TRAIN</div>
+      <div class="code-visual">
+        <div class="cv-bar">
+          <div class="cv-dots"><div class="cv-dot" style="background:#ff5f57"></div><div class="cv-dot" style="background:#febc2e"></div><div class="cv-dot" style="background:#28c840"></div></div>
+          <span class="cv-file">hackrace_recon.py</span>
+        </div>
+        <div class="cv-body">
+          <span class="ln"><span class="lk">import</span> <span class="lv">hackrace</span></span>
+          <span class="ln"></span>
+          <span class="ln"><span class="lk">target</span> = <span class="lv">"client_domain.in"</span></span>
+          <span class="ln"><span class="lk">scope</span> = <span class="lv">["web", "api", "network"]</span></span>
+          <span class="ln"></span>
+          <span class="ln"><span class="lf">engine</span> = hackrace.<span class="lc">VAPTEngine</span>(</span>
+          <span class="ln">  target=target,</span>
+          <span class="ln">  mode=<span class="lv">"full_scope"</span>,</span>
+          <span class="ln">  owasp=<span class="lv">True</span></span>
+          <span class="ln">)</span>
+          <span class="ln"></span>
+          <span class="ln">results = engine.<span class="lc">run_scan</span>()</span>
+          <span class="ln"><span class="ls"># ✓ 0 critical vulnerabilities found</span></span>
+          <span class="ln"><span class="ls"># ✓ Report generated: hackrace_report.pdf</span></span>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ROADMAP -->
-<section class="roadmap" id="roadmap">
-  <p class="sec-eye reveal">Our Vision</p>
-  <h2 class="sec-h reveal">Building a Platform,<br><span style="color:var(--g)">Not Just a Service</span></h2>
-  <p class="sec-sub reveal">From workshops to a full-scale talent and learning ecosystem.</p>
-  <div class="rm-timeline reveal">
+<!-- SECURITY DEEP DIVE -->
+<section class="security" id="security">
+  <div class="sec-wrap">
+    <span class="sec-eye text-c rev">Enterprise Security</span>
+    <h2 class="sec-h text-c rev">Full-Spectrum <span style="color:var(--c)">Cyber Protection</span></h2>
+    <p class="sec-sub text-c rev" style="margin:0 auto 50px;">From reconnaissance to remediation — we deliver end-to-end security services that give you complete confidence in your digital infrastructure.</p>
+    <div class="sec-grid rev">
+      <div class="sec-item"><div class="si-top"><span class="si-icon">🔍</span><span class="si-badge">VAPT</span></div><h3>Vulnerability Assessment & Penetration Testing</h3><p>Systematic discovery and exploitation of vulnerabilities across your entire attack surface. Full written report with CVSS scores, PoC, and fix roadmap.</p><div class="sec-meta"><span class="sm">WEB APP</span><span class="sm">MOBILE</span><span class="sm">NETWORK</span><span class="sm">API</span><span class="sm">CLOUD</span></div></div>
+      <div class="sec-item"><div class="si-top"><span class="si-icon">💀</span><span class="si-badge">PENTEST</span></div><h3>Advanced Penetration Testing</h3><p>Simulated real-world attacks — phishing simulations, social engineering, privilege escalation, lateral movement, and persistence testing.</p><div class="sec-meta"><span class="sm">RED TEAM</span><span class="sm">SOCIAL ENG</span><span class="sm">PERSISTENCE</span><span class="sm">APT SIM</span></div></div>
+      <div class="sec-item"><div class="si-top"><span class="si-icon">🖥️</span><span class="si-badge">SOC</span></div><h3>Security Operations Training</h3><p>Build internal SOC capability — SIEM deployment, alert triage, incident response playbooks, threat hunting, and analyst skill development.</p><div class="sec-meta"><span class="sm">SIEM</span><span class="sm">SPLUNK</span><span class="sm">THREAT HUNT</span><span class="sm">IR PLAYBOOK</span></div></div>
+      <div class="sec-item"><div class="si-top"><span class="si-icon">📱</span><span class="si-badge">MOBILE</span></div><h3>Mobile App Security Testing</h3><p>Android and iOS security assessment — static analysis, dynamic analysis, insecure storage, improper session handling, and API security.</p><div class="sec-meta"><span class="sm">ANDROID</span><span class="sm">iOS</span><span class="sm">OWASP MASVS</span><span class="sm">API</span></div></div>
+    </div>
   </div>
 </section>
 
-<!-- TOPICS -->
-<section class="topics" id="topics">
-  <p class="sec-eye reveal">What We Teach</p>
-  <h2 class="sec-h reveal">14+ Workshop <span style="color:var(--g)">Topics</span></h2>
-  <p class="sec-sub reveal">Delivered by professionals who work in these fields — not just academics.</p>
-  <div class="topic-cloud reveal">
-    <span class="ttag">🔐 Ethical Hacking</span><span class="ttag">🐍 Python Programming</span><span class="ttag">🤖 AI &amp; Machine Learning</span><span class="ttag">📊 Data Analytics</span><span class="ttag">🌐 Web Development</span><span class="ttag">📱 Digital Marketing</span><span class="ttag">💰 Finance &amp; Stock Market</span><span class="ttag">🗣️ Soft Skills</span><span class="ttag">🔍 Bug Hunting</span><span class="ttag">🛡️ Cybersecurity Fundamentals</span><span class="ttag">☁️ Cloud Computing</span><span class="ttag">🚀 Startup &amp; Entrepreneurship</span><span class="ttag">🧠 GenAI &amp; Prompt Engineering</span><span class="ttag">🔧 DevOps Basics</span>
+<!-- TRAINING -->
+<section class="training" id="training">
+  <div class="tr-grid" style="max-width:1200px;margin:0 auto;">
+    <div class="tr-left rev">
+      <div class="tr-card">
+        <div class="tr-scan"></div>
+        <div class="tr-stat">
+          <div class="trs"><div class="trs-n" data-t="500">0</div><div class="trs-l">Students</div></div>
+          <div class="trs"><div class="trs-n" data-t="14">0</div><div class="trs-l">Topics</div></div>
+          <div class="trs"><div class="trs-n" data-t="15">0</div><div class="trs-l">Trainers</div></div>
+        </div>
+        <div class="tr-features">
+          <div class="trf">Industry professionals as trainers — not just academics</div>
+          <div class="trf">Hands-on, project-based learning approach</div>
+          <div class="trf">NAAC-aligned documentation for institutions</div>
+          <div class="trf">HackRace verified completion certificates</div>
+          <div class="trf">On-site, virtual, and hybrid delivery modes</div>
+          <div class="trf">Custom curriculum tailored to your requirements</div>
+          <div class="trf">Post-session feedback and performance reports</div>
+        </div>
+      </div>
+    </div>
+    <div class="tr-right rev">
+      <span class="sec-eye">Skill Training</span>
+      <h2 class="sec-h">Real Skills.<br><span style="color:var(--c)">Real Trainers.</span></h2>
+      <p class="sec-sub" style="margin-bottom:28px;">Our training programmes are delivered by working professionals — people who use these skills daily in their careers, not just educators who teach theory.</p>
+      <div class="topic-flow">
+        <span class="tf">🔐 Ethical Hacking</span>
+        <span class="tf">🐍 Python</span>
+        <span class="tf">🤖 AI & ML</span>
+        <span class="tf">📊 Data Analytics</span>
+        <span class="tf">🌐 Web Dev</span>
+        <span class="tf">📱 Digital Marketing</span>
+        <span class="tf">🔍 Bug Hunting</span>
+        <span class="tf">🛡️ Cybersecurity</span>
+        <span class="tf">☁️ Cloud</span>
+        <span class="tf">🧠 GenAI</span>
+        <span class="tf">🔧 DevOps</span>
+        <span class="tf">💰 Finance</span>
+        <span class="tf">🗣️ Soft Skills</span>
+        <span class="tf">🚀 Entrepreneurship</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLACEMENT -->
+<section class="placement" id="placement">
+  <div class="pl-wrap">
+    <span class="sec-eye text-c rev">Career Support</span>
+    <h2 class="sec-h text-c rev">From Skills to <span style="color:var(--c)">Employment</span></h2>
+    <p class="sec-sub text-c rev" style="margin:0 auto 50px;">We don't just train — we connect trained talent directly with companies looking to hire. Our placement support bridges the gap between skill and opportunity.</p>
+    <div class="pl-grid rev">
+      <div class="pl-card">
+        <div class="pl-num">01 / PREP</div>
+        <h3>Interview Readiness</h3>
+        <p>Mock technical and HR interviews, resume optimisation, GitHub portfolio building, and LinkedIn profile enhancement tailored for tech roles.</p>
+      </div>
+      <div class="pl-card">
+        <div class="pl-num">02 / CONNECT</div>
+        <h3>Industry Network Access</h3>
+        <p>Direct referrals to our network of hiring companies. We introduce pre-vetted, HackRace-certified candidates to employers — bypassing the standard job board noise.</p>
+      </div>
+      <div class="pl-card">
+        <div class="pl-num">03 / LAUNCH</div>
+        <h3>Career Launchpad</h3>
+        <p>End-to-end support from skill-building to offer letter — job search strategy, application support, salary negotiation guidance, and first 90-day onboarding advice.</p>
+      </div>
+    </div>
+    <div class="pl-cta rev">
+      <div class="pl-cta-txt">
+        <h3>Looking to hire <span style="color:var(--c)">skilled talent</span>?</h3>
+        <p>We supply pre-screened, trained professionals in cybersecurity, development, data analytics, and digital marketing. Contact us and get matched within 48 hours.</p>
+      </div>
+      <a href="#contact" class="btn-p" style="white-space:nowrap">Talk to Us →</a>
+    </div>
   </div>
 </section>
 
 <!-- CONTACT -->
 <section class="contact" id="contact">
-  <p class="sec-eye reveal">Get In Touch</p>
-  <h2 class="sec-h reveal">Let's Build Something <span style="color:var(--g)">Together</span></h2>
-  <p class="sec-sub reveal">First session is always free. No commitment. Just real value.</p>
-  <div class="contact-wrap reveal">
-    <div class="contact-left">
-      <h3>Ready to train your team<br>or empower your students?</h3>
-      <p>Reach out and we'll set up a free demo workshop or discovery call within 24 hours. We serve colleges, corporates, institutions, ed-tech platforms, and individuals.</p>
-      <div class="cinfo">
-        <div class="ci"><div class="ci-ico">📱</div><div><div class="ci-lbl">WhatsApp / Call</div><div class="ci-val"><a href="https://wa.me/918511565780">+91 85115 65780</a></div></div></div>
-        <div class="ci"><div class="ci-ico">📱</div><div><div class="ci-lbl">WhatsApp / Call</div><div class="ci-val"><a href="https://wa.me/917027181375">+91 70271 81375</a></div></div></div>
-        <div class="ci"><div class="ci-ico">📧</div><div><div class="ci-lbl">Email</div><div class="ci-val"><a href="mailto:hello@hackrace.in">hello@hackrace.in</a></div></div></div>
-        <div class="ci"><div class="ci-ico">🏢</div><div><div class="ci-lbl">Head Office</div><div class="ci-val">Gurugram, Haryana, India</div></div></div>
-        <div class="ci"><div class="ci-ico">⏰</div><div><div class="ci-lbl">Working Hours</div><div class="ci-val">Mon – Sat, 10am – 6pm</div></div></div>
+  <p class="sec-eye text-c rev">Contact</p>
+  <h2 class="sec-h text-c rev">Let's Work <span style="color:var(--c)">Together</span></h2>
+  <p class="sec-sub text-c rev" style="margin:0 auto 60px;">First security audit or training session is always free. No commitment, no pressure — just a conversation.</p>
+  <div class="ct-wrap rev">
+    <div class="ct-left">
+      <h3>Ready to secure your<br>business or train your team?</h3>
+      <p>Reach out and we'll get back within 24 hours. We work with companies, institutions, and individuals across India — remotely and on-site.</p>
+      <div class="ct-info">
+        <div class="ci"><div class="ci-i">📱</div><div><div class="ci-l">WhatsApp / Call</div><div class="ci-v"><a href="https://wa.me/918511565780">+91 85115 65780</a></div></div></div>
+        <div class="ci"><div class="ci-i">📱</div><div><div class="ci-l">WhatsApp / Call</div><div class="ci-v"><a href="https://wa.me/917027181375">+91 70271 81375</a></div></div></div>
+        <div class="ci"><div class="ci-i">📧</div><div><div class="ci-l">Email</div><div class="ci-v"><a href="mailto:hello@hackrace.in">hello@hackrace.in</a></div></div></div>
+        <div class="ci"><div class="ci-i">🏢</div><div><div class="ci-l">Operations</div><div class="ci-v">Pan-India · Remote & On-site</div></div></div>
+        <div class="ci"><div class="ci-i">⏰</div><div><div class="ci-l">Working Hours</div><div class="ci-v">Monday – Saturday, 10am – 7pm</div></div></div>
       </div>
+      <a href="https://wa.me/918511565780?text=Hi%20HackRace!%20I%27d%20like%20to%20discuss%20a%20project." class="btn-p" style="display:inline-block;margin-top:8px" target="_blank">💬 WhatsApp Us Now</a>
     </div>
-    <div class="coord-wrap">
-      <div class="coord-card">
-        <div class="coord-badge">Global Inquiries</div>
-        <div class="coord-row">
-          <div class="coord-av">HR</div>
-          <div><div class="coord-name">Inquiry</div><div class="coord-role">HackRace · Gurugram, India</div></div>
+    <div class="ct-form" id="ctForm">
+      <div class="form-title">Send Us a Message</div>
+      <div class="form-sub">We respond to all inquiries within 24 hours.</div>
+      <div id="formFields">
+        <div class="frow">
+          <div class="fg"><label>Full Name</label><input type="text" placeholder="Your name" id="fn"></div>
+          <div class="fg"><label>Email</label><input type="email" placeholder="your@email.com" id="fe"></div>
         </div>
-        <div class="coord-contacts">
-          <div class="cc"><span class="cc-icon">📧</span><div><div class="cc-lbl">PRIMARY EMAIL</div><a href="mailto:prashantsharma11aug@gmail.com">prashantsharma11aug@gmail.com</a></div></div>
-          <div class="cc"><span class="cc-icon">📱</span><div><div class="cc-lbl">WHATSAPP / CALL</div><a href="https://wa.me/918511565780">+91 85115 65780</a></div></div>
-          <div class="cc"><span class="cc-icon">📍</span><div><div class="cc-lbl">LOCATION</div><span style="color:var(--txt);font-size:13px;font-weight:500">Gurugram, Haryana</span></div></div>
+        <div class="frow">
+          <div class="fg"><label>Phone</label><input type="tel" placeholder="+91 00000 00000" id="fp"></div>
+          <div class="fg"><label>Service Needed</label>
+            <select id="fs">
+              <option value="">Select a service</option>
+              <option>VAPT / Penetration Testing</option>
+              <option>SOC Training</option>
+              <option>Vulnerability Assessment</option>
+              <option>Web Development</option>
+              <option>Skill Training / Workshop</option>
+              <option>POSH Compliance</option>
+              <option>Career / Placement Support</option>
+              <option>Other</option>
+            </select>
+          </div>
         </div>
-        <div class="coord-btns">
-          <a href="mailto:prashant.builds@gmail.com" class="cbtn cbtn-main">📬 Send an Email</a>
-          <a href="https://wa.me/918511565780?text=Hi%20HackRace!%20I%27d%20like%20to%20book%20a%20free%20workshop%20for%20my%20college%2Fcompany." class="cbtn cbtn-ghost" target="_blank">💬 WhatsApp Us</a>
+        <div class="frow full">
+          <div class="fg"><label>Message</label><textarea placeholder="Tell us about your project or requirement..." id="fm"></textarea></div>
         </div>
+        <button class="form-btn" onclick="submitForm()">Send Message →</button>
+        <p class="form-note">🔒 Your information is confidential and never shared.</p>
+      </div>
+      <div class="form-success" id="formSuccess">
+        <div class="fs-icon">✅</div>
+        <h4>Message Sent!</h4>
+        <p>Thank you for reaching out. We'll get back to you within 24 hours.</p>
       </div>
     </div>
   </div>
@@ -565,67 +664,72 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bdr);padding:56px 
 <footer>
   <div class="foot-grid">
     <div class="foot-brand">
-      <a href="#home" class="logo"><span class="logo-dot"></span>HACK<em>RACE</em></a>
-      <p>India's most ambitious skill training ecosystem. From college workshops to enterprise cybersecurity — we power growth at every level.</p>
+      <div class="foot-logo"><span class="fl-h">HACK</span><span class="fl-r">RACE</span></div>
+      <p>Enterprise cybersecurity, digital development, and industry skill training — delivering real outcomes across India.</p>
+      <div class="foot-social">
+        <a href="https://wa.me/918511565780" class="fsoc" target="_blank">💬</a>
+        <a href="mailto:hello@hackrace.in" class="fsoc">📧</a>
+        <a href="#" class="fsoc">💼</a>
+      </div>
     </div>
     <div class="foot-col">
-      <h4>Services</h4>
-      <a href="#services">College Workshops</a>
-      <a href="#corporate">VAPT &amp; Security</a>
-      <a href="#corporate">Development</a>
-      <a href="#services">POSH Compliance</a>
+      <h4>Security</h4>
+      <a href="#security">VAPT Services</a>
+      <a href="#security">Penetration Testing</a>
+      <a href="#security">SOC Training</a>
+      <a href="#security">Compliance Audits</a>
     </div>
     <div class="foot-col">
       <h4>Company</h4>
-      <a href="#serve">Who We Serve</a>
-      <a href="#roadmap">Our Vision</a>
-      <a href="#topics">Topics</a>
-      <a href="#contact">Contact</a>
+      <a href="#services">Services</a>
+      <a href="#about">Why HackRace</a>
+      <a href="#training">Training</a>
+      <a href="#placement">Placement</a>
     </div>
     <div class="foot-col">
       <h4>Contact</h4>
       <a href="mailto:hello@hackrace.in">hello@hackrace.in</a>
-      <a href="mailto:prashant.builds@gmail.com">prashant.builds@gmail.com</a>
-      <a href="mailto:prashantsharma11aug@gmail.com">prashantsharma11aug@gmail.com</a>
       <a href="https://wa.me/918511565780">+91 85115 65780</a>
+      <a href="https://wa.me/917027181375">+91 70271 81375</a>
+      <a href="#contact">Send a Message</a>
     </div>
   </div>
   <div class="foot-bot">
-    <p>© 2026 <span>HackRace</span>. All rights reserved. | Surat &amp; Gurugram, India.</p>
-    <p>Empowering India's next generation of professionals.</p>
+    <p>© 2026 <span>HackRace</span>. All rights reserved.</p>
+    <p>Secured · Built · Trained — <span>Pan-India</span></p>
   </div>
 </footer>
 
-<!-- WHATSAPP FLOAT -->
+<!-- WA -->
 <div class="wa-float">
-  <div class="wa-menu" id="waMenu">
-    <a class="wa-opt" href="https://wa.me/918511565780?text=Hi%20HackRace!%20I%27d%20like%20to%20know%20more." target="_blank"><div class="wa-dot"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg></div>HACKRACE · 85115 65780</a>
-    <a class="wa-opt" href="https://wa.me/917027181375?text=Hi%20HackRace!%20I%27d%20like%20to%20know%20more." target="_blank"><div class="wa-dot"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg></div>HACKRACE · 70271 81375</a>
+  <div class="wa-menu" id="waM">
+    <a class="wa-opt" href="https://wa.me/918511565780?text=Hi%20HackRace!" target="_blank"><div class="wa-dot"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg></div>+91 85115 65780</a>
+    <a class="wa-opt" href="https://wa.me/917027181375?text=Hi%20HackRace!" target="_blank"><div class="wa-dot"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg></div>+91 70271 81375</a>
   </div>
   <button class="wa-fab" onclick="toggleWA()"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg></button>
 </div>
 
-<!-- CHATBOT -->
+<!-- CHAT -->
 <div class="chat-float">
-  <div class="chat-win" id="chatWin">
+  <div class="chat-win" id="chatW">
     <div class="chat-hdr">
       <div class="chat-av">🤖</div>
-      <div class="chat-hdr-info"><h4>HackRace AI Assistant</h4><div class="chat-status"><div class="status-dot"></div>Online · Responds instantly</div></div>
-      <button class="chat-close" onclick="toggleChat()">✕</button>
+      <div class="chat-hdr-info"><h4>HackRace Assistant</h4><div class="chat-status"><div class="sdot"></div>Online · Instant replies</div></div>
+      <button class="chat-x" onclick="toggleChat()">✕</button>
     </div>
-    <div class="chat-body" id="chatBody">
-      <div class="chat-msg bot">👋 Welcome to <strong>HackRace</strong>! I'm your AI guide. Ask me anything or pick a question below.</div>
+    <div class="chat-body" id="chatB">
+      <div class="chat-msg bot">👋 Hey! I'm the <strong>HackRace AI</strong>. Ask me about our services, pricing, or how to get started.</div>
     </div>
     <div class="chat-qs-wrap">
-      <div class="chat-qs-label">Quick Questions</div>
-      <div class="chat-qs" id="chatQs">
+      <div class="chat-qs-l">Quick questions</div>
+      <div class="chat-qs">
         <button class="chat-q" onclick="ask('What services do you offer?')">Services?</button>
-        <button class="chat-q" onclick="ask('How much does it cost?')">Pricing?</button>
-        <button class="chat-q" onclick="ask('Do you do VAPT?')">VAPT?</button>
-        <button class="chat-q" onclick="ask('How to book a session?')">Book Session?</button>
-        <button class="chat-q" onclick="ask('Who are your trainers?')">Trainers?</button>
-        <button class="chat-q" onclick="ask('Do you work with corporates?')">Corporates?</button>
-        <button class="chat-q" onclick="ask('Tell me about POSH compliance')">POSH?</button>
+        <button class="chat-q" onclick="ask('How much does VAPT cost?')">VAPT pricing?</button>
+        <button class="chat-q" onclick="ask('Do you offer training?')">Training?</button>
+        <button class="chat-q" onclick="ask('How to get started?')">Get started?</button>
+        <button class="chat-q" onclick="ask('Do you do web development?')">Web dev?</button>
+        <button class="chat-q" onclick="ask('Tell me about placement support')">Placement?</button>
+        <button class="chat-q" onclick="ask('What is POSH compliance?')">POSH?</button>
         <button class="chat-q" onclick="ask('Where are you located?')">Location?</button>
       </div>
     </div>
@@ -634,233 +738,142 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bdr);padding:56px 
 </div>
 
 <script>
-// ── CURSOR ──
-const cur = document.getElementById('cursor');
-const ring = document.getElementById('cursor-ring');
+// CURSOR
+const c=document.getElementById('cur'),cr=document.getElementById('cur-r');
 let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-setInterval(()=>{rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';},16);
-document.querySelectorAll('a,button,.serve-card,.srv-card,.corp-item,.cyber-item,.ttag,.chat-q').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{cur.style.width='20px';cur.style.height='20px';ring.style.width='50px';ring.style.height='50px';});
-  el.addEventListener('mouseleave',()=>{cur.style.width='12px';cur.style.height='12px';ring.style.width='36px';ring.style.height='36px';});
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;c.style.left=mx+'px';c.style.top=my+'px';});
+setInterval(()=>{rx+=(mx-rx)*.11;ry+=(my-ry)*.11;cr.style.left=rx+'px';cr.style.top=ry+'px';},16);
+document.querySelectorAll('a,button,.srv-card,.sec-item,.pl-card,.pill,.tf,.chat-q,.ci').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{c.classList.add('big');cr.classList.add('big');});
+  el.addEventListener('mouseleave',()=>{c.classList.remove('big');cr.classList.remove('big');});
 });
 
-// ── SCROLL PROGRESS ──
+// SCROLL
 window.addEventListener('scroll',()=>{
   const pct=(window.scrollY/(document.body.scrollHeight-window.innerHeight))*100;
-  document.getElementById('progress').style.width=pct+'%';
-  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>40);
+  document.getElementById('prog').style.width=pct+'%';
+  document.getElementById('nav').classList.toggle('sc',window.scrollY>50);
 });
 
-// ── MATRIX CANVAS ──
-const mc=document.getElementById('matrixCanvas');
-const mctx=mc.getContext('2d');
+// MATRIX
+const mc=document.getElementById('matC');const mx2=mc.getContext('2d');
 mc.width=window.innerWidth;mc.height=window.innerHeight;
-const cols=Math.floor(mc.width/18);
-const drops=Array(cols).fill(1);
-const chars='HACKRACE01VAPT SOC PENTEST CYBER AI ML PYTHON WEB DEV';
-function drawMatrix(){
-  mctx.fillStyle='rgba(3,3,10,0.05)';mctx.fillRect(0,0,mc.width,mc.height);
-  mctx.fillStyle='#00ff88';mctx.font='14px JetBrains Mono';
-  drops.forEach((y,i)=>{
-    const c=chars[Math.floor(Math.random()*chars.length)];
-    mctx.fillText(c,i*18,y*18);
-    if(y*18>mc.height&&Math.random()>.98)drops[i]=0;
-    drops[i]++;
-  });
+const cols=Math.floor(mc.width/16);const drops=Array(cols).fill(1);
+const chars='HACKRACE01VAPT SOC PT OWASP CVE XSS SQLI RCE LFI SSRF CSRF';
+function drawM(){
+  mx2.fillStyle='rgba(4,4,13,0.05)';mx2.fillRect(0,0,mc.width,mc.height);
+  mx2.fillStyle='#00e5ff';mx2.font='13px JetBrains Mono';
+  drops.forEach((y,i)=>{const ch=chars[Math.floor(Math.random()*chars.length)];mx2.fillText(ch,i*16,y*16);if(y*16>mc.height&&Math.random()>.97)drops[i]=0;drops[i]++;});
 }
-setInterval(drawMatrix,50);
+setInterval(drawM,60);
 window.addEventListener('resize',()=>{mc.width=window.innerWidth;mc.height=window.innerHeight;});
 
-// ── PARTICLE CANVAS ──
-const bc=document.getElementById('bgCanvas');
-const bctx=bc.getContext('2d');
+// PARTICLES
+const bc=document.getElementById('bgC');const bx=bc.getContext('2d');
 bc.width=window.innerWidth;bc.height=window.innerHeight;
-const pts=Array.from({length:80},()=>({x:Math.random()*bc.width,y:Math.random()*bc.height,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*2+1}));
-function drawBg(){
-  bctx.clearRect(0,0,bc.width,bc.height);
-  pts.forEach(p=>{
-    p.x+=p.vx;p.y+=p.vy;
-    if(p.x<0||p.x>bc.width)p.vx*=-1;
-    if(p.y<0||p.y>bc.height)p.vy*=-1;
-    bctx.beginPath();bctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    bctx.fillStyle='#00ff8840';bctx.fill();
-  });
-  pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{
-    const d=Math.hypot(a.x-b.x,a.y-b.y);
-    if(d<120){bctx.beginPath();bctx.moveTo(a.x,a.y);bctx.lineTo(b.x,b.y);bctx.strokeStyle=`rgba(0,255,136,${.15*(1-d/120)})`;bctx.lineWidth=.5;bctx.stroke();}
-  }));
-  requestAnimationFrame(drawBg);
+const pts=Array.from({length:70},()=>({x:Math.random()*bc.width,y:Math.random()*bc.height,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:Math.random()*1.8+.8}));
+function drawB(){
+  bx.clearRect(0,0,bc.width,bc.height);
+  pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>bc.width)p.vx*=-1;if(p.y<0||p.y>bc.height)p.vy*=-1;bx.beginPath();bx.arc(p.x,p.y,p.r,0,Math.PI*2);bx.fillStyle='#00e5ff35';bx.fill();});
+  pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<110){bx.beginPath();bx.moveTo(a.x,a.y);bx.lineTo(b.x,b.y);bx.strokeStyle=`rgba(0,229,255,${.12*(1-d/110)})`;bx.lineWidth=.4;bx.stroke();}}));
+  requestAnimationFrame(drawB);
 }
-drawBg();
+drawB();
 window.addEventListener('resize',()=>{bc.width=window.innerWidth;bc.height=window.innerHeight;});
 
-// ── TERMINAL ANIMATION ──
-const lines=document.querySelectorAll('.tl');
-lines.forEach((l,i)=>setTimeout(()=>l.classList.add('show'),400+i*300));
+// TERMINAL
+document.querySelectorAll('.tl').forEach((l,i)=>setTimeout(()=>l.classList.add('show'),500+i*280));
 
-// ── COUNTER ANIMATION ──
-function animateCounter(el){
-  const target=+el.dataset.target;
-  let current=0;
-  const step=target/60;
-  const timer=setInterval(()=>{
-    current+=step;
-    if(current>=target){current=target;clearInterval(timer);}
-    el.textContent=Math.floor(current)+(target>=100?'+':'+');
-  },20);
+// COUNTERS
+function animC(el){
+  const t=+el.dataset.t;let cur=0;const step=t/55;
+  const ti=setInterval(()=>{cur+=step;if(cur>=t){cur=t;clearInterval(ti);}el.textContent=Math.floor(cur)+'+';},18);
 }
-const counters=document.querySelectorAll('.sstat-num[data-target]');
-const counterObs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){animateCounter(e.target);counterObs.unobserve(e.target);}});
-},{threshold:.5});
-counters.forEach(c=>counterObs.observe(c));
+const obs=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting){animC(e.target);obs.unobserve(e.target);}});},{threshold:.5});
+document.querySelectorAll('[data-t]').forEach(el=>obs.observe(el));
 
-// ── SCROLL REVEAL ──
-const revObs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
-},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
-document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+// REVEAL
+const robs=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:.08,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.rev').forEach(el=>robs.observe(el));
 
-// ── MOBILE NAV ──
+// MOBILE NAV
 function toggleNav(){document.getElementById('navLinks').classList.toggle('open');}
 document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>document.getElementById('navLinks').classList.remove('open')));
 
-// ── TABS ──
-function switchTab(id){
-  document.querySelectorAll('.srv-tab').forEach((t,i)=>{
-    const ids=['college','corporate','individual'];
-    t.classList.toggle('active',ids[i]===id);
-  });
-  document.querySelectorAll('.srv-content').forEach(c=>{
-    c.classList.toggle('active',c.id==='tab-'+id);
-  });
+// TABS
+function tab(id){
+  document.querySelectorAll('.srv-tab').forEach((t,i)=>{const ids=['sec','dev','train'];t.classList.toggle('active',ids[i]===id);});
+  document.querySelectorAll('.srv-grid').forEach(g=>g.classList.toggle('active',g.id==='tab-'+id));
 }
 
-// ── WHATSAPP ──
-function toggleWA(){document.getElementById('waMenu').classList.toggle('open');}
-document.addEventListener('click',e=>{if(!e.target.closest('.wa-float'))document.getElementById('waMenu').classList.remove('open');});
+// WA
+function toggleWA(){document.getElementById('waM').classList.toggle('open');}
+document.addEventListener('click',e=>{if(!e.target.closest('.wa-float'))document.getElementById('waM').classList.remove('open');});
 
-// ── CHATBOT ──
+// CHAT
 function toggleChat(){
-  const w=document.getElementById('chatWin');
-  const b=document.getElementById('chatBtn');
-  const open=w.classList.toggle('open');
-  b.textContent=open?'✕':'🤖';
-  if(open)document.getElementById('chatBody').scrollTop=9999;
+  const w=document.getElementById('chatW'),b=document.getElementById('chatBtn');
+  const o=w.classList.toggle('open');
+  b.textContent=o?'✕':'🤖';
+  if(o)document.getElementById('chatB').scrollTop=9999;
 }
 
 const KB={
-  'What services do you offer?':'🎯 HackRace offers:\n\n• **College**: Workshops, Hackathons, NAAC docs, Placement support\n• **Corporate**: VAPT, SOC training, Penetration Testing, Dev Services\n• **Individual**: Mentorship, Certifications, Career Launchpad\n• **Everyone**: POSH Compliance, Govt Skill Programs\n\nWant details on any specific service?',
-  'How much does it cost?':'💰 Your **first session is 100% FREE** — no cost, no commitment.\n\nAfter that:\n• College workshops: Custom pricing per batch size\n• Corporate VAPT/Security: Project-based quotes\n• Individual mentorship: Contact for rates\n\nEmail prashant.builds@gmail.com for a custom proposal.',
-  'Do you do VAPT?':'🔐 Yes! Our VAPT services include:\n\n• Web Application Penetration Testing\n• Network VAPT (internal + external)\n• Mobile App Security Testing\n• API Security Assessment\n• Full CVE report + remediation steps\n\nContact us for a security audit quote!',
-  'How to book a session?':'📅 Super easy!\n\n1. WhatsApp us at +91 85115 65780\n2. Or email prashant.builds@gmail.com\n3. Tell us: college/company name, topic, batch size\n\nWe\'ll reply within 24 hours and schedule your **free demo session**.',
-  'Who are your trainers?':'👨‍💻 All HackRace trainers are:\n\n• Working industry professionals (not just academics)\n• Verified and background-checked\n• Domain experts with hands-on experience\n• Available for on-site and virtual sessions\n\nTopics: AI, Cybersecurity, Web Dev, Data, Finance, Marketing, and more.',
-  'Do you work with corporates?':'🏢 Absolutely! For corporates we offer:\n\n• VAPT & Penetration Testing\n• SOC Training programs\n• Vulnerability Assessments\n• Custom software development\n• Team upskilling workshops\n• POSH annual compliance contracts\n\nWe\'ve worked with companies across Surat and Gurugram.',
-  'Tell me about POSH compliance':'🛡️ POSH (Prevention of Sexual Harassment) training is **legally mandatory** for all institutions and companies.\n\nHackRace offers:\n• FREE POSH session during first engagement\n• Annual POSH compliance contracts\n• Certified awareness workshops\n• Documentation support\n\nPerfect land-and-expand: free first, paid annually.',
-  'Where are you located?':'📍 HackRace operates from:\n\n• **Branch Office**: Surat, Gujarat, India\n• **Head Office**: Gurugram, Haryana, India\n\n🌐 We serve pan-India — online and on-site.\n⏰ Mon–Sat, 10am to 6pm\n\nReach us: hello@hackrace.in',
+  'What services do you offer?':'🎯 HackRace offers three core pillars:\n\n<strong style="color:var(--c)">Cybersecurity:</strong> VAPT, Penetration Testing, SOC Training, Compliance Audits, Bug Bounty Support\n\n<strong style="color:var(--c)">Development:</strong> Web Apps, Automation, Dashboards, UI/UX, Secure Dev, Cloud/DevOps\n\n<strong style="color:var(--c)">Training:</strong> Industry Workshops, Certifications, Corporate Upskilling, Placement Support\n\nWhat are you looking for?',
+  'How much does VAPT cost?':'💰 VAPT pricing depends on scope:\n\n• Web App VAPT: Custom quote based on app size\n• Network VAPT: Based on IP range\n• Full Scope: Project-based pricing\n\n<strong style="color:var(--c)">First consultation is FREE.</strong>\n\nContact us at hello@hackrace.in or WhatsApp +91 85115 65780 for a custom quote within 24 hours.',
+  'Do you offer training?':'🎓 Yes! Our training covers:\n\n• Ethical Hacking & Cybersecurity\n• Python, AI/ML, Data Analytics\n• Web Development, Cloud, DevOps\n• Digital Marketing, Soft Skills\n• Bug Bounty & SOC Training\n\nDelivered by working professionals — not just teachers. On-site, virtual, or hybrid.\n\nInterested? Contact us to discuss your requirements.',
+  'How to get started?':'🚀 Three easy steps:\n\n1. <strong style="color:var(--c)">Contact us</strong> — WhatsApp or email below\n2. <strong style="color:var(--c)">Free consultation</strong> — we understand your needs\n3. <strong style="color:var(--c)">We deliver</strong> — security audit, training, or development\n\nFirst session/audit is always free.\n\n📱 +91 85115 65780\n📧 hello@hackrace.in',
+  'Do you do web development?':'💻 Absolutely! We build:\n\n• Custom websites & web applications\n• Internal tools & automation scripts\n• Real-time dashboards & analytics\n• UI/UX design (Figma → code)\n• Secure, OWASP-compliant development\n• Cloud infrastructure & DevOps\n\nAll our development is security-first by default. Get in touch for a free estimate.',
+  'Tell me about placement support?':'💼 Our Placement Support includes:\n\n• Resume & LinkedIn optimisation\n• Mock technical & HR interviews\n• GitHub portfolio building\n• Direct referrals to hiring companies\n• HackRace-certified candidate badge\n• Job search & salary negotiation guidance\n\nWe connect trained talent with companies looking to hire in tech & cybersecurity.',
+  'What is POSH compliance?':'🛡️ POSH (Prevention of Sexual Harassment) training is legally mandatory for all companies and institutions in India.\n\nHackRace offers:\n• <strong style="color:var(--c)">Free POSH session</strong> during first engagement\n• Annual POSH compliance contracts\n• Certified awareness workshops\n• Full documentation & reporting\n\nThis is a legal requirement — non-compliance can result in penalties.',
+  'Where are you located?':'📍 HackRace operates <strong style="color:var(--c)">pan-India</strong> — remote-first with on-site capability anywhere in India.\n\n⏰ Monday – Saturday, 10am – 7pm\n📧 hello@hackrace.in\n📱 +91 85115 65780\n\nWe come to you — whether you\'re in Mumbai, Delhi, Bangalore, Hyderabad, or anywhere else.',
 };
 
 function ask(q){
-  const body=document.getElementById('chatBody');
-  const qsWrap=document.getElementById('chatQs');
-  
-  // User message
-  const uMsg=document.createElement('div');
-  uMsg.className='chat-msg user';
-  uMsg.textContent=q;
-  body.appendChild(uMsg);
-  body.scrollTop=body.scrollHeight;
-  qsWrap.parentElement.style.opacity='.4';
-  
-  // Typing indicator
-  const typing=document.createElement('div');
-  typing.className='chat-typing';
-  typing.innerHTML='<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
-  body.appendChild(typing);
-  body.scrollTop=body.scrollHeight;
-  
+  const body=document.getElementById('chatB');
+  const um=document.createElement('div');um.className='chat-msg usr';um.textContent=q;body.appendChild(um);body.scrollTop=body.scrollHeight;
+  const ty=document.createElement('div');ty.className='typing';ty.innerHTML='<div class="tdot"></div><div class="tdot"></div><div class="tdot"></div>';body.appendChild(ty);body.scrollTop=body.scrollHeight;
   setTimeout(()=>{
-    typing.remove();
-    const ans=KB[q]||'For personalised help, contact us at hello@hackrace.in or WhatsApp +91 85115 65780. We\'d love to help! 🚀';
-    const bMsg=document.createElement('div');
-    bMsg.className='chat-msg bot';
-    // Render bold
-    bMsg.innerHTML=ans.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong style="color:var(--g)">$1</strong>');
-    body.appendChild(bMsg);
-    body.scrollTop=body.scrollHeight;
-    qsWrap.parentElement.style.opacity='1';
-    
-    // Magic particle burst on bot message
-    burst(bMsg);
-  },1000);
+    ty.remove();
+    const ans=KB[q]||'For more details, reach us at <strong style="color:var(--c)">hello@hackrace.in</strong> or WhatsApp <strong style="color:var(--c)">+91 85115 65780</strong>. We\'ll respond within 24 hours! 🚀';
+    const bm=document.createElement('div');bm.className='chat-msg bot';bm.innerHTML=ans.replace(/\n/g,'<br>');body.appendChild(bm);body.scrollTop=body.scrollHeight;
+  },900);
 }
 
-function burst(el){
-  const rect=el.getBoundingClientRect();
-  for(let i=0;i<6;i++){
-    const p=document.createElement('div');
-    p.style.cssText=`position:fixed;width:6px;height:6px;border-radius:50%;background:var(--g);pointer-events:none;z-index:99999;left:${rect.left+Math.random()*rect.width}px;top:${rect.top}px;animation:particlePop .6s ease forwards;animation-delay:${i*60}ms;`;
-    document.body.appendChild(p);
-    setTimeout(()=>p.remove(),800);
-  }
+// CONTACT FORM
+function submitForm(){
+  const n=document.getElementById('fn').value;
+  const e=document.getElementById('fe').value;
+  if(!n||!e){alert('Please fill in your name and email.');return;}
+  document.getElementById('formFields').style.display='none';
+  document.getElementById('formSuccess').style.display='block';
+  // Optional: send to Formspree or similar
+  // fetch('https://formspree.io/f/YOUR_ID',{method:'POST',body:new FormData(...)});
 }
 
-// ── EASTER EGG: KONAMI CODE → MATRIX BLAST ──
-let kseq=[],kcode=[38,38,40,40,37,39,37,39,66,65];
-document.addEventListener('keydown',e=>{
-  kseq.push(e.keyCode);kseq=kseq.slice(-10);
-  if(kseq.join(',')==kcode.join(',')){
-    document.getElementById('matrixCanvas').style.opacity='0.25';
-    setTimeout(()=>document.getElementById('matrixCanvas').style.opacity='0.03',4000);
-    const msg=document.createElement('div');
-    msg.innerHTML='🎮 KONAMI CODE ACTIVATED — Matrix Mode Engaged!';
-    msg.style.cssText='position:fixed;top:80px;left:50%;transform:translateX(-50%);background:var(--g);color:#000;padding:12px 28px;border-radius:100px;font-weight:700;z-index:9999;font-size:14px;animation:fadeUp .4s ease;';
-    document.body.appendChild(msg);setTimeout(()=>msg.remove(),3500);
-  }
-});
-
-// ── HOVER GLOW ON NAV ──
-document.querySelectorAll('.serve-card').forEach(c=>{
-  c.addEventListener('mousemove',e=>{
-    const r=c.getBoundingClientRect();
-    const x=e.clientX-r.left;const y=e.clientY-r.top;
-    c.style.background=`radial-gradient(200px at ${x}px ${y}px, #00ff8808, var(--bg3))`;
-  });
+// HOVER GLOW ON CARDS
+document.querySelectorAll('.srv-card,.sec-item,.pl-card').forEach(c=>{
+  c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect();c.style.background=`radial-gradient(220px at ${e.clientX-r.left}px ${e.clientY-r.top}px, #00e5ff07, var(--bg3))`;});
   c.addEventListener('mouseleave',()=>c.style.background='');
 });
-</script>
-  <script>
-    // 1. Disable Right-Click
-    document.addEventListener('contextmenu', (e) => e.preventDefault());
 
-    // 2. Disable Keyboard Shortcuts
-    document.onkeydown = function(e) {
-        // Disable F12 (DevTools)
-        if (e.keyCode == 123) {
-            return false;
-        }
-        // Disable Ctrl+U (View Source)
-        if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
-            return false;
-        }
-        // Disable Ctrl+Shift+I (Inspect)
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
-            return false;
-        }
-        // Disable Ctrl+Shift+C (Inspect Element)
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
-            return false;
-        }
-        // Disable Ctrl+Shift+J (Console)
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
-            return false;
-        }
-        // Disable Ctrl+S (Save Page)
-        if (e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) {
-            return false;
-        }
-    };
+// KONAMI CODE
+let ks=[],kc=[38,38,40,40,37,39,37,39,66,65];
+document.addEventListener('keydown',e=>{ks.push(e.keyCode);ks=ks.slice(-10);if(ks.join(',')==kc.join(',')){document.getElementById('matC').style.opacity='0.2';setTimeout(()=>document.getElementById('matC').style.opacity='0.025',5000);const m=document.createElement('div');m.innerHTML='🎮 KONAMI ACTIVATED — MATRIX ENGAGED';m.style.cssText='position:fixed;top:80px;left:50%;transform:translateX(-50%);background:var(--c);color:#000;padding:12px 28px;border-radius:4px;font-weight:700;z-index:9999;font-size:13px;letter-spacing:1px;animation:fu .3s ease;font-family:JetBrains Mono,monospace;';document.body.appendChild(m);setTimeout(()=>m.remove(),4000);}});
+</script>
+
+<!-- SECURITY: BLOCK DEVTOOLS ACCESS -->
+<script>
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.onkeydown=function(e){
+  if(e.keyCode==123)return false;
+  if(e.ctrlKey&&e.keyCode=='U'.charCodeAt(0))return false;
+  if(e.ctrlKey&&e.shiftKey&&e.keyCode=='I'.charCodeAt(0))return false;
+  if(e.ctrlKey&&e.shiftKey&&e.keyCode=='C'.charCodeAt(0))return false;
+  if(e.ctrlKey&&e.shiftKey&&e.keyCode=='J'.charCodeAt(0))return false;
+  if(e.ctrlKey&&e.keyCode=='S'.charCodeAt(0))return false;
+  if(e.ctrlKey&&e.keyCode=='A'.charCodeAt(0))return false;
+};
 </script>
 </body>
 </html>
