@@ -3,587 +3,899 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HackRace — Cybersecurity · Training · Development</title>
-<meta name="description" content="HackRace delivers enterprise-grade VAPT, penetration testing, cybersecurity training, and digital solutions across India.">
+<title>HackRace — Offensive Security & Training</title>
+<meta name="description" content="Enterprise-grade penetration testing, VAPT, and cybersecurity training. Trusted by companies worldwide.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%23e63329'/%3E%3Cpath d='M28 26h12v20h20V26h12v48H60V58H40v16H28V26z' fill='white'/%3E%3C/svg%3E">
+
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-:root{
-  --red:#e63329;--red2:#ff4d43;--dark:#0a0806;--dark2:#110e0c;--dark3:#1a1614;--dark4:#221e1b;
-  --cream:#f5f0eb;--cream2:#ede7df;--cream3:#c9bfb5;--muted:#8a7d74;--bdr:#ffffff0a;--bdr2:#ffffff14;
-  --glow:0 0 60px #e6332918;
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ink: #080a0d;
+  --ink2: #0f1318;
+  --ink3: #161b22;
+  --ink4: #1e242d;
+  --red: #e63329;
+  --red-dim: rgba(230,51,41,0.12);
+  --red-glow: rgba(230,51,41,0.06);
+  --white: #f4f1ec;
+  --white2: #c8c3bc;
+  --fog: #6b7585;
+  --line: rgba(255,255,255,0.06);
+  --line2: rgba(255,255,255,0.1);
+  --green: #00e87a;
+  --amber: #ffb020;
 }
-html{scroll-behavior:smooth;}
-body{font-family:'Outfit',sans-serif;background:var(--dark);color:var(--cream);overflow-x:hidden;cursor:none;user-select:none;}
-::selection{background:var(--red);color:#fff;}
 
-/* CURSOR */
-#cur{position:fixed;width:8px;height:8px;background:var(--red);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);mix-blend-mode:difference;transition:transform .15s;}
-#cur-r{position:fixed;width:36px;height:36px;border:1px solid #e6332960;border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:all .12s ease;}
-body:has(a:hover) #cur, body:has(button:hover) #cur{transform:translate(-50%,-50%) scale(2.5);}
-body:has(a:hover) #cur-r, body:has(button:hover) #cur-r{width:56px;height:56px;border-color:var(--red);}
+html { scroll-behavior: smooth; font-size: 16px; }
 
-/* SCROLLBAR */
-::-webkit-scrollbar{width:2px;}
-::-webkit-scrollbar-thumb{background:var(--red);}
-
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:2000;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 5%;border-bottom:1px solid var(--bdr);background:rgba(10,8,6,0.85);backdrop-filter:blur(24px);transition:.3s;}
-nav.scrolled{border-color:var(--bdr2);background:rgba(10,8,6,0.97);}
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none;cursor:none;}
-.logo-mark{width:32px;height:32px;background:var(--red);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:16px;font-weight:900;color:#fff;}
-.logo-text{font-family:'Outfit',sans-serif;font-weight:800;font-size:17px;letter-spacing:3px;color:var(--cream);}
-.logo-text span{color:var(--red);}
-.nav-links{display:flex;align-items:center;gap:6px;}
-.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;padding:7px 14px;border-radius:5px;transition:.2s;cursor:none;letter-spacing:.2px;}
-.nav-links a:hover,.nav-links a.active{color:var(--cream);background:var(--bdr2);}
-.nav-cta{background:var(--red)!important;color:#fff!important;padding:8px 18px!important;font-weight:600!important;}
-.nav-cta:hover{background:#c42820!important;opacity:1!important;}
-.hbg{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:none;padding:6px;}
-.hbg span{width:20px;height:1.5px;background:var(--cream);display:block;transition:.3s;}
-
-/* PAGES */
-.page{display:none;min-height:100vh;padding-top:64px;animation:pgIn .4s ease;}
-.page.active{display:block;}
-@keyframes pgIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
-
-/* SECTION UTILS */
-.container{max-width:1160px;margin:0 auto;padding:0 5%;}
-.sec-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--red);text-transform:uppercase;display:block;margin-bottom:12px;}
-.sec-h{font-family:'Fraunces',serif;font-size:clamp(32px,4vw,54px);font-weight:900;line-height:1.1;margin-bottom:16px;}
-.sec-sub{color:var(--muted);font-size:15px;line-height:1.9;max-width:560px;}
-.text-c{text-align:center;}.text-c .sec-sub{margin:0 auto;}
-.btn-red{background:var(--red);color:#fff;padding:13px 28px;border-radius:6px;font-weight:700;font-size:13px;text-decoration:none;border:none;cursor:none;display:inline-flex;align-items:center;gap:8px;transition:.2s;letter-spacing:.3px;font-family:'Outfit',sans-serif;}
-.btn-red:hover{background:#c42820;transform:translateY(-1px);}
-.btn-ghost{background:transparent;color:var(--cream);padding:13px 28px;border-radius:6px;font-size:13px;font-weight:500;text-decoration:none;border:1px solid var(--bdr2);cursor:none;display:inline-flex;align-items:center;gap:8px;transition:.2s;font-family:'Outfit',sans-serif;}
-.btn-ghost:hover{border-color:var(--cream2);color:var(--cream);}
-
-/* ========== HOME PAGE ========== */
-.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:80px 5%;}
-.hero-bg{position:absolute;inset:0;pointer-events:none;}
-.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--bdr) 1px,transparent 1px),linear-gradient(90deg,var(--bdr) 1px,transparent 1px);background-size:60px 60px;opacity:.5;}
-.hero-glow{position:absolute;top:-20%;right:-10%;width:600px;height:600px;background:radial-gradient(circle,#e6332910,transparent 65%);border-radius:50%;}
-.hero-glow2{position:absolute;bottom:-10%;left:-5%;width:400px;height:400px;background:radial-gradient(circle,#e6332908,transparent 65%);border-radius:50%;}
-.hero-inner{position:relative;z-index:2;max-width:1160px;margin:0 auto;width:100%;}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--red);border:1px solid #e6332930;padding:7px 16px;border-radius:4px;margin-bottom:30px;background:#e6332908;}
-.eye-pulse{width:6px;height:6px;background:var(--red);border-radius:50%;animation:pulse 1.8s infinite;}
-h1.hero-title{font-family:'Fraunces',serif;font-size:clamp(44px,6vw,80px);font-weight:900;line-height:1.0;margin-bottom:24px;max-width:720px;}
-h1 .red{color:var(--red);}
-h1 .italic{font-style:italic;}
-.hero-desc{color:var(--muted);font-size:16px;line-height:1.9;max-width:520px;margin-bottom:36px;}
-.hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:48px;}
-.hero-stats{display:flex;gap:40px;flex-wrap:wrap;padding-top:40px;border-top:1px solid var(--bdr);}
-.hstat{text-align:left;}
-.hstat-n{font-family:'Fraunces',serif;font-size:36px;font-weight:900;color:var(--cream);line-height:1;}
-.hstat-l{font-size:12px;color:var(--muted);margin-top:4px;letter-spacing:.5px;}
-
-/* HOME SERVICES STRIP */
-.services-strip{padding:80px 5%;background:var(--dark2);border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);}
-.strip-grid{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
-.strip-item{background:var(--dark3);padding:36px 30px;transition:.3s;cursor:none;border:1px solid transparent;position:relative;overflow:hidden;}
-.strip-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--red);transform:scaleY(0);transition:.3s;transform-origin:bottom;}
-.strip-item:hover{background:var(--dark4);border-color:var(--bdr2);}
-.strip-item:hover::before{transform:scaleY(1);}
-.strip-ico{font-size:28px;margin-bottom:16px;display:block;}
-.strip-item h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;margin-bottom:10px;}
-.strip-item p{color:var(--muted);font-size:13px;line-height:1.75;}
-.strip-item .arrow{margin-top:16px;color:var(--red);font-family:'JetBrains Mono',monospace;font-size:11px;opacity:0;transition:.2s;}
-.strip-item:hover .arrow{opacity:1;}
-
-/* HOME CLIENTS */
-.home-trust{padding:60px 5%;background:var(--dark);}
-.trust-inner{max-width:1160px;margin:0 auto;text-align:center;}
-.trust-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--muted);margin-bottom:24px;display:block;}
-.trust-logos{display:flex;flex-wrap:wrap;justify-content:center;gap:20px;align-items:center;}
-.trust-logo{background:var(--dark3);border:1px solid var(--bdr);padding:12px 24px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:1px;}
-
-/* ========== VAPT PAGE ========== */
-.vapt-hero{background:var(--dark2);padding:90px 5% 70px;border-bottom:1px solid var(--bdr);}
-.vapt-hero-inner{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
-.vapt-tag{display:inline-block;background:#e6332915;border:1px solid #e6332930;color:var(--red);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;padding:5px 14px;border-radius:3px;margin-bottom:20px;}
-.vapt-visual{background:var(--dark3);border:1px solid var(--bdr2);border-radius:12px;padding:28px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:2.1;position:relative;overflow:hidden;}
-.vapt-scan{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--red),transparent);animation:scanline 3.5s linear infinite;}
-.v-cmt{color:var(--muted);}.v-key{color:var(--red2);}.v-val{color:#98d4a0;}.v-str{color:#f5a623;}.v-num{color:#79c0ff;}
-
-.vuln-section{padding:80px 5%;background:var(--dark);}
-.vuln-inner{max-width:1160px;margin:0 auto;}
-.vuln-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:50px;}
-.vuln-card{background:var(--dark3);border:1px solid var(--bdr);border-radius:10px;padding:28px;transition:.3s;position:relative;overflow:hidden;}
-.vuln-card:hover{border-color:var(--bdr2);transform:translateY(-4px);}
-.vuln-sev{position:absolute;top:16px;right:16px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;padding:3px 10px;border-radius:3px;font-weight:700;}
-.sev-crit{background:#e633291a;color:var(--red);border:1px solid #e6332930;}
-.sev-high{background:#f59e0b1a;color:#f59e0b;border:1px solid #f59e0b30;}
-.sev-med{background:#3b82f61a;color:#60a5fa;border:1px solid #3b82f630;}
-.vuln-icon{font-size:26px;margin-bottom:14px;display:block;}
-.vuln-card h3{font-size:15px;font-weight:700;margin-bottom:8px;}
-.vuln-card p{color:var(--muted);font-size:12.5px;line-height:1.75;}
-.vuln-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px;}
-.vtag{font-family:'JetBrains Mono',monospace;font-size:9px;background:var(--dark4);border:1px solid var(--bdr);color:var(--muted);padding:2px 8px;border-radius:3px;}
-
-.why-vapt{padding:80px 5%;background:var(--dark2);}
-.why-inner{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
-.why-list{display:flex;flex-direction:column;gap:16px;margin-top:40px;}
-.why-item{display:flex;gap:16px;padding:20px;background:var(--dark3);border:1px solid var(--bdr);border-radius:8px;transition:.2s;}
-.why-item:hover{border-color:var(--bdr2);}
-.why-ico{width:40px;height:40px;background:#e6332910;border:1px solid #e6332930;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-.why-item h4{font-size:14px;font-weight:700;margin-bottom:5px;}
-.why-item p{color:var(--muted);font-size:12.5px;line-height:1.7;}
-.process-flow{background:var(--dark3);border:1px solid var(--bdr2);border-radius:12px;padding:30px;}
-.process-step{display:flex;gap:16px;margin-bottom:20px;position:relative;}
-.process-step:not(:last-child)::after{content:'';position:absolute;left:18px;top:42px;bottom:-20px;width:1px;background:var(--bdr2);}
-.ps-num{width:36px;height:36px;background:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;}
-.ps-t{font-size:14px;font-weight:700;margin-bottom:4px;}
-.ps-d{font-size:12.5px;color:var(--muted);line-height:1.6;}
-
-.vapt-cta{padding:80px 5%;background:var(--dark);text-align:center;}
-.vapt-cta-inner{max-width:700px;margin:0 auto;}
-.vapt-cta h2{font-family:'Fraunces',serif;font-size:clamp(28px,3.5vw,44px);font-weight:900;margin-bottom:16px;}
-.vapt-cta p{color:var(--muted);font-size:15px;margin-bottom:32px;line-height:1.8;}
-.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
-
-/* ========== TRAINING PAGE ========== */
-.training-hero{padding:90px 5% 70px;background:var(--dark2);border-bottom:1px solid var(--bdr);}
-.training-hero-inner{max-width:1160px;margin:0 auto;}
-.courses-section{padding:80px 5%;background:var(--dark);}
-.courses-inner{max-width:1160px;margin:0 auto;}
-.course-filters{display:flex;gap:8px;flex-wrap:wrap;margin:32px 0;}
-.cf{background:var(--dark3);border:1px solid var(--bdr);color:var(--muted);padding:8px 18px;border-radius:4px;font-size:12px;font-weight:600;cursor:none;transition:.2s;font-family:'Outfit',sans-serif;}
-.cf.active,.cf:hover{background:#e6332910;border-color:#e6332940;color:var(--cream);}
-.courses-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
-.course-card{background:var(--dark3);border:1px solid var(--bdr);border-radius:10px;overflow:hidden;transition:.3s;cursor:none;}
-.course-card:hover{border-color:var(--bdr2);transform:translateY(-4px);}
-.course-thumb{height:140px;display:flex;align-items:center;justify-content:center;font-size:48px;position:relative;overflow:hidden;}
-.course-body{padding:24px;}
-.course-level{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;padding:3px 10px;border-radius:3px;display:inline-block;margin-bottom:10px;}
-.lv-beg{background:#22c55e15;color:#22c55e;border:1px solid #22c55e30;}
-.lv-int{background:#f59e0b15;color:#f59e0b;border:1px solid #f59e0b30;}
-.lv-adv{background:#e6332915;color:var(--red);border:1px solid #e6332930;}
-.course-card h3{font-size:16px;font-weight:700;margin-bottom:8px;font-family:'Fraunces',serif;}
-.course-card p{color:var(--muted);font-size:12.5px;line-height:1.75;margin-bottom:16px;}
-.course-meta{display:flex;gap:14px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);border-top:1px solid var(--bdr);padding-top:14px;margin-bottom:14px;}
-.course-actions{display:flex;gap:8px;}
-.btn-dl{background:var(--red);color:#fff;padding:9px 16px;border-radius:5px;font-size:12px;font-weight:600;border:none;cursor:none;flex:1;text-align:center;transition:.2s;font-family:'Outfit',sans-serif;}
-.btn-dl:hover{background:#c42820;}
-.btn-info{background:var(--dark4);color:var(--cream);padding:9px 16px;border-radius:5px;font-size:12px;border:1px solid var(--bdr2);cursor:none;transition:.2s;font-family:'Outfit',sans-serif;}
-.btn-info:hover{border-color:var(--muted);}
-
-/* CALENDAR */
-.calendar-section{padding:80px 5%;background:var(--dark2);}
-.cal-inner{max-width:1160px;margin:0 auto;}
-.cal-grid{margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:20px;}
-.cal-event{background:var(--dark3);border:1px solid var(--bdr);border-radius:10px;padding:24px;display:flex;gap:20px;align-items:flex-start;transition:.2s;}
-.cal-event:hover{border-color:var(--bdr2);}
-.cal-date{background:var(--red);border-radius:8px;padding:10px 14px;text-align:center;min-width:56px;flex-shrink:0;}
-.cal-mon{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:#ffffff90;text-transform:uppercase;}
-.cal-day{font-family:'Fraunces',serif;font-size:28px;font-weight:900;color:#fff;line-height:1;}
-.cal-info h4{font-size:15px;font-weight:700;margin-bottom:5px;}
-.cal-info p{color:var(--muted);font-size:12.5px;line-height:1.7;margin-bottom:10px;}
-.cal-tags{display:flex;gap:6px;flex-wrap:wrap;}
-.ctag{font-family:'JetBrains Mono',monospace;font-size:9px;background:var(--dark4);border:1px solid var(--bdr);color:var(--muted);padding:3px 9px;border-radius:3px;}
-.cal-mode{font-size:11px;color:var(--red);font-weight:600;margin-top:8px;display:block;}
-
-/* ========== CORPORATE PAGE ========== */
-.corp-hero{padding:90px 5% 70px;background:var(--dark2);border-bottom:1px solid var(--bdr);}
-.corp-packages{padding:80px 5%;background:var(--dark);}
-.pkg-grid{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:50px;}
-.pkg-card{background:var(--dark3);border:1px solid var(--bdr);border-radius:12px;padding:32px;position:relative;transition:.3s;}
-.pkg-card.featured{border-color:var(--red);background:var(--dark4);}
-.pkg-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:4px 16px;border-radius:20px;letter-spacing:1px;white-space:nowrap;font-family:'JetBrains Mono',monospace;}
-.pkg-name{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;}
-.pkg-title{font-family:'Fraunces',serif;font-size:24px;font-weight:900;margin-bottom:20px;}
-.pkg-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px;}
-.pkg-features li{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--muted);}
-.pkg-features li::before{content:'◆';color:var(--red);font-size:7px;margin-top:5px;flex-shrink:0;}
-
-.corp-process{padding:80px 5%;background:var(--dark2);}
-.cp-inner{max-width:1160px;margin:0 auto;}
-.cp-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:50px;}
-.cp-step{background:var(--dark3);padding:30px 24px;position:relative;}
-.cp-step::after{content:attr(data-n);position:absolute;top:20px;right:20px;font-family:'Fraunces',serif;font-size:48px;font-weight:900;color:#e6332908;}
-.cp-step h4{font-size:15px;font-weight:700;margin-bottom:8px;margin-top:8px;}
-.cp-step p{color:var(--muted);font-size:12.5px;line-height:1.7;}
-.cp-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--red);margin-bottom:4px;text-transform:uppercase;}
-
-/* ========== JOIN/CAREERS PAGE ========== */
-.join-hero{padding:90px 5% 70px;background:var(--dark2);border-bottom:1px solid var(--bdr);}
-.join-roles{padding:80px 5%;background:var(--dark);}
-.roles-inner{max-width:1160px;margin:0 auto;}
-.roles-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:40px;}
-.role-card{background:var(--dark3);border:1px solid var(--bdr);border-radius:10px;padding:28px;transition:.3s;cursor:none;}
-.role-card:hover{border-color:var(--red);transform:translateX(4px);}
-.role-type{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--red);margin-bottom:10px;display:block;}
-.role-card h3{font-size:18px;font-weight:700;margin-bottom:10px;font-family:'Fraunces',serif;}
-.role-card p{color:var(--muted);font-size:13px;line-height:1.75;margin-bottom:16px;}
-.role-skills{display:flex;flex-wrap:wrap;gap:6px;}
-.rsk{font-family:'JetBrains Mono',monospace;font-size:9px;background:var(--dark4);border:1px solid var(--bdr);color:var(--muted);padding:3px 10px;border-radius:3px;}
-
-.join-form-section{padding:80px 5%;background:var(--dark2);}
-.jf-inner{max-width:800px;margin:0 auto;}
-.join-form{background:var(--dark3);border:1px solid var(--bdr2);border-radius:16px;padding:40px;margin-top:40px;position:relative;overflow:hidden;}
-.join-form::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--red),#ff8c00);}
-.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
-.fg{display:flex;flex-direction:column;gap:6px;}
-.fg label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.5px;color:var(--muted);text-transform:uppercase;}
-.fg input,.fg select,.fg textarea{background:var(--dark4);border:1px solid var(--bdr2);color:var(--cream);padding:11px 14px;border-radius:7px;font-size:13.5px;font-family:'Outfit',sans-serif;outline:none;transition:.2s;-webkit-appearance:none;}
-.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--red);box-shadow:0 0 0 3px #e6332910;}
-.fg input::placeholder,.fg textarea::placeholder{color:var(--muted);}
-.fg select option{background:var(--dark3);}
-.fg textarea{resize:vertical;min-height:110px;}
-.submit-btn{width:100%;background:var(--red);color:#fff;border:none;padding:14px;border-radius:7px;font-weight:700;font-size:15px;cursor:none;font-family:'Outfit',sans-serif;transition:.2s;margin-top:6px;letter-spacing:.3px;}
-.submit-btn:hover{background:#c42820;}
-
-/* ========== CONTACT PAGE ========== */
-.contact-hero{padding:90px 5% 50px;background:var(--dark2);}
-.contact-body{padding:60px 5% 100px;background:var(--dark2);}
-.contact-inner{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;}
-.ct-info-block{background:var(--dark3);border:1px solid var(--bdr);border-radius:10px;padding:24px;display:flex;gap:16px;align-items:center;margin-bottom:12px;transition:.2s;}
-.ct-info-block:hover{border-color:var(--bdr2);}
-.ct-ico{width:44px;height:44px;background:#e6332910;border:1px solid #e6332930;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-.ct-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;}
-.ct-value{font-size:14px;font-weight:600;}
-.ct-value a{color:var(--cream);text-decoration:none;transition:.2s;}
-.ct-value a:hover{color:var(--red);}
-.contact-form{background:var(--dark3);border:1px solid var(--bdr2);border-radius:14px;padding:36px;position:relative;overflow:hidden;}
-.contact-form::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--red),#ff8c00,var(--red));}
-
-/* ========== CHATBOT ========== */
-.chat-float{position:fixed;bottom:28px;right:28px;z-index:1500;}
-.chat-fab{width:52px;height:52px;background:var(--red);border-radius:50%;border:none;cursor:none;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 30px #e6332940;animation:fabPulse 3s ease infinite;transition:.3s;font-size:20px;}
-.chat-fab:hover{transform:scale(1.08);}
-@keyframes fabPulse{0%,100%{box-shadow:0 4px 30px #e6332940;}50%{box-shadow:0 4px 50px #e6332960;}}
-.chat-window{position:absolute;bottom:66px;right:0;width:380px;background:#111118;border:1px solid var(--bdr2);border-radius:18px;overflow:hidden;display:none;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.9);animation:chatIn .25s ease;}
-.chat-window.open{display:flex;}
-@keyframes chatIn{from{opacity:0;transform:translateY(12px) scale(.96);}to{opacity:1;transform:translateY(0) scale(1);}}
-.chat-hdr{background:#16141f;padding:16px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--bdr);}
-.chat-av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--red),#ff8c00);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
-.chat-hdr-name{font-weight:700;font-size:14px;}
-.chat-hdr-status{font-size:10px;color:var(--red);font-family:'JetBrains Mono',monospace;display:flex;align-items:center;gap:5px;}
-.sdot{width:5px;height:5px;background:var(--red);border-radius:50%;animation:pulse 1.5s infinite;}
-.chat-close{margin-left:auto;background:var(--bdr);border:none;color:var(--muted);width:24px;height:24px;border-radius:50%;cursor:none;font-size:12px;display:flex;align-items:center;justify-content:center;transition:.2s;}
-.chat-close:hover{background:var(--bdr2);color:var(--cream);}
-.chat-msgs{padding:16px;height:340px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;scrollbar-width:thin;scrollbar-color:var(--bdr) transparent;}
-.msg{max-width:88%;font-size:13.5px;line-height:1.7;}
-.msg.bot{background:var(--dark4);border:1px solid var(--bdr);border-radius:14px 14px 14px 3px;padding:12px 15px;align-self:flex-start;color:var(--cream);}
-.msg.usr{background:var(--red);border-radius:14px 14px 3px 14px;padding:12px 15px;align-self:flex-end;color:#fff;font-weight:500;}
-.typing-ind{display:flex;align-items:center;gap:5px;padding:12px 15px;background:var(--dark4);border:1px solid var(--bdr);border-radius:14px 14px 14px 3px;align-self:flex-start;width:fit-content;}
-.tdot{width:7px;height:7px;background:var(--muted);border-radius:50%;animation:tdot 1.2s ease infinite;}
-.tdot:nth-child(2){animation-delay:.2s;}
-.tdot:nth-child(3){animation-delay:.4s;}
-@keyframes tdot{0%,100%{transform:translateY(0);opacity:.5;}50%{transform:translateY(-5px);opacity:1;}}
-.chat-input-area{padding:12px;border-top:1px solid var(--bdr);display:flex;gap:8px;background:#16141f;}
-.chat-input{flex:1;background:var(--dark4);border:1px solid var(--bdr2);color:var(--cream);padding:10px 14px;border-radius:8px;font-size:13px;font-family:'Outfit',sans-serif;outline:none;resize:none;max-height:80px;}
-.chat-input:focus{border-color:var(--red);}
-.chat-send{width:38px;height:38px;background:var(--red);border:none;border-radius:8px;cursor:none;display:flex;align-items:center;justify-content:center;font-size:15px;transition:.2s;flex-shrink:0;}
-.chat-send:hover{background:#c42820;}
-.chat-quickies{padding:10px 12px;display:flex;flex-wrap:wrap;gap:6px;border-top:1px solid var(--bdr);background:#16141f;}
-.cq{background:var(--dark4);border:1px solid var(--bdr);color:var(--muted);padding:5px 11px;border-radius:5px;font-size:11px;cursor:none;transition:.2s;font-family:'Outfit',sans-serif;}
-.cq:hover{border-color:var(--red);color:var(--cream);}
-
-/* BROCHURE MODAL */
-.modal{position:fixed;inset:0;z-index:3000;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.85);backdrop-filter:blur(10px);}
-.modal.open{display:flex;}
-.modal-box{background:var(--dark3);border:1px solid var(--bdr2);border-radius:16px;padding:40px;max-width:460px;width:90%;position:relative;animation:pgIn .3s ease;}
-.modal-close{position:absolute;top:16px;right:16px;background:var(--bdr);border:none;color:var(--muted);width:28px;height:28px;border-radius:50%;cursor:none;font-size:14px;display:flex;align-items:center;justify-content:center;}
-.modal-close:hover{background:var(--bdr2);color:var(--cream);}
-.modal-title{font-family:'Fraunces',serif;font-size:24px;font-weight:900;margin-bottom:6px;}
-.modal-sub{color:var(--muted);font-size:13px;margin-bottom:24px;line-height:1.7;}
-.modal-form .fg{margin-bottom:14px;}
-
-/* FOOTER */
-footer{background:var(--dark2);border-top:1px solid var(--bdr);padding:64px 5% 28px;}
-.foot-grid{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:50px;margin-bottom:48px;}
-.foot-logo{font-family:'Outfit',sans-serif;font-weight:800;font-size:18px;letter-spacing:3px;display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-.flm{width:28px;height:28px;background:var(--red);border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:14px;font-weight:900;color:#fff;}
-.foot-brand p{color:var(--muted);font-size:13px;line-height:1.85;max-width:230px;margin-bottom:20px;}
-.foot-col h4{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);margin-bottom:16px;text-transform:uppercase;}
-.foot-col a{display:block;color:var(--muted);text-decoration:none;font-size:13.5px;margin-bottom:9px;transition:.2s;cursor:none;}
-.foot-col a:hover{color:var(--cream);}
-.foot-bot{max-width:1160px;margin:0 auto;padding-top:24px;border-top:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);}
-.foot-bot span{color:var(--red);}
-
-/* MISC */
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
-@keyframes scanline{0%{top:-2px;}100%{top:100%;}}
-.hidden{display:none!important;}
-.tag-red{background:#e6332912;border:1px solid #e6332930;color:var(--red);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;padding:3px 10px;border-radius:3px;}
-
-/* RESPONSIVE */
-@media(max-width:1024px){
-  .hero-stats{gap:24px;}
-  .vuln-grid,.courses-grid,.pkg-grid{grid-template-columns:repeat(2,1fr);}
-  .vapt-hero-inner,.why-inner,.contact-inner,.corp-steps,.fgrid{grid-template-columns:1fr;}
-  .cp-steps{grid-template-columns:repeat(2,1fr);}
-  .roles-grid{grid-template-columns:1fr;}
-  .cal-grid{grid-template-columns:1fr;}
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--ink);
+  color: var(--white);
+  overflow-x: hidden;
+  cursor: none;
+  -webkit-font-smoothing: antialiased;
 }
-@media(max-width:768px){
-  nav{padding:0 4%;}
-  .nav-links{display:none;}
-  .nav-links.open{display:flex;flex-direction:column;position:fixed;top:64px;left:0;right:0;background:rgba(10,8,6,.98);padding:24px;gap:4px;z-index:1999;border-bottom:1px solid var(--bdr);}
-  .hbg{display:flex;}
-  .vuln-grid,.courses-grid,.pkg-grid,.strip-grid,.foot-grid{grid-template-columns:1fr;}
-  .cp-steps{grid-template-columns:1fr;}
-  .chat-window{width:320px;right:-4px;}
-  .hero-title{font-size:clamp(36px,8vw,52px);}
+
+::selection { background: var(--red); color: #fff; }
+
+/* ─── SECURITY HARDENING ─── */
+img { -webkit-user-drag: none; user-drag: none; }
+
+/* ─── CURSOR ─── */
+#cr { position: fixed; z-index: 99999; pointer-events: none; }
+#cr-d {
+  position: fixed; width: 5px; height: 5px; background: var(--red);
+  border-radius: 50%; transform: translate(-50%,-50%);
+  transition: transform 0.12s, width 0.2s, height 0.2s;
+}
+#cr-r {
+  position: fixed; width: 34px; height: 34px;
+  border: 1px solid rgba(230,51,41,0.5); border-radius: 50%;
+  transform: translate(-50%,-50%);
+  transition: all 0.15s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+body:has(a:hover) #cr-d, body:has(button:hover) #cr-d { transform: translate(-50%,-50%) scale(2.5); }
+body:has(a:hover) #cr-r, body:has(button:hover) #cr-r { width: 54px; height: 54px; border-color: var(--red); }
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 2px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: var(--red); }
+
+/* ─── NOISE GRAIN ─── */
+body::after {
+  content: ''; position: fixed; inset: 0; z-index: 9998; pointer-events: none;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  height: 64px; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; transition: background 0.4s, border-color 0.4s;
+  border-bottom: 1px solid transparent;
+}
+nav.scrolled {
+  background: rgba(8,10,13,0.92);
+  backdrop-filter: blur(24px) saturate(180%);
+  border-color: var(--line2);
+}
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; cursor: none; }
+.logo-mark {
+  width: 32px; height: 32px; background: var(--red); border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden; flex-shrink: 0;
+}
+.logo-mark svg { width: 18px; height: 18px; fill: white; }
+.logo-mark::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.18), transparent 60%);
+}
+.logo-name {
+  font-family: 'DM Sans', sans-serif; font-weight: 600;
+  font-size: 15px; letter-spacing: 3.5px; color: var(--white);
+  text-transform: uppercase;
+}
+.logo-name b { color: var(--red); font-weight: 600; }
+
+.nav-links { display: flex; align-items: center; gap: 4px; }
+.nav-links a {
+  color: var(--fog); text-decoration: none; font-size: 13px;
+  font-weight: 400; padding: 7px 13px; border-radius: 5px;
+  transition: color 0.2s, background 0.2s; cursor: none; letter-spacing: 0.1px;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--white); background: var(--line2); }
+.nav-cta {
+  background: var(--red) !important; color: #fff !important;
+  padding: 8px 18px !important; font-weight: 500 !important;
+  border-radius: 6px !important;
+}
+.nav-cta:hover { background: #c42820 !important; transform: translateY(-1px); }
+.hbg { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: none; padding: 6px; }
+.hbg span { width: 20px; height: 1.5px; background: var(--white); display: block; transition: 0.3s; }
+
+/* ─── PAGES ─── */
+.page { display: none; padding-top: 64px; }
+.page.active { display: block; animation: pgIn 0.5s cubic-bezier(0.22,1,0.36,1); }
+@keyframes pgIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ─── GLOBAL UTILS ─── */
+.container { max-width: 1240px; margin: 0 auto; padding: 0 48px; }
+.label {
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+  letter-spacing: 3px; color: var(--red); text-transform: uppercase;
+  display: block; margin-bottom: 16px;
+}
+.display {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(40px, 5vw, 72px);
+  font-weight: 400; line-height: 1.02; color: var(--white);
+}
+.display em { font-style: italic; color: var(--red); }
+.body-lg { font-size: 17px; line-height: 1.85; color: var(--fog); font-weight: 300; }
+.body-md { font-size: 14px; line-height: 1.8; color: var(--fog); }
+.mono { font-family: 'IBM Plex Mono', monospace; }
+
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--red); color: #fff; padding: 13px 26px;
+  border-radius: 6px; font-size: 13px; font-weight: 500;
+  text-decoration: none; border: none; cursor: none;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  letter-spacing: 0.2px; font-family: 'DM Sans', sans-serif;
+  position: relative; overflow: hidden;
+}
+.btn-primary::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+}
+.btn-primary:hover { background: #c92820; transform: translateY(-2px); box-shadow: 0 12px 40px rgba(230,51,41,0.28); }
+
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent; color: var(--white2); padding: 13px 26px;
+  border-radius: 6px; font-size: 13px; font-weight: 400;
+  text-decoration: none; border: 1px solid var(--line2); cursor: none;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  font-family: 'DM Sans', sans-serif;
+}
+.btn-outline:hover { border-color: rgba(255,255,255,0.22); color: var(--white); background: var(--line); }
+
+/* ─── REVEAL ─── */
+.r { opacity: 0; transform: translateY(28px); transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1), transform 0.75s cubic-bezier(0.22,1,0.36,1); }
+.r.on { opacity: 1; transform: none; }
+.r-l { opacity: 0; transform: translateX(-28px); transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1), transform 0.75s cubic-bezier(0.22,1,0.36,1); }
+.r-l.on { opacity: 1; transform: none; }
+.r-r { opacity: 0; transform: translateX(28px); transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1), transform 0.75s cubic-bezier(0.22,1,0.36,1); }
+.r-r.on { opacity: 1; transform: none; }
+.d1 { transition-delay: 0.08s !important; }
+.d2 { transition-delay: 0.16s !important; }
+.d3 { transition-delay: 0.24s !important; }
+.d4 { transition-delay: 0.32s !important; }
+.d5 { transition-delay: 0.40s !important; }
+.d6 { transition-delay: 0.48s !important; }
+
+/* ════════════════════════════════
+   HOME — HERO
+════════════════════════════════ */
+.hero {
+  min-height: 100vh; display: flex; align-items: center;
+  position: relative; overflow: hidden;
+}
+#heroCanvas { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+
+.hero-grid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+.hero-vignette {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 40%, var(--ink) 100%);
+}
+
+.hero-content { position: relative; z-index: 2; width: 100%; padding: 120px 48px 100px; max-width: 1240px; margin: 0 auto; }
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+  letter-spacing: 3px; color: var(--red); margin-bottom: 32px;
+  border: 1px solid rgba(230,51,41,0.2); padding: 8px 16px;
+  border-radius: 3px; background: rgba(230,51,41,0.04);
+  animation: fadeSlideUp 0.9s cubic-bezier(0.22,1,0.36,1) both;
+}
+.blink { width: 6px; height: 6px; background: var(--red); border-radius: 50%; animation: blink 1.6s ease infinite; }
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+.hero-headline {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(54px, 7vw, 106px);
+  font-weight: 400; line-height: 0.96;
+  letter-spacing: -1px; margin-bottom: 36px;
+  animation: fadeSlideUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.1s both;
+  max-width: 900px;
+}
+.hero-headline .italic { font-style: italic; }
+.hero-headline .accent { color: var(--red); }
+.hero-headline .thin { font-weight: 300; }
+
+.hero-sub {
+  font-size: 17px; line-height: 1.8; color: var(--fog); font-weight: 300;
+  max-width: 520px; margin-bottom: 44px;
+  animation: fadeSlideUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.18s both;
+}
+
+.hero-actions {
+  display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 80px;
+  animation: fadeSlideUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.26s both;
+}
+
+.hero-stats {
+  display: flex; gap: 0; border-top: 1px solid var(--line2);
+  animation: fadeSlideUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.34s both;
+}
+.hstat {
+  padding: 28px 48px 0 0; border-right: 1px solid var(--line2);
+  margin-right: 48px;
+}
+.hstat:last-child { border-right: none; }
+.hstat-n {
+  font-family: 'Instrument Serif', serif; font-size: 44px;
+  font-weight: 400; color: var(--white); line-height: 1;
+  letter-spacing: -1px;
+}
+.hstat-l { font-size: 11px; color: var(--fog); margin-top: 4px; letter-spacing: 0.5px; font-weight: 400; }
+
+/* Floating terminal card */
+.hero-card {
+  position: absolute; right: 48px; top: 50%; transform: translateY(-50%);
+  width: 420px; background: var(--ink2); border: 1px solid var(--line2);
+  border-radius: 12px; overflow: hidden; z-index: 3;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.7), 0 0 0 1px var(--line);
+  animation: fadeSlideUp 1s cubic-bezier(0.22,1,0.36,1) 0.3s both;
+}
+.card-header {
+  background: var(--ink3); padding: 13px 18px;
+  display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid var(--line);
+}
+.dot { width: 11px; height: 11px; border-radius: 50%; }
+.dot-r { background: #ff5f57; } .dot-y { background: #febc2e; } .dot-g { background: #28c840; }
+.card-title { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--fog); margin-left: 8px; letter-spacing: 1px; }
+.card-body { padding: 22px; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; line-height: 2.1; position: relative; min-height: 280px; }
+.scan-bar {
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--red) 50%, transparent);
+  animation: scanY 4s linear infinite; pointer-events: none;
+}
+@keyframes scanY { 0% { top: -1px; opacity: 0.7; } 100% { top: 100%; opacity: 0.2; } }
+.tc { color: #3d4455; } /* comment */
+.tk { color: #ff9580; } /* key */
+.tv { color: #98d4a0; } /* value */
+.ts { color: #f5c842; } /* string */
+.tn { color: #79c0ff; } /* number */
+.tg { color: var(--green); } /* green ok */
+.tl { opacity: 0; animation: tl 0.25s ease forwards; }
+.tl:nth-child(1)  { animation-delay: 0.6s; }
+.tl:nth-child(2)  { animation-delay: 1.1s; }
+.tl:nth-child(3)  { animation-delay: 1.5s; }
+.tl:nth-child(4)  { animation-delay: 1.9s; }
+.tl:nth-child(5)  { animation-delay: 2.3s; }
+.tl:nth-child(6)  { animation-delay: 2.7s; }
+.tl:nth-child(7)  { animation-delay: 3.1s; }
+.tl:nth-child(8)  { animation-delay: 3.5s; }
+.tl:nth-child(9)  { animation-delay: 3.9s; }
+.tl:nth-child(10) { animation-delay: 4.3s; }
+.tl:nth-child(11) { animation-delay: 4.7s; }
+@keyframes tl { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: none; } }
+.cursor-bl { animation: cbl 0.7s step-end infinite; }
+@keyframes cbl { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+@keyframes fadeSlideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+
+/* ─── TICKER ─── */
+.ticker { height: 44px; background: var(--ink2); border-top: 1px solid var(--line2); border-bottom: 1px solid var(--line2); overflow: hidden; display: flex; align-items: center; position: relative; }
+.ticker::before, .ticker::after {
+  content: ''; position: absolute; top: 0; bottom: 0; width: 100px; z-index: 2; pointer-events: none;
+}
+.ticker::before { left: 0; background: linear-gradient(to right, var(--ink2), transparent); }
+.ticker::after { right: 0; background: linear-gradient(to left, var(--ink2), transparent); }
+.ticker-track {
+  display: flex; gap: 0; align-items: center; white-space: nowrap;
+  animation: ticker 30s linear infinite;
+}
+.ticker-item {
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+  letter-spacing: 2px; color: var(--fog); padding: 0 28px;
+  border-right: 1px solid var(--line2); text-transform: uppercase;
+  transition: color 0.2s; flex-shrink: 0;
+}
+.ticker-item:hover { color: var(--white); }
+@keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* ════════════════════════════════
+   SERVICES SECTION
+════════════════════════════════ */
+.services { padding: 120px 0; }
+.services-header { margin-bottom: 72px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: end; }
+.services-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line2); border-left: 1px solid var(--line2); }
+.svc { border-right: 1px solid var(--line2); border-bottom: 1px solid var(--line2); padding: 44px 36px; cursor: none; transition: background 0.25s; position: relative; overflow: hidden; }
+.svc::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--red); transform: scaleX(0); transition: transform 0.3s cubic-bezier(0.22,1,0.36,1); transform-origin: left; }
+.svc:hover { background: var(--ink2); }
+.svc:hover::after { transform: scaleX(1); }
+.svc-n { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: rgba(230,51,41,0.5); letter-spacing: 2px; margin-bottom: 28px; }
+.svc-icon { font-size: 28px; margin-bottom: 20px; display: block; transition: transform 0.3s; }
+.svc:hover .svc-icon { transform: scale(1.12) rotate(-4deg); }
+.svc h3 { font-family: 'Instrument Serif', serif; font-size: 22px; font-weight: 400; margin-bottom: 12px; line-height: 1.2; }
+.svc p { font-size: 13px; line-height: 1.8; color: var(--fog); }
+.svc-link { margin-top: 20px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1.5px; color: var(--red); opacity: 0; transform: translateX(-6px); transition: opacity 0.25s, transform 0.25s; display: block; }
+.svc:hover .svc-link { opacity: 1; transform: none; }
+
+/* ════════════════════════════════
+   PROOF / TRUST
+════════════════════════════════ */
+.proof { padding: 120px 0; background: var(--ink2); }
+.proof-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+.proof-number { font-family: 'Instrument Serif', serif; font-size: clamp(80px, 12vw, 160px); font-weight: 400; color: var(--red); line-height: 0.85; letter-spacing: -4px; display: block; }
+.proof-items { display: flex; flex-direction: column; gap: 0; margin-top: 32px; }
+.proof-item { padding: 24px 0; border-bottom: 1px solid var(--line2); display: flex; gap: 20px; align-items: flex-start; transition: padding-left 0.25s; cursor: default; }
+.proof-item:hover { padding-left: 8px; }
+.proof-item:first-child { border-top: 1px solid var(--line2); }
+.proof-dot { width: 6px; height: 6px; background: var(--red); border-radius: 50%; flex-shrink: 0; margin-top: 8px; }
+.proof-item h4 { font-size: 15px; font-weight: 500; margin-bottom: 5px; }
+.proof-item p { font-size: 13px; color: var(--fog); line-height: 1.75; }
+
+/* Process visual */
+.process-list { display: flex; flex-direction: column; gap: 0; }
+.process-step { display: flex; gap: 20px; padding: 22px 0; border-bottom: 1px solid var(--line); position: relative; transition: padding-left 0.2s; }
+.process-step:hover { padding-left: 6px; }
+.process-step:last-child { border-bottom: none; }
+.ps-n { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--red); font-weight: 500; flex-shrink: 0; width: 26px; padding-top: 2px; }
+.ps-t { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+.ps-d { font-size: 12.5px; color: var(--fog); line-height: 1.7; }
+
+/* ════════════════════════════════
+   VAPT PAGE
+════════════════════════════════ */
+.page-hero { padding: 100px 0 80px; position: relative; overflow: hidden; }
+.page-hero-bg { position: absolute; top: -40%; right: -20%; width: 700px; height: 700px; background: radial-gradient(circle, rgba(230,51,41,0.06), transparent 65%); pointer-events: none; border-radius: 50%; }
+
+.vuln-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line2); margin-top: 60px; border-radius: 2px; overflow: hidden; }
+.vc { background: var(--ink2); padding: 32px; transition: background 0.25s; position: relative; }
+.vc:hover { background: var(--ink3); }
+.vc-sev {
+  font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 1.5px;
+  font-weight: 500; padding: 3px 10px; border-radius: 3px; display: inline-block; margin-bottom: 16px;
+}
+.vc-crit { background: rgba(230,51,41,0.12); color: var(--red); border: 1px solid rgba(230,51,41,0.25); }
+.vc-high { background: rgba(255,176,32,0.1); color: var(--amber); border: 1px solid rgba(255,176,32,0.2); }
+.vc-med { background: rgba(77,159,255,0.1); color: #60a5fa; border: 1px solid rgba(77,159,255,0.2); }
+.vc-icon { font-size: 26px; margin-bottom: 14px; display: block; }
+.vc h3 { font-family: 'Instrument Serif', serif; font-size: 18px; font-weight: 400; margin-bottom: 10px; }
+.vc p { font-size: 12.5px; color: var(--fog); line-height: 1.75; }
+.vc-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 14px; }
+.vtag { font-family: 'IBM Plex Mono', monospace; font-size: 9px; background: var(--ink3); border: 1px solid var(--line2); color: var(--fog); padding: 2px 8px; border-radius: 2px; }
+
+/* ════════════════════════════════
+   TRAINING PAGE
+════════════════════════════════ */
+.cf-bar { display: flex; gap: 6px; flex-wrap: wrap; margin: 32px 0 44px; }
+.cf {
+  background: var(--ink2); border: 1px solid var(--line2); color: var(--fog);
+  padding: 8px 18px; border-radius: 4px; font-size: 12px; font-weight: 500;
+  cursor: none; transition: all 0.2s; font-family: 'DM Sans', sans-serif; letter-spacing: 0.2px;
+}
+.cf.on, .cf:hover { background: var(--red-dim); border-color: rgba(230,51,41,0.3); color: var(--white); }
+
+.courses-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.cc {
+  background: var(--ink2); border: 1px solid var(--line2); border-radius: 10px;
+  overflow: hidden; transition: border-color 0.25s, transform 0.3s, box-shadow 0.3s; cursor: none;
+}
+.cc:hover { border-color: var(--line2); transform: translateY(-6px); box-shadow: 0 30px 80px rgba(0,0,0,0.5); }
+.cc-thumb { height: 120px; display: flex; align-items: center; justify-content: center; font-size: 40px; position: relative; }
+.cc-thumb::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 60%; background: linear-gradient(transparent, var(--ink2)); }
+.cc-body { padding: 22px; }
+.cc-level { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 1.5px; padding: 2px 9px; border-radius: 2px; display: inline-block; margin-bottom: 10px; font-weight: 500; }
+.lv-b { background: rgba(0,232,122,0.08); color: var(--green); border: 1px solid rgba(0,232,122,0.2); }
+.lv-i { background: rgba(255,176,32,0.08); color: var(--amber); border: 1px solid rgba(255,176,32,0.2); }
+.lv-a { background: var(--red-dim); color: var(--red); border: 1px solid rgba(230,51,41,0.2); }
+.cc h3 { font-family: 'Instrument Serif', serif; font-size: 18px; font-weight: 400; margin-bottom: 8px; line-height: 1.25; }
+.cc p { font-size: 12.5px; color: var(--fog); line-height: 1.75; margin-bottom: 14px; }
+.cc-meta { display: flex; gap: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--fog); border-top: 1px solid var(--line); padding-top: 13px; margin-bottom: 13px; }
+.cc-actions { display: flex; gap: 7px; }
+.btn-syl { background: var(--red); color: #fff; padding: 9px 14px; border-radius: 5px; font-size: 12px; font-weight: 500; border: none; cursor: none; flex: 1; text-align: center; transition: background 0.2s; font-family: 'DM Sans', sans-serif; }
+.btn-syl:hover { background: #c42820; }
+.btn-enq { background: var(--ink3); color: var(--white2); padding: 9px 13px; border-radius: 5px; font-size: 12px; border: 1px solid var(--line2); cursor: none; transition: border-color 0.2s; font-family: 'DM Sans', sans-serif; }
+.btn-enq:hover { border-color: var(--line2); color: var(--white); }
+
+/* Calendar */
+.cal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 48px; }
+.cal-ev {
+  background: var(--ink2); border: 1px solid var(--line2); border-radius: 10px;
+  padding: 22px; display: flex; gap: 18px; align-items: flex-start;
+  transition: border-color 0.2s, transform 0.25s;
+}
+.cal-ev:hover { border-color: var(--line2); transform: translateY(-3px); }
+.cal-date { background: var(--red); border-radius: 8px; padding: 10px 14px; text-align: center; min-width: 56px; flex-shrink: 0; }
+.cal-mon { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 2px; color: rgba(255,255,255,0.7); text-transform: uppercase; }
+.cal-day { font-family: 'Instrument Serif', serif; font-size: 32px; font-weight: 400; color: #fff; line-height: 1.1; }
+.cal-info h4 { font-size: 15px; font-weight: 500; margin-bottom: 5px; }
+.cal-info p { color: var(--fog); font-size: 12.5px; line-height: 1.7; margin-bottom: 10px; }
+.cal-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+.ctag { font-family: 'IBM Plex Mono', monospace; font-size: 9px; background: var(--ink3); border: 1px solid var(--line2); color: var(--fog); padding: 2px 8px; border-radius: 2px; }
+.cal-mode { font-size: 11px; color: var(--red); font-weight: 500; margin-top: 8px; display: block; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.5px; }
+
+/* ════════════════════════════════
+   CORPORATE PAGE
+════════════════════════════════ */
+.pkg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line2); margin-top: 60px; border-radius: 2px; overflow: hidden; }
+.pkg {
+  background: var(--ink2); padding: 40px 32px; position: relative; transition: background 0.25s;
+}
+.pkg.featured { background: var(--ink3); }
+.pkg-badge {
+  position: absolute; top: -1px; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--red), transparent);
+}
+.pkg-badge-label {
+  position: absolute; top: 16px; right: 16px;
+  background: var(--red); color: #fff; font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px; letter-spacing: 2px; padding: 3px 10px; border-radius: 2px;
+}
+.pkg-tier { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--fog); margin-bottom: 8px; }
+.pkg-name { font-family: 'Instrument Serif', serif; font-size: 28px; font-weight: 400; margin-bottom: 28px; }
+.pkg ul { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+.pkg ul li { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--fog); }
+.pkg ul li::before { content: ''; width: 4px; height: 4px; background: var(--red); border-radius: 50%; margin-top: 8px; flex-shrink: 0; }
+
+.cp-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line2); margin-top: 60px; }
+.cp-step { background: var(--ink2); padding: 32px 24px; transition: background 0.25s; position: relative; overflow: hidden; }
+.cp-step:hover { background: var(--ink3); }
+.cp-step-bg { position: absolute; top: 16px; right: 16px; font-family: 'Instrument Serif', serif; font-size: 64px; font-weight: 400; color: rgba(230,51,41,0.05); line-height: 1; }
+.cp-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--red); margin-bottom: 12px; }
+.cp-step h4 { font-family: 'Instrument Serif', serif; font-size: 18px; font-weight: 400; margin-bottom: 8px; }
+.cp-step p { font-size: 12.5px; color: var(--fog); line-height: 1.7; }
+
+/* ════════════════════════════════
+   JOIN PAGE
+════════════════════════════════ */
+.roles-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line2); margin-top: 48px; }
+.rc {
+  background: var(--ink2); padding: 32px; transition: background 0.25s; cursor: none; position: relative;
+  overflow: hidden;
+}
+.rc::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--red); transform: scaleY(0); transition: transform 0.3s cubic-bezier(0.22,1,0.36,1); transform-origin: bottom; }
+.rc:hover { background: var(--ink3); }
+.rc:hover::before { transform: scaleY(1); }
+.rc-type { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--red); margin-bottom: 10px; display: block; }
+.rc h3 { font-family: 'Instrument Serif', serif; font-size: 20px; font-weight: 400; margin-bottom: 8px; }
+.rc p { color: var(--fog); font-size: 13px; line-height: 1.75; margin-bottom: 14px; }
+.rc-skills { display: flex; flex-wrap: wrap; gap: 5px; }
+.rsk { font-family: 'IBM Plex Mono', monospace; font-size: 9px; background: var(--ink3); border: 1px solid var(--line2); color: var(--fog); padding: 2px 9px; border-radius: 2px; }
+
+/* ════════════════════════════════
+   CONTACT PAGE
+════════════════════════════════ */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start; padding-top: 60px; }
+.ct-info-item { display: flex; gap: 16px; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--line2); transition: padding-left 0.2s; cursor: default; }
+.ct-info-item:hover { padding-left: 6px; }
+.ct-ico { width: 42px; height: 42px; background: var(--red-dim); border: 1px solid rgba(230,51,41,0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+.ct-lbl { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 1px; color: var(--fog); margin-bottom: 4px; }
+.ct-val { font-size: 14px; font-weight: 400; }
+.ct-val a { color: var(--white); text-decoration: none; transition: color 0.2s; }
+.ct-val a:hover { color: var(--red); }
+
+/* ────── FORMS ────── */
+.form-wrap { background: var(--ink2); border: 1px solid var(--line2); border-radius: 12px; padding: 40px; position: relative; overflow: hidden; }
+.form-wrap::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--red), transparent); }
+.form-title { font-family: 'Instrument Serif', serif; font-size: 26px; font-weight: 400; margin-bottom: 6px; }
+.form-sub { font-size: 13px; color: var(--fog); margin-bottom: 28px; line-height: 1.7; }
+.fg { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.fg label { font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.5px; color: var(--fog); text-transform: uppercase; }
+.fg input, .fg select, .fg textarea {
+  background: var(--ink); border: 1px solid var(--line2); color: var(--white);
+  padding: 11px 14px; border-radius: 6px; font-size: 13.5px;
+  font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+}
+.fg input:focus, .fg select:focus, .fg textarea:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(230,51,41,0.08); }
+.fg input::placeholder, .fg textarea::placeholder { color: var(--fog); }
+.fg select option { background: var(--ink2); }
+.fg textarea { resize: vertical; min-height: 110px; }
+.fgrid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.submit-btn {
+  width: 100%; background: var(--red); color: #fff; border: none;
+  padding: 14px; border-radius: 6px; font-weight: 500; font-size: 14px;
+  cursor: none; font-family: 'DM Sans', sans-serif; transition: background 0.2s, transform 0.2s;
+  margin-top: 6px; letter-spacing: 0.3px; position: relative; overflow: hidden;
+}
+.submit-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent); }
+.submit-btn:hover { background: #c42820; transform: translateY(-1px); }
+
+/* ─── CTA ─── */
+.cta-section { padding: 140px 0; text-align: center; position: relative; overflow: hidden; }
+.cta-section::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 800px; height: 400px; background: radial-gradient(ellipse, rgba(230,51,41,0.08), transparent 60%); pointer-events: none; }
+.cta-inner { max-width: 720px; margin: 0 auto; position: relative; z-index: 2; }
+.cta-inner .display { margin-bottom: 20px; }
+.cta-inner .body-lg { margin-bottom: 40px; margin-left: auto; margin-right: auto; max-width: 480px; }
+.cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+/* ─── FOOTER ─── */
+footer { background: var(--ink2); border-top: 1px solid var(--line2); padding: 72px 0 28px; }
+.foot-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 56px; margin-bottom: 56px; }
+.foot-brand p { color: var(--fog); font-size: 13px; line-height: 1.85; max-width: 240px; margin: 14px 0 20px; }
+.foot-col h5 { font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 2.5px; color: var(--fog); margin-bottom: 18px; text-transform: uppercase; }
+.foot-col a { display: block; color: var(--fog); text-decoration: none; font-size: 13.5px; margin-bottom: 9px; transition: color 0.2s; cursor: none; }
+.foot-col a:hover { color: var(--white); }
+.foot-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 24px; border-top: 1px solid var(--line); font-size: 12px; color: var(--fog); }
+.foot-bottom span { color: var(--red); }
+.foot-socials { display: flex; gap: 8px; }
+.fsoc { width: 32px; height: 32px; background: var(--ink3); border: 1px solid var(--line2); border-radius: 6px; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 13px; transition: border-color 0.2s; }
+.fsoc:hover { border-color: var(--line2); }
+
+/* ─── CHATBOT ─── */
+.chat-float { position: fixed; bottom: 28px; right: 28px; z-index: 1500; }
+.chat-fab {
+  width: 52px; height: 52px; background: var(--red); border-radius: 50%;
+  border: none; cursor: none; display: flex; align-items: center; justify-content: center;
+  font-size: 20px; box-shadow: 0 8px 32px rgba(230,51,41,0.4); transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+.chat-fab::before {
+  content: ''; position: absolute; inset: -3px; border-radius: 50%;
+  border: 1px solid rgba(230,51,41,0.3); animation: fabPing 2.5s ease infinite;
+}
+@keyframes fabPing { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.5); opacity: 0; } }
+.chat-fab:hover { transform: scale(1.06); box-shadow: 0 12px 48px rgba(230,51,41,0.5); }
+.chat-window {
+  position: absolute; bottom: 66px; right: 0; width: 380px;
+  background: var(--ink2); border: 1px solid var(--line2); border-radius: 16px;
+  overflow: hidden; display: none; flex-direction: column;
+  box-shadow: 0 32px 100px rgba(0,0,0,0.9); animation: chatUp 0.25s cubic-bezier(0.22,1,0.36,1);
+}
+.chat-window.open { display: flex; }
+@keyframes chatUp { from { opacity: 0; transform: translateY(12px) scale(0.96); } to { opacity: 1; transform: none; } }
+.chat-hdr { background: var(--ink3); padding: 16px 18px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--line2); }
+.chat-av { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--red), #ff8c00); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.chat-hdr-name { font-weight: 600; font-size: 14px; }
+.chat-hdr-st { font-size: 10px; color: var(--green); font-family: 'IBM Plex Mono', monospace; display: flex; align-items: center; gap: 5px; }
+.sdot { width: 5px; height: 5px; background: var(--green); border-radius: 50%; animation: blink 1.5s infinite; }
+.chat-close { margin-left: auto; background: var(--line2); border: none; color: var(--fog); width: 26px; height: 26px; border-radius: 50%; cursor: none; font-size: 12px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+.chat-close:hover { background: var(--line2); color: var(--white); }
+.chat-msgs { padding: 16px; height: 340px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; scrollbar-width: thin; scrollbar-color: var(--line2) transparent; }
+.msg { max-width: 88%; font-size: 13.5px; line-height: 1.7; }
+.msg.bot { background: var(--ink3); border: 1px solid var(--line2); border-radius: 14px 14px 14px 3px; padding: 11px 14px; align-self: flex-start; }
+.msg.usr { background: var(--red); border-radius: 14px 14px 3px 14px; padding: 11px 14px; align-self: flex-end; color: #fff; font-weight: 500; }
+.typing { display: flex; align-items: center; gap: 4px; padding: 12px 14px; background: var(--ink3); border: 1px solid var(--line2); border-radius: 14px 14px 14px 3px; align-self: flex-start; }
+.tdot { width: 6px; height: 6px; background: var(--fog); border-radius: 50%; animation: td 1.2s ease infinite; }
+.tdot:nth-child(2) { animation-delay: 0.2s; } .tdot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes td { 0%,100% { transform: translateY(0); opacity: 0.4; } 50% { transform: translateY(-5px); opacity: 1; } }
+.chat-quick { padding: 10px 12px; display: flex; flex-wrap: wrap; gap: 5px; border-top: 1px solid var(--line); background: var(--ink3); }
+.cq { background: var(--ink4); border: 1px solid var(--line2); color: var(--fog); padding: 5px 11px; border-radius: 4px; font-size: 11px; cursor: none; transition: all 0.2s; font-family: 'DM Sans', sans-serif; }
+.cq:hover { border-color: rgba(230,51,41,0.3); color: var(--white); }
+.chat-input-row { padding: 12px; border-top: 1px solid var(--line); display: flex; gap: 8px; background: var(--ink3); }
+.chat-inp { flex: 1; background: var(--ink); border: 1px solid var(--line2); color: var(--white); padding: 10px 13px; border-radius: 7px; font-size: 13px; font-family: 'DM Sans', sans-serif; outline: none; resize: none; max-height: 80px; }
+.chat-inp:focus { border-color: var(--red); }
+.chat-send { width: 36px; height: 36px; background: var(--red); border: none; border-radius: 7px; cursor: none; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: background 0.2s; flex-shrink: 0; }
+.chat-send:hover { background: #c42820; }
+
+/* ─── MODAL ─── */
+.modal { position: fixed; inset: 0; z-index: 3000; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.85); backdrop-filter: blur(16px); }
+.modal.open { display: flex; }
+.modal-box { background: var(--ink2); border: 1px solid var(--line2); border-radius: 16px; padding: 44px; max-width: 460px; width: 90%; position: relative; animation: pgIn 0.3s cubic-bezier(0.22,1,0.36,1); overflow: hidden; }
+.modal-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--red), transparent); }
+.modal-close { position: absolute; top: 18px; right: 18px; background: var(--line2); border: none; color: var(--fog); width: 30px; height: 30px; border-radius: 50%; cursor: none; font-size: 13px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+.modal-close:hover { background: var(--line2); color: var(--white); }
+.modal-icon { font-size: 34px; margin-bottom: 12px; }
+.modal-title { font-family: 'Instrument Serif', serif; font-size: 28px; font-weight: 400; margin-bottom: 8px; }
+.modal-sub { color: var(--fog); font-size: 13px; margin-bottom: 26px; line-height: 1.75; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1100px) {
+  .hero-card { display: none; }
+  .hero-content { padding: 100px 32px 80px; }
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .vuln-grid, .courses-grid, .pkg-grid { grid-template-columns: repeat(2, 1fr); }
+  .proof-grid, .contact-grid, .vapt-hero-inner { grid-template-columns: 1fr; gap: 48px; }
+  .foot-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .cp-steps { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .nav-links.open { display: flex; flex-direction: column; position: fixed; top: 64px; left: 0; right: 0; background: rgba(8,10,13,0.98); padding: 20px; gap: 4px; z-index: 999; border-bottom: 1px solid var(--line2); backdrop-filter: blur(24px); }
+  .hbg { display: flex; }
+  .container { padding: 0 20px; }
+  .hero-content { padding: 80px 20px 60px; }
+  .services-grid, .vuln-grid, .courses-grid, .pkg-grid { grid-template-columns: 1fr; }
+  .roles-grid { grid-template-columns: 1fr; }
+  .cp-steps { grid-template-columns: 1fr; }
+  .cal-grid { grid-template-columns: 1fr; }
+  .fgrid2 { grid-template-columns: 1fr; }
+  .foot-grid { grid-template-columns: 1fr; }
+  .hstat { padding: 20px 24px 0 0; margin-right: 24px; }
+  .hstat-n { font-size: 36px; }
+  .chat-window { width: 320px; right: -4px; }
+  .services-header { grid-template-columns: 1fr; }
+  .proof-number { font-size: 80px; }
+  .hero-headline { font-size: clamp(44px, 10vw, 72px); }
 }
 </style>
 </head>
 <body>
 
-<div id="cur"></div>
-<div id="cur-r"></div>
+<div id="cr-d"></div>
+<div id="cr-r"></div>
+
+<!-- PARTICLE BG -->
+<canvas id="heroCanvas"></canvas>
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="#" class="logo" onclick="showPage('home')">
-    <div class="logo-mark">H</div>
-    <span class="logo-text">HACK<span>RACE</span></span>
+  <a class="logo" href="#" onclick="return nav('home')">
+    <div class="logo-mark">
+      <svg viewBox="0 0 18 18"><path d="M2 2h4v6h6V2h4v14h-4V10H6v6H2V2z"/></svg>
+    </div>
+    <span class="logo-name">HACK<b>RACE</b></span>
   </a>
   <div class="nav-links" id="navLinks">
-    <a href="#" onclick="showPage('home')" id="nav-home" class="active">Home</a>
-    <a href="#" onclick="showPage('vapt')" id="nav-vapt">VAPT</a>
-    <a href="#" onclick="showPage('training')" id="nav-training">Training</a>
-    <a href="#" onclick="showPage('corporate')" id="nav-corporate">Corporate</a>
-    <a href="#" onclick="showPage('join')" id="nav-join">Join Us</a>
-    <a href="#" onclick="showPage('contact')" id="nav-contact">Contact</a>
-    <a href="#" onclick="openModal('brochure')" class="nav-cta">Download Brochure</a>
+    <a href="#" onclick="return nav('home')" id="nav-home" class="active">Home</a>
+    <a href="#" onclick="return nav('vapt')" id="nav-vapt">VAPT</a>
+    <a href="#" onclick="return nav('training')" id="nav-training">Training</a>
+    <a href="#" onclick="return nav('corporate')" id="nav-corporate">Corporate</a>
+    <a href="#" onclick="return nav('join')" id="nav-join">Careers</a>
+    <a href="#" onclick="return nav('contact')" id="nav-contact">Contact</a>
+    <a href="#" onclick="modal('brochure'); return false" class="nav-cta">Get Brochure</a>
   </div>
-  <button class="hbg" id="hbg" onclick="toggleMobileNav()"><span></span><span></span><span></span></button>
+  <button class="hbg" onclick="mobileNav()"><span></span><span></span><span></span></button>
 </nav>
 
-<!-- ============ HOME PAGE ============ -->
+<!-- ════ HOME ════ -->
 <div class="page active" id="page-home">
+
   <section class="hero">
-    <div class="hero-bg">
-      <div class="hero-grid"></div>
-      <div class="hero-glow"></div>
-      <div class="hero-glow2"></div>
-    </div>
-    <div class="hero-inner">
-      <div class="hero-eyebrow"><span class="eye-pulse"></span>INDIA'S CYBERSECURITY PARTNER</div>
-      <h1 class="hero-title">
-        Secure. Train.<br>
-        <span class="red italic">Dominate.</span>
+    <div class="hero-grid"></div>
+    <div class="hero-vignette"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow"><span class="blink"></span>OFFENSIVE SECURITY · GLOBAL STANDARD</div>
+      <h1 class="hero-headline">
+        We <em>find</em> what<br>
+        attackers <span class="accent">exploit.</span>
       </h1>
-      <p class="hero-desc">HackRace delivers enterprise-grade VAPT, penetration testing, industry-aligned skill training, and digital solutions — trusted by companies and institutions across India.</p>
-      <div class="hero-btns">
-        <a href="#" class="btn-red" onclick="showPage('vapt')">🔐 Explore VAPT</a>
-        <a href="#" class="btn-ghost" onclick="showPage('training')">🎓 View Training</a>
+      <p class="hero-sub">Enterprise-grade VAPT, penetration testing, and security training. We work like attackers — so your systems are ready for them.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="nav('vapt')">Explore VAPT →</button>
+        <button class="btn-outline" onclick="nav('training')">View Training</button>
       </div>
       <div class="hero-stats">
-        <div class="hstat"><div class="hstat-n" data-t="500">0+</div><div class="hstat-l">Students Trained</div></div>
-        <div class="hstat"><div class="hstat-n" data-t="30">0+</div><div class="hstat-l">Clients Served</div></div>
-        <div class="hstat"><div class="hstat-n" data-t="15">0+</div><div class="hstat-l">Industry Trainers</div></div>
-        <div class="hstat"><div class="hstat-n" data-t="14">0+</div><div class="hstat-l">Service Verticals</div></div>
+        <div class="hstat"><div class="hstat-n" data-t="500">0+</div><div class="hstat-l">Professionals Trained</div></div>
+        <div class="hstat"><div class="hstat-n" data-t="30">0+</div><div class="hstat-l">Enterprise Clients</div></div>
+        <div class="hstat"><div class="hstat-n" data-t="15">0+</div><div class="hstat-l">Expert Practitioners</div></div>
+      </div>
+    </div>
+
+    <!-- Floating terminal -->
+    <div class="hero-card">
+      <div class="card-header">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <span class="card-title">vapt_scan.py — HackRace Engine</span>
+      </div>
+      <div class="card-body">
+        <div class="scan-bar"></div>
+        <div class="tl"><span class="tc"># Initializing HackRace VAPT Engine v2.4</span></div>
+        <div class="tl"><span class="tk">target</span> = <span class="ts">"client.domain.com"</span></div>
+        <div class="tl"><span class="tk">scope</span> = [<span class="ts">"web"</span>, <span class="ts">"api"</span>, <span class="ts">"infra"</span>]</div>
+        <div class="tl"><br><span class="tc"># Recon phase</span></div>
+        <div class="tl"><span class="tk">recon</span>.<span class="tn">run</span>() &nbsp;<span class="tg">→ ✓ 247 endpoints</span></div>
+        <div class="tl"><span class="tk">osint</span>.<span class="tn">fingerprint</span>() <span class="tg">→ ✓</span></div>
+        <div class="tl"><br><span class="tc"># Vulnerability assessment</span></div>
+        <div class="tl"><span class="tk">scanner</span>.<span class="tn">owasp_top10</span>() <span class="tg">→ ✓</span></div>
+        <div class="tl"><span class="tk">scanner</span>.<span class="tn">cve_lookup</span>() &nbsp;<span class="tg">→ ✓</span></div>
+        <div class="tl"><br><span style="color:#ff5c54;">■ CRITICAL</span> <span class="tn">3</span> &nbsp;<span class="tg">[PATCHED]</span></div>
+        <div class="tl"><span style="color:#ffb020;">■ HIGH</span> &nbsp;&nbsp;&nbsp;<span class="tn">7</span> &nbsp;<span class="tg">[PATCHED]</span></div>
+        <div class="tl"><span class="tg">✓ Report generated → hackrace_report.pdf</span><span class="cursor-bl"> ▮</span></div>
       </div>
     </div>
   </section>
 
-  <div class="services-strip">
-    <div class="strip-grid">
-      <div class="strip-item" onclick="showPage('vapt')">
-        <span class="strip-ico">🔐</span>
-        <h3>VAPT & Pen Testing</h3>
-        <p>Full-scope vulnerability assessment and penetration testing across web, mobile, API, and network infrastructure.</p>
-        <div class="arrow">→ EXPLORE VAPT</div>
-      </div>
-      <div class="strip-item" onclick="showPage('training')">
-        <span class="strip-ico">🎓</span>
-        <h3>Skill Training</h3>
-        <p>Hands-on cybersecurity, AI, web dev, and data analytics training delivered by working industry professionals.</p>
-        <div class="arrow">→ VIEW COURSES</div>
-      </div>
-      <div class="strip-item" onclick="showPage('corporate')">
-        <span class="strip-ico">🏢</span>
-        <h3>Corporate Training</h3>
-        <p>Custom upskilling programs for enterprise teams — on-site, virtual, or hybrid delivery aligned with your stack.</p>
-        <div class="arrow">→ CORPORATE PLANS</div>
-      </div>
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-track">
+      <div class="ticker-item">OWASP Top 10</div><div class="ticker-item">ISO 27001</div><div class="ticker-item">NIST CSF</div><div class="ticker-item">PTES</div><div class="ticker-item">CVSS v3.1</div><div class="ticker-item">GDPR</div><div class="ticker-item">POSH Act</div><div class="ticker-item">NAAC Aligned</div><div class="ticker-item">Burp Suite Pro</div><div class="ticker-item">Metasploit</div><div class="ticker-item">Kali Linux</div><div class="ticker-item">Splunk SIEM</div><div class="ticker-item">AWS Security</div><div class="ticker-item">Zero Day Research</div>
+      <div class="ticker-item">OWASP Top 10</div><div class="ticker-item">ISO 27001</div><div class="ticker-item">NIST CSF</div><div class="ticker-item">PTES</div><div class="ticker-item">CVSS v3.1</div><div class="ticker-item">GDPR</div><div class="ticker-item">POSH Act</div><div class="ticker-item">NAAC Aligned</div><div class="ticker-item">Burp Suite Pro</div><div class="ticker-item">Metasploit</div><div class="ticker-item">Kali Linux</div><div class="ticker-item">Splunk SIEM</div><div class="ticker-item">AWS Security</div><div class="ticker-item">Zero Day Research</div>
     </div>
   </div>
 
-  <div class="home-trust">
-    <div class="trust-inner">
-      <span class="trust-label">Trusted Methodologies & Compliance</span>
-      <div class="trust-logos">
-        <div class="trust-logo">OWASP TOP 10</div>
-        <div class="trust-logo">ISO 27001</div>
-        <div class="trust-logo">PTES</div>
-        <div class="trust-logo">NIST CSF</div>
-        <div class="trust-logo">CVSS v3.1</div>
-        <div class="trust-logo">GDPR</div>
-        <div class="trust-logo">POSH ACT</div>
-        <div class="trust-logo">NAAC ALIGNED</div>
+  <!-- SERVICES -->
+  <section class="services">
+    <div class="container">
+      <div class="services-header">
+        <div class="r">
+          <span class="label">What we do</span>
+          <h2 class="display">Security at every<br><em>layer.</em></h2>
+        </div>
+        <div class="r d1">
+          <p class="body-lg">From offensive security testing to upskilling your entire workforce — HackRace operates at the intersection of attack and defense.</p>
+        </div>
+      </div>
+      <div class="services-grid">
+        <div class="svc r" onclick="nav('vapt')"><div class="svc-n">01</div><span class="svc-icon">🔐</span><h3>VAPT & Pen Testing</h3><p>Full-scope vulnerability assessment across web, mobile, API, and network with CVSS-scored findings and PoC exploits.</p><span class="svc-link">→ EXPLORE</span></div>
+        <div class="svc r d1" onclick="nav('training')"><div class="svc-n">02</div><span class="svc-icon">🎓</span><h3>Skill Training</h3><p>Cybersecurity, AI/ML, web development, and data analytics — delivered by active practitioners, not just educators.</p><span class="svc-link">→ VIEW COURSES</span></div>
+        <div class="svc r d2" onclick="nav('corporate')"><div class="svc-n">03</div><span class="svc-icon">🏢</span><h3>Corporate Upskilling</h3><p>Custom team training programs designed around your tech stack, security posture, and business objectives.</p><span class="svc-link">→ GET QUOTE</span></div>
+        <div class="svc r d1" onclick="nav('vapt')"><div class="svc-n">04</div><span class="svc-icon">🎣</span><h3>Phishing Simulation</h3><p>Test your team with real-world phishing campaigns. See exactly who clicks. Free first demo — 10 employees, no commitment.</p><span class="svc-link">→ FREE DEMO</span></div>
+        <div class="svc r d2" onclick="nav('corporate')"><div class="svc-n">05</div><span class="svc-icon">⚖️</span><h3>POSH Compliance</h3><p>Legally required workplace training. We handle ICC documentation, awareness sessions, and annual compliance reporting.</p><span class="svc-link">→ LEARN MORE</span></div>
+        <div class="svc r d3" onclick="nav('contact')"><div class="svc-n">06</div><span class="svc-icon">☁️</span><h3>Cloud Security Audit</h3><p>AWS, Azure, GCP misconfigurations found. IAM privilege escalation, exposed buckets, cloud hardening roadmap.</p><span class="svc-link">→ GET AUDITED</span></div>
       </div>
     </div>
-  </div>
+  </section>
+
+  <!-- PROOF -->
+  <section class="proof">
+    <div class="container">
+      <div class="proof-grid">
+        <div class="r-l">
+          <span class="label">Why HackRace</span>
+          <span class="proof-number">30+</span>
+          <p class="body-lg" style="margin-top: 20px; max-width: 380px;">Companies have trusted us to find their vulnerabilities before attackers did.</p>
+          <div style="margin-top: 40px;">
+            <button class="btn-primary" onclick="nav('contact')">Get a Free Audit →</button>
+          </div>
+        </div>
+        <div class="r-r">
+          <span class="label">Our VAPT Process</span>
+          <div class="process-list">
+            <div class="process-step r d1"><div class="ps-n">01</div><div><div class="ps-t">Scoping & NDA</div><div class="ps-d">Define scope, rules of engagement, sign NDA, set timeline and communication protocol.</div></div></div>
+            <div class="process-step r d2"><div class="ps-n">02</div><div><div class="ps-t">Reconnaissance</div><div class="ps-d">OSINT, footprinting, attack surface mapping, technology and service fingerprinting.</div></div></div>
+            <div class="process-step r d3"><div class="ps-n">03</div><div><div class="ps-t">Vulnerability Discovery</div><div class="ps-d">Automated scanning combined with deep manual testing across all defined attack vectors.</div></div></div>
+            <div class="process-step r d4"><div class="ps-n">04</div><div><div class="ps-t">Exploitation & PoC</div><div class="ps-d">Controlled exploitation to confirm real-world impact. No data exfiltration, no disruption.</div></div></div>
+            <div class="process-step r d5"><div class="ps-n">05</div><div><div class="ps-t">Report Delivery</div><div class="ps-d">Executive summary + full technical report with CVSS scores, evidence, and fix roadmap.</div></div></div>
+            <div class="process-step r d6"><div class="ps-n">06</div><div><div class="ps-t">Free Retest</div><div class="ps-d">After remediation, we retest all patched items at zero additional cost.</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-inner r">
+      <span class="label" style="display:block;margin-bottom:16px;">Start today — it's free</span>
+      <div class="display" style="margin-bottom:20px;">First audit is always<br><em>on us.</em></div>
+      <p class="body-lg">No commitment. No pressure. We scope your engagement and deliver a custom quote within 24 hours.</p>
+      <div class="cta-btns" style="margin-top:36px;">
+        <button class="btn-primary" onclick="nav('contact')">Schedule Free Audit →</button>
+        <button class="btn-outline" onclick="modal('brochure')">Download Brochure</button>
+      </div>
+    </div>
+  </section>
 </div>
 
-<!-- ============ VAPT PAGE ============ -->
+<!-- ════ VAPT PAGE ════ -->
 <div class="page" id="page-vapt">
-  <section class="vapt-hero">
-    <div class="vapt-hero-inner">
-      <div>
-        <div class="vapt-tag">ENTERPRISE SECURITY</div>
-        <h2 class="sec-h">Vulnerability Assessment<br>&amp; <span style="color:var(--red)">Penetration Testing</span></h2>
-        <p class="sec-sub">We find what attackers find — before they exploit it. Our VAPT engagements deliver full-scope security assessment with CVSS-scored findings, proof-of-concept exploits, and a prioritised remediation roadmap.</p>
-        <div style="display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;">
-          <button class="btn-red" onclick="openModal('brochure')">📄 Download VAPT Report Sample</button>
-          <button class="btn-ghost" onclick="showPage('contact')">Get Free Audit →</button>
-        </div>
-      </div>
-      <div class="vapt-visual">
-        <div class="vapt-scan"></div>
-        <span style="color:var(--muted);font-size:11px;font-family:'JetBrains Mono',monospace;">hackrace_vapt_engine.py</span><br><br>
-        <span class="v-cmt"># HackRace VAPT Engine v2.0</span><br>
-        <span class="v-key">target</span> = <span class="v-str">"client.domain.in"</span><br>
-        <span class="v-key">scope</span> = [<span class="v-str">"web"</span>, <span class="v-str">"api"</span>, <span class="v-str">"network"</span>]<br><br>
-        <span class="v-cmt"># Phase 1: Reconnaissance</span><br>
-        <span class="v-key">recon</span>.<span style="color:#79c0ff;">run</span>() <span class="v-cmt">→ ✓ 247 endpoints</span><br><br>
-        <span class="v-cmt"># Phase 2: Vulnerability Scan</span><br>
-        <span class="v-key">scanner</span>.<span style="color:#79c0ff;">owasp_check</span>() <span class="v-cmt">→ ✓</span><br>
-        <span class="v-key">scanner</span>.<span style="color:#79c0ff;">cve_lookup</span>() <span class="v-cmt">→ ✓</span><br><br>
-        <span class="v-cmt"># Phase 3: Report</span><br>
-        <span style="color:#22c55e;">■ CRITICAL:</span> <span class="v-num">3</span> <span class="v-str">[PATCHED]</span><br>
-        <span style="color:#f59e0b;">■ HIGH:</span> <span class="v-num">7</span> &nbsp;<span class="v-str">[PATCHED]</span><br>
-        <span style="color:#60a5fa;">■ MEDIUM:</span> <span class="v-num">12</span> <span class="v-str">[MITIGATED]</span><br>
-        <span class="v-cmt"># Report → hackrace_report.pdf ✓</span>
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="container">
+      <span class="label">Enterprise Security</span>
+      <h2 class="display r" style="max-width:800px;">Vulnerability Assessment<br>&amp; <em>Penetration Testing</em></h2>
+      <p class="body-lg r d1" style="max-width:580px;margin:24px 0 36px;">We find what attackers find — before they exploit it. Full-scope security assessment with CVSS-scored findings, proof-of-concept exploits, and a prioritised remediation roadmap.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;" class="r d2">
+        <button class="btn-primary" onclick="modal('brochure')">Download VAPT Sample Report</button>
+        <button class="btn-outline" onclick="nav('contact')">Get Free Audit →</button>
       </div>
     </div>
   </section>
 
-  <section class="vuln-section">
-    <div class="vuln-inner">
-      <span class="sec-label">What We Find</span>
-      <h2 class="sec-h">Vulnerability Classes We <span style="color:var(--red)">Uncover</span></h2>
-      <p class="sec-sub">Our team identifies all OWASP Top 10 vulnerabilities and beyond — from injection flaws to broken authentication, misconfigurations, and zero-days.</p>
+  <section style="padding:80px 0;">
+    <div class="container">
+      <span class="label r">What we find</span>
+      <h3 class="display r d1" style="margin-bottom:8px;">Vulnerability classes<br>we <em>uncover.</em></h3>
+      <p class="body-md r d2" style="max-width:560px;margin-bottom:0;">All OWASP Top 10 vulnerabilities and beyond — from injection flaws to zero-days.</p>
       <div class="vuln-grid">
-        <div class="vuln-card"><span class="vuln-sev sev-crit">CRITICAL</span><span class="vuln-icon">💉</span><h3>SQL Injection</h3><p>Attacker-controlled SQL queries that expose, modify, or delete database contents. Leads to full data breach.</p><div class="vuln-tags"><span class="vtag">OWASP A03</span><span class="vtag">BLIND SQLi</span><span class="vtag">TIME-BASED</span></div></div>
-        <div class="vuln-card"><span class="vuln-sev sev-crit">CRITICAL</span><span class="vuln-icon">💀</span><h3>Remote Code Execution</h3><p>Attacker executes arbitrary code on your server. Complete system compromise, data exfiltration, backdoor installation.</p><div class="vuln-tags"><span class="vtag">OWASP A03</span><span class="vtag">DESERIALIZATION</span><span class="vtag">FILE UPLOAD</span></div></div>
-        <div class="vuln-card"><span class="vuln-sev sev-high">HIGH</span><span class="vuln-icon">🔑</span><h3>Broken Authentication</h3><p>Weak session management, credential stuffing vulnerabilities, insecure password storage, and flawed 2FA bypass chains.</p><div class="vuln-tags"><span class="vtag">OWASP A07</span><span class="vtag">SESSION</span><span class="vtag">JWT FLAWS</span></div></div>
-        <div class="vuln-card"><span class="vuln-sev sev-high">HIGH</span><span class="vuln-icon">🌐</span><h3>Cross-Site Scripting (XSS)</h3><p>Reflected, stored, and DOM-based XSS enabling session hijacking, credential theft, and malicious redirects.</p><div class="vuln-tags"><span class="vtag">OWASP A03</span><span class="vtag">STORED</span><span class="vtag">REFLECTED</span><span class="vtag">DOM</span></div></div>
-        <div class="vuln-card"><span class="vuln-sev sev-high">HIGH</span><span class="vuln-icon">🔄</span><h3>SSRF / XXE</h3><p>Server-side request forgery and XML external entity attacks used to access internal systems and cloud metadata.</p><div class="vuln-tags"><span class="vtag">OWASP A10</span><span class="vtag">AWS META</span><span class="vtag">INTERNAL</span></div></div>
-        <div class="vuln-card"><span class="vuln-sev sev-med">MEDIUM</span><span class="vuln-icon">⚙️</span><h3>Security Misconfiguration</h3><p>Default credentials, exposed admin panels, verbose error messages, open cloud storage buckets, missing security headers.</p><div class="vuln-tags"><span class="vtag">OWASP A05</span><span class="vtag">HEADERS</span><span class="vtag">CLOUD</span></div></div>
-        <div class="vuln-card"><span class="vuln-sev sev-crit">CRITICAL</span><span class="vuln-icon">📲</span><h3>Insecure Direct Object Reference</h3><p>Parameter manipulation to access other users' data. Common in APIs, file downloads, and account management systems.</p><div class="vuln-tags"><span class="vtag">OWASP A01</span><span class="vtag">IDOR</span><span class="vtag">API</span></div></div>
-        <div class="vuln-card"><span class="vuln-sev sev-high">HIGH</span><span class="vuln-icon">📱</span><h3>Mobile App Vulnerabilities</h3><p>Insecure data storage, improper platform usage, weak cryptography, and insecure communication in Android &amp; iOS apps.</p><div class="vuln-tags"><span class="vtag">MASVS</span><span class="vtag">ANDROID</span><span class="vtag">iOS</span></div></div>
-        <div class="vuln-card"><span class="vuln-sev sev-med">MEDIUM</span><span class="vuln-icon">🌩️</span><h3>Cloud &amp; API Security</h3><p>Misconfigured IAM roles, overly permissive API keys, exposed endpoints, insufficient rate limiting, and broken object-level auth.</p><div class="vuln-tags"><span class="vtag">AWS</span><span class="vtag">REST API</span><span class="vtag">GRAPHQL</span></div></div>
+        <div class="vc r"><span class="vc-sev vc-crit">CRITICAL</span><span class="vc-icon">💉</span><h3>SQL Injection</h3><p>Attacker-controlled queries exposing or destroying your entire database. Leads to full data breach.</p><div class="vc-tags"><span class="vtag">OWASP A03</span><span class="vtag">BLIND SQLi</span><span class="vtag">TIME-BASED</span></div></div>
+        <div class="vc r d1"><span class="vc-sev vc-crit">CRITICAL</span><span class="vc-icon">💀</span><h3>Remote Code Execution</h3><p>Arbitrary code execution on your server. Complete compromise, data exfiltration, backdoor installation.</p><div class="vc-tags"><span class="vtag">OWASP A03</span><span class="vtag">DESERIALIZATION</span><span class="vtag">FILE UPLOAD</span></div></div>
+        <div class="vc r d2"><span class="vc-sev vc-high">HIGH</span><span class="vc-icon">🔑</span><h3>Broken Authentication</h3><p>Weak sessions, credential stuffing, insecure password storage, and flawed 2FA bypass chains.</p><div class="vc-tags"><span class="vtag">OWASP A07</span><span class="vtag">SESSION</span><span class="vtag">JWT FLAWS</span></div></div>
+        <div class="vc r d1"><span class="vc-sev vc-high">HIGH</span><span class="vc-icon">🌐</span><h3>Cross-Site Scripting (XSS)</h3><p>Reflected, stored, and DOM-based XSS enabling session hijacking and credential theft.</p><div class="vc-tags"><span class="vtag">OWASP A03</span><span class="vtag">STORED</span><span class="vtag">REFLECTED</span></div></div>
+        <div class="vc r d2"><span class="vc-sev vc-crit">CRITICAL</span><span class="vc-icon">📲</span><h3>IDOR</h3><p>Parameter manipulation to access other users' data. Common in APIs and account management.</p><div class="vc-tags"><span class="vtag">OWASP A01</span><span class="vtag">IDOR</span><span class="vtag">API</span></div></div>
+        <div class="vc r d3"><span class="vc-sev vc-high">HIGH</span><span class="vc-icon">🔄</span><h3>SSRF / XXE</h3><p>Access internal systems and cloud metadata via server-side request forgery and XML entity attacks.</p><div class="vc-tags"><span class="vtag">OWASP A10</span><span class="vtag">AWS META</span><span class="vtag">INTERNAL</span></div></div>
+        <div class="vc r d2"><span class="vc-sev vc-high">HIGH</span><span class="vc-icon">📱</span><h3>Mobile App Vulnerabilities</h3><p>Insecure data storage, improper platform usage, and weak cryptography in Android & iOS apps.</p><div class="vc-tags"><span class="vtag">MASVS</span><span class="vtag">ANDROID</span><span class="vtag">iOS</span></div></div>
+        <div class="vc r d3"><span class="vc-sev vc-med">MEDIUM</span><span class="vc-icon">⚙️</span><h3>Security Misconfiguration</h3><p>Default creds, exposed admin panels, verbose errors, open cloud buckets, missing security headers.</p><div class="vc-tags"><span class="vtag">OWASP A05</span><span class="vtag">HEADERS</span><span class="vtag">CLOUD</span></div></div>
+        <div class="vc r d4"><span class="vc-sev vc-med">MEDIUM</span><span class="vc-icon">🌩️</span><h3>Cloud & API Security</h3><p>Misconfigured IAM, exposed endpoints, insufficient rate limiting, broken object-level auth.</p><div class="vc-tags"><span class="vtag">AWS</span><span class="vtag">REST API</span><span class="vtag">GRAPHQL</span></div></div>
       </div>
     </div>
   </section>
 
-  <section class="why-vapt">
-    <div class="why-inner">
-      <div>
-        <span class="sec-label">Why Connect With Us</span>
-        <h2 class="sec-h">Why Choose HackRace <span style="color:var(--red)">for VAPT?</span></h2>
-        <div class="why-list">
-          <div class="why-item"><div class="why-ico">⚡</div><div><h4>Real Practitioners, Not Scanners</h4><p>Our team manually tests every engagement. We don't just run automated tools — we think like real attackers to find what scanners miss.</p></div></div>
-          <div class="why-item"><div class="why-ico">📋</div><div><h4>Detailed, Actionable Reports</h4><p>Every finding comes with CVSS score, proof-of-concept exploit, business impact explanation, and step-by-step remediation guidance.</p></div></div>
-          <div class="why-item"><div class="why-ico">🔁</div><div><h4>Free Re-testing Included</h4><p>After remediation, we re-test all fixed vulnerabilities at no additional cost to verify proper patches were applied.</p></div></div>
-          <div class="why-item"><div class="why-ico">🔒</div><div><h4>Strict NDAs &amp; Confidentiality</h4><p>All engagements operate under signed NDA. Your data, infrastructure details, and findings are never shared.</p></div></div>
-        </div>
-      </div>
-      <div>
-        <div class="process-flow">
-          <div style="margin-bottom:24px;"><span class="sec-label">Our VAPT Process</span></div>
-          <div class="process-step"><div class="ps-num">1</div><div><div class="ps-t">Scoping &amp; NDA</div><div class="ps-d">Define target scope, rules of engagement, sign NDA, set timeline.</div></div></div>
-          <div class="process-step"><div class="ps-num">2</div><div><div class="ps-t">Reconnaissance</div><div class="ps-d">OSINT, footprinting, attack surface mapping, technology fingerprinting.</div></div></div>
-          <div class="process-step"><div class="ps-num">3</div><div><div class="ps-t">Vulnerability Discovery</div><div class="ps-d">Automated scanning + manual testing across all defined attack vectors.</div></div></div>
-          <div class="process-step"><div class="ps-num">4</div><div><div class="ps-t">Exploitation &amp; PoC</div><div class="ps-d">Controlled exploitation to confirm impact. No data exfiltration, no damage.</div></div></div>
-          <div class="process-step"><div class="ps-num">5</div><div><div class="ps-t">Report Delivery</div><div class="ps-d">Executive summary + technical report with CVSS scores, PoC, and fix roadmap.</div></div></div>
-          <div class="process-step" style="margin-bottom:0;"><div class="ps-num">6</div><div><div class="ps-t">Remediation Support + Retest</div><div class="ps-d">Developer walkthrough, fix support, and free retest of all patched items.</div></div></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="vapt-cta">
-    <div class="vapt-cta-inner">
-      <span class="sec-label text-c" style="display:block;text-align:center;">GET STARTED</span>
-      <h2>Ready to find your <span style="color:var(--red)">vulnerabilities?</span></h2>
-      <p>First consultation is always free. We'll scope your engagement and provide a custom quote within 24 hours.</p>
-      <div class="cta-btns">
-        <button class="btn-red" onclick="showPage('contact')">Schedule Free Audit →</button>
-        <button class="btn-ghost" onclick="openModal('brochure')">📄 Download Brochure</button>
+  <section class="cta-section">
+    <div class="cta-inner r">
+      <span class="label" style="display:block;margin-bottom:16px;">Start today</span>
+      <div class="display" style="margin-bottom:20px;">Ready to find your <em>vulnerabilities?</em></div>
+      <p class="body-lg">First consultation free. Custom quote within 24 hours.</p>
+      <div class="cta-btns" style="margin-top:36px;">
+        <button class="btn-primary" onclick="nav('contact')">Schedule Free Audit →</button>
+        <button class="btn-outline" onclick="modal('brochure')">Download Brochure</button>
       </div>
     </div>
   </section>
 </div>
 
-<!-- ============ TRAINING PAGE ============ -->
+<!-- ════ TRAINING PAGE ════ -->
 <div class="page" id="page-training">
-  <section class="training-hero">
-    <div class="training-hero-inner">
-      <span class="sec-label">Skill Training</span>
-      <h2 class="sec-h">Real Skills.<br><span style="color:var(--red)">Real Trainers.</span></h2>
-      <p class="sec-sub" style="margin-bottom:28px;">Our training programs are delivered by working professionals — people who use these skills daily, not just educators who teach theory. Hands-on, project-based, and career-focused.</p>
-      <div style="display:flex;gap:12px;flex-wrap:wrap;">
-        <button class="btn-red" onclick="openModal('brochure')">📥 Download Training Brochure</button>
-        <button class="btn-ghost" onclick="showPage('corporate')">Corporate Training →</button>
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="container">
+      <span class="label">Skill Training</span>
+      <h2 class="display r" style="max-width:700px;">Real skills.<br><em>Real trainers.</em></h2>
+      <p class="body-lg r d1" style="max-width:560px;margin:24px 0 36px;">Delivered by practitioners — people who use these skills daily in their actual work. Hands-on, project-based, and career-focused.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;" class="r d2">
+        <button class="btn-primary" onclick="modal('brochure')">Download Training Brochure</button>
+        <button class="btn-outline" onclick="nav('corporate')">Corporate Training →</button>
       </div>
     </div>
   </section>
 
-  <section class="courses-section">
-    <div class="courses-inner">
-      <span class="sec-label">All Courses</span>
-      <h2 class="sec-h">Choose Your <span style="color:var(--red)">Learning Path</span></h2>
-      <div class="course-filters">
-        <button class="cf active" onclick="filterCourses('all',this)">All</button>
-        <button class="cf" onclick="filterCourses('security',this)">Cybersecurity</button>
-        <button class="cf" onclick="filterCourses('dev',this)">Development</button>
-        <button class="cf" onclick="filterCourses('data',this)">Data & AI</button>
-        <button class="cf" onclick="filterCourses('soft',this)">Soft Skills</button>
+  <section style="padding:80px 0;">
+    <div class="container">
+      <span class="label">All Courses</span>
+      <h3 class="display r" style="margin-bottom:0;">Choose your<br><em>learning path.</em></h3>
+      <div class="cf-bar">
+        <button class="cf on" onclick="filterC('all',this)">All</button>
+        <button class="cf" onclick="filterC('security',this)">Cybersecurity</button>
+        <button class="cf" onclick="filterC('dev',this)">Development</button>
+        <button class="cf" onclick="filterC('data',this)">Data & AI</button>
+        <button class="cf" onclick="filterC('soft',this)">Soft Skills</button>
       </div>
-      <div class="courses-grid" id="coursesGrid">
-        <!-- Cards injected by JS -->
-      </div>
+      <div class="courses-grid" id="coursesGrid"></div>
     </div>
   </section>
 
-  <section class="calendar-section">
-    <div class="cal-inner">
-      <span class="sec-label">Upcoming Sessions</span>
-      <h2 class="sec-h">Training <span style="color:var(--red)">Calendar 2025</span></h2>
-      <p class="sec-sub">Book your seat early — our sessions fill up fast. All workshops are delivered by industry professionals.</p>
+  <section style="padding:80px 0;background:var(--ink2);">
+    <div class="container">
+      <span class="label">Upcoming Sessions</span>
+      <h3 class="display r" style="margin-bottom:16px;">Training <em>calendar.</em></h3>
+      <p class="body-md r d1" style="max-width:520px;margin-bottom:0;">All workshops delivered by industry professionals. Sessions fill quickly.</p>
       <div class="cal-grid">
-        <div class="cal-event"><div class="cal-date"><div class="cal-mon">MAY</div><div class="cal-day">12</div></div><div class="cal-info"><h4>Ethical Hacking & VAPT Bootcamp</h4><p>Intensive 3-day hands-on bootcamp covering web app hacking, network pentesting, and report writing. Tools: Burp Suite, Nmap, Metasploit.</p><div class="cal-tags"><span class="ctag">3 DAYS</span><span class="ctag">HANDS-ON</span><span class="ctag">CERTIFICATE</span></div><span class="cal-mode">🌐 Virtual + Recorded Access</span></div></div>
-        <div class="cal-event"><div class="cal-date"><div class="cal-mon">MAY</div><div class="cal-day">20</div></div><div class="cal-info"><h4>Python for Cybersecurity</h4><p>Write your own security tools — port scanners, password crackers, web scrapers, and automation scripts. Beginner-friendly.</p><div class="cal-tags"><span class="ctag">2 DAYS</span><span class="ctag">BEGINNER</span><span class="ctag">LAB INCLUDED</span></div><span class="cal-mode">🌐 Virtual</span></div></div>
-        <div class="cal-event"><div class="cal-date"><div class="cal-mon">JUN</div><div class="cal-day">05</div></div><div class="cal-info"><h4>AI & Machine Learning Foundations</h4><p>Practical AI/ML workshop covering supervised learning, neural networks, and real-world project deployment using Python.</p><div class="cal-tags"><span class="ctag">2 DAYS</span><span class="ctag">ALL LEVELS</span><span class="ctag">PROJECT INCLUDED</span></div><span class="cal-mode">📍 Hybrid (Surat + Virtual)</span></div></div>
-        <div class="cal-event"><div class="cal-date"><div class="cal-mon">JUN</div><div class="cal-day">15</div></div><div class="cal-info"><h4>SOC Analyst Training</h4><p>Security Operations Center fundamentals — SIEM tools, log analysis, alert triage, incident response playbooks using Splunk.</p><div class="cal-tags"><span class="ctag">5 DAYS</span><span class="ctag">ADVANCED</span><span class="ctag">SPLUNK LAB</span></div><span class="cal-mode">🌐 Virtual</span></div></div>
-        <div class="cal-event"><div class="cal-date"><div class="cal-mon">JUN</div><div class="cal-day">28</div></div><div class="cal-info"><h4>Bug Bounty Masterclass</h4><p>Learn how to find real bugs on HackerOne and Bugcrowd — methodology, tools, report writing, and monetisation strategies.</p><div class="cal-tags"><span class="ctag">1 DAY</span><span class="ctag">INTERMEDIATE</span><span class="ctag">LIVE HUNTING</span></div><span class="cal-mode">🌐 Virtual</span></div></div>
-        <div class="cal-event"><div class="cal-date"><div class="cal-mon">JUL</div><div class="cal-day">10</div></div><div class="cal-info"><h4>Full Stack Web Development</h4><p>HTML → React → Node.js → MongoDB full-stack track. Build and deploy a complete web application from scratch in 5 days.</p><div class="cal-tags"><span class="ctag">5 DAYS</span><span class="ctag">BEGINNER-INT</span><span class="ctag">PROJECT</span></div><span class="cal-mode">📍 On-site + Virtual Option</span></div></div>
-        <div class="cal-event"><div class="cal-date"><div class="cal-mon">JUL</div><div class="cal-day">22</div></div><div class="cal-info"><h4>POSH Compliance Workshop</h4><p>Mandatory POSH awareness session for HR teams and employees. Covers legal framework, ICC setup, and complaint procedures.</p><div class="cal-tags"><span class="ctag">HALF DAY</span><span class="ctag">ALL STAFF</span><span class="ctag">CERTIFICATE</span></div><span class="cal-mode">📍 On-site (any city)</span></div></div>
-        <div class="cal-event"><div class="cal-date"><div class="cal-mon">AUG</div><div class="cal-day">04</div></div><div class="cal-info"><h4>Cloud Security & AWS Pentesting</h4><p>AWS misconfigurations, IAM privilege escalation, S3 bucket attacks, and cloud security best practices with live lab environment.</p><div class="cal-tags"><span class="ctag">2 DAYS</span><span class="ctag">ADVANCED</span><span class="ctag">AWS LAB</span></div><span class="cal-mode">🌐 Virtual</span></div></div>
+        <div class="cal-ev r"><div class="cal-date"><div class="cal-mon">MAY</div><div class="cal-day">12</div></div><div class="cal-info"><h4>Ethical Hacking & VAPT Bootcamp</h4><p>3-day intensive covering web hacking, network pentesting, and report writing.</p><div class="cal-tags"><span class="ctag">3 DAYS</span><span class="ctag">HANDS-ON</span><span class="ctag">CERTIFICATE</span></div><span class="cal-mode">🌐 Virtual + Recorded Access</span></div></div>
+        <div class="cal-ev r d1"><div class="cal-date"><div class="cal-mon">MAY</div><div class="cal-day">20</div></div><div class="cal-info"><h4>Python for Cybersecurity</h4><p>Write your own security tools — port scanners, scrapers, automation scripts.</p><div class="cal-tags"><span class="ctag">2 DAYS</span><span class="ctag">BEGINNER</span><span class="ctag">LAB</span></div><span class="cal-mode">🌐 Virtual</span></div></div>
+        <div class="cal-ev r d1"><div class="cal-date"><div class="cal-mon">JUN</div><div class="cal-day">05</div></div><div class="cal-info"><h4>AI & Machine Learning Foundations</h4><p>Practical AI/ML covering supervised learning, neural networks, and project deployment.</p><div class="cal-tags"><span class="ctag">2 DAYS</span><span class="ctag">ALL LEVELS</span><span class="ctag">PROJECT</span></div><span class="cal-mode">📍 Hybrid</span></div></div>
+        <div class="cal-ev r d2"><div class="cal-date"><div class="cal-mon">JUN</div><div class="cal-day">15</div></div><div class="cal-info"><h4>SOC Analyst Training</h4><p>SOC fundamentals — SIEM, alert triage, incident response using Splunk.</p><div class="cal-tags"><span class="ctag">5 DAYS</span><span class="ctag">ADVANCED</span><span class="ctag">SPLUNK LAB</span></div><span class="cal-mode">🌐 Virtual</span></div></div>
+        <div class="cal-ev r d2"><div class="cal-date"><div class="cal-mon">JUN</div><div class="cal-day">28</div></div><div class="cal-info"><h4>Bug Bounty Masterclass</h4><p>Find real bugs on HackerOne and Bugcrowd. Methodology, tools, and live hunting.</p><div class="cal-tags"><span class="ctag">1 DAY</span><span class="ctag">INTERMEDIATE</span><span class="ctag">LIVE HUNT</span></div><span class="cal-mode">🌐 Virtual</span></div></div>
+        <div class="cal-ev r d3"><div class="cal-date"><div class="cal-mon">JUL</div><div class="cal-day">22</div></div><div class="cal-info"><h4>POSH Compliance Workshop</h4><p>Legally mandatory workplace training. ICC setup, complaint procedures, certificates.</p><div class="cal-tags"><span class="ctag">HALF DAY</span><span class="ctag">ALL STAFF</span><span class="ctag">CERTIFICATE</span></div><span class="cal-mode">📍 On-site (any city)</span></div></div>
       </div>
     </div>
   </section>
 </div>
 
-<!-- ============ CORPORATE PAGE ============ -->
+<!-- ════ CORPORATE PAGE ════ -->
 <div class="page" id="page-corporate">
-  <section class="corp-hero">
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
     <div class="container">
-      <span class="sec-label">Enterprise Solutions</span>
-      <h2 class="sec-h">Corporate Training &amp;<br><span style="color:var(--red)">Upskilling Programs</span></h2>
-      <p class="sec-sub" style="margin-bottom:28px;">Custom-designed training for your entire team. On-site, virtual, or hybrid — aligned with your technology stack, security posture, and business objectives.</p>
-      <div style="display:flex;gap:12px;flex-wrap:wrap;">
-        <button class="btn-red" onclick="showPage('contact')">Request Custom Proposal →</button>
-        <button class="btn-ghost" onclick="openModal('brochure')">Download Corporate Deck</button>
+      <span class="label">Enterprise Solutions</span>
+      <h2 class="display r" style="max-width:760px;">Corporate training<br>&amp; <em>upskilling programs.</em></h2>
+      <p class="body-lg r d1" style="max-width:560px;margin:24px 0 36px;">Custom programs for your entire team. On-site, virtual, or hybrid — designed around your stack, security posture, and business goals.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;" class="r d2">
+        <button class="btn-primary" onclick="nav('contact')">Request Proposal →</button>
+        <button class="btn-outline" onclick="modal('brochure')">Download Corporate Deck</button>
       </div>
     </div>
   </section>
 
-  <section class="corp-packages">
+  <section style="padding:80px 0;">
     <div class="container">
-      <span class="sec-label">Packages</span>
-      <h2 class="sec-h text-c">Training <span style="color:var(--red)">Packages</span></h2>
+      <span class="label">Packages</span>
+      <h3 class="display r" style="margin-bottom:0;text-align:center;">Training <em>packages.</em></h3>
       <div class="pkg-grid">
-        <div class="pkg-card">
-          <div class="pkg-name">Starter</div>
-          <div class="pkg-title">Foundation Pack</div>
-          <ul class="pkg-features">
+        <div class="pkg r">
+          <div class="pkg-tier">Starter</div>
+          <div class="pkg-name">Foundation Pack</div>
+          <ul>
             <li>1 custom workshop (1–2 days)</li>
             <li>Up to 30 participants</li>
             <li>Pre-session needs analysis</li>
@@ -591,94 +903,95 @@ footer{background:var(--dark2);border-top:1px solid var(--bdr);padding:64px 5% 2
             <li>Post-session feedback report</li>
             <li>Virtual or on-site delivery</li>
           </ul>
-          <button class="btn-ghost" style="width:100%;" onclick="showPage('contact')">Get Quote →</button>
+          <button class="btn-outline" style="width:100%;" onclick="nav('contact')">Get Quote →</button>
         </div>
-        <div class="pkg-card featured">
-          <div class="pkg-badge">MOST POPULAR</div>
-          <div class="pkg-name">Growth</div>
-          <div class="pkg-title">Professional Pack</div>
-          <ul class="pkg-features">
+        <div class="pkg featured r d1">
+          <div class="pkg-badge"></div>
+          <div class="pkg-badge-label">MOST POPULAR</div>
+          <div class="pkg-tier">Growth</div>
+          <div class="pkg-name">Professional Pack</div>
+          <ul>
             <li>3 workshops (customised topics)</li>
             <li>Up to 100 participants</li>
             <li>Dedicated trainer for your team</li>
             <li>NAAC-aligned documentation</li>
-            <li>Pre &amp; post assessment</li>
+            <li>Pre &amp; post assessment included</li>
             <li>Placement support included</li>
             <li>6-month support access</li>
           </ul>
-          <button class="btn-red" style="width:100%;" onclick="showPage('contact')">Get Quote →</button>
+          <button class="btn-primary" style="width:100%;" onclick="nav('contact')">Get Quote →</button>
         </div>
-        <div class="pkg-card">
-          <div class="pkg-name">Enterprise</div>
-          <div class="pkg-title">Annual Partner</div>
-          <ul class="pkg-features">
+        <div class="pkg r d2">
+          <div class="pkg-tier">Enterprise</div>
+          <div class="pkg-name">Annual Partner</div>
+          <ul>
             <li>Unlimited workshop requests</li>
             <li>Unlimited participants</li>
             <li>Dedicated account manager</li>
             <li>Monthly security briefings</li>
-            <li>VAPT discount (30%) included</li>
+            <li>30% VAPT discount included</li>
             <li>POSH annual compliance</li>
-            <li>Priority scheduling</li>
-            <li>Custom LMS access</li>
+            <li>Priority scheduling + custom LMS</li>
           </ul>
-          <button class="btn-ghost" style="width:100%;" onclick="showPage('contact')">Talk to Sales →</button>
+          <button class="btn-outline" style="width:100%;" onclick="nav('contact')">Talk to Sales →</button>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="corp-process" style="padding:80px 5%;background:var(--dark);">
-    <div class="cp-inner">
-      <span class="sec-label">Process</span>
-      <h2 class="sec-h">How It Works</h2>
+  <section style="padding:80px 0;background:var(--ink2);">
+    <div class="container">
+      <span class="label">Process</span>
+      <h3 class="display r" style="margin-bottom:0;">How it <em>works.</em></h3>
       <div class="cp-steps">
-        <div class="cp-step" data-n="01"><div class="cp-label">STEP 01</div><h4>Discovery Call</h4><p>We understand your team's current skill level, goals, timeline, and preferred delivery mode.</p></div>
-        <div class="cp-step" data-n="02"><div class="cp-label">STEP 02</div><h4>Custom Curriculum</h4><p>Our trainers design a program tailored specifically to your technology stack and learning objectives.</p></div>
-        <div class="cp-step" data-n="03"><div class="cp-label">STEP 03</div><h4>Delivery</h4><p>Sessions delivered on-site, virtually, or hybrid. Includes labs, projects, and Q&amp;A with live trainers.</p></div>
-        <div class="cp-step" data-n="04"><div class="cp-label">STEP 04</div><h4>Report &amp; Followup</h4><p>Performance report, certificates, and 30-day post-session support access for all participants.</p></div>
+        <div class="cp-step r"><div class="cp-step-bg">01</div><div class="cp-label">STEP 01</div><h4>Discovery Call</h4><p>We understand your team's skill gaps, goals, timeline, and delivery preference.</p></div>
+        <div class="cp-step r d1"><div class="cp-step-bg">02</div><div class="cp-label">STEP 02</div><h4>Custom Curriculum</h4><p>Trainers design a program around your actual technology stack and objectives.</p></div>
+        <div class="cp-step r d2"><div class="cp-step-bg">03</div><div class="cp-label">STEP 03</div><h4>Delivery</h4><p>On-site, virtual, or hybrid sessions with live labs, projects, and Q&amp;A.</p></div>
+        <div class="cp-step r d3"><div class="cp-step-bg">04</div><div class="cp-label">STEP 04</div><h4>Report & Followup</h4><p>Performance report, certificates, and 30-day post-session support for all participants.</p></div>
       </div>
     </div>
   </section>
 </div>
 
-<!-- ============ JOIN PAGE ============ -->
+<!-- ════ CAREERS PAGE ════ -->
 <div class="page" id="page-join">
-  <section class="join-hero">
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
     <div class="container">
-      <span class="sec-label">Careers & Opportunities</span>
-      <h2 class="sec-h">Join the <span style="color:var(--red)">HackRace Team</span></h2>
-      <p class="sec-sub">We're always looking for passionate practitioners — security researchers, trainers, developers, and sales professionals who want to build something real.</p>
+      <span class="label">Careers</span>
+      <h2 class="display r">Join the<br><em>HackRace team.</em></h2>
+      <p class="body-lg r d1" style="max-width:520px;margin-top:20px;">Security researchers, trainers, developers, and sales professionals. We're building something real — come build it with us.</p>
     </div>
   </section>
 
-  <section class="join-roles">
-    <div class="roles-inner">
-      <span class="sec-label">Open Roles</span>
-      <h2 class="sec-h">Current <span style="color:var(--red)">Openings</span></h2>
+  <section style="padding:80px 0;">
+    <div class="container">
+      <span class="label">Open Roles</span>
+      <h3 class="display r" style="margin-bottom:0;">Current <em>openings.</em></h3>
       <div class="roles-grid">
-        <div class="role-card"><span class="role-type">FULL-TIME / PART-TIME</span><h3>Security Researcher / Pentester</h3><p>Conduct VAPT engagements, write technical reports, develop PoC exploits, and mentor junior members. CEH, OSCP, or equivalent preferred.</p><div class="role-skills"><span class="rsk">BURP SUITE</span><span class="rsk">METASPLOIT</span><span class="rsk">OWASP</span><span class="rsk">REPORT WRITING</span><span class="rsk">PYTHON</span></div></div>
-        <div class="role-card"><span class="role-type">CONTRACT / FREELANCE</span><h3>Cybersecurity Trainer</h3><p>Deliver workshops on ethical hacking, VAPT, SOC operations, or cloud security to students and corporate teams. Active practice required.</p><div class="role-skills"><span class="rsk">TRAINING</span><span class="rsk">COMMUNICATION</span><span class="rsk">HANDS-ON</span><span class="rsk">CONTENT CREATION</span></div></div>
-        <div class="role-card"><span class="role-type">FULL-TIME</span><h3>Full Stack Developer</h3><p>Build security dashboards, automation tools, and client-facing platforms. Security-minded development practices essential.</p><div class="role-skills"><span class="rsk">REACT</span><span class="rsk">NODE.JS</span><span class="rsk">PYTHON</span><span class="rsk">AWS</span><span class="rsk">DOCKER</span></div></div>
-        <div class="role-card"><span class="role-type">FULL-TIME</span><h3>Business Development Executive</h3><p>Drive corporate training and VAPT deals. Build relationships with companies and institutions across India. Strong communication required.</p><div class="role-skills"><span class="rsk">B2B SALES</span><span class="rsk">IT INDUSTRY</span><span class="rsk">NEGOTIATION</span><span class="rsk">CRM</span></div></div>
-        <div class="role-card"><span class="role-type">INTERNSHIP</span><h3>Security Research Intern</h3><p>Learn under senior pentesters — assist in recon, scanning, and report writing. CEH studying or cybersecurity degree students preferred.</p><div class="role-skills"><span class="rsk">KALI LINUX</span><span class="rsk">NETWORKING</span><span class="rsk">LEARNING MINDSET</span></div></div>
-        <div class="role-card"><span class="role-type">FREELANCE</span><h3>AI / Data Analytics Trainer</h3><p>Conduct workshops on Python, AI/ML, data analytics, or GenAI for student and corporate batches. Practical project delivery required.</p><div class="role-skills"><span class="rsk">PYTHON</span><span class="rsk">TENSORFLOW</span><span class="rsk">PANDAS</span><span class="rsk">TEACHING</span></div></div>
+        <div class="rc r"><span class="rc-type">FULL-TIME / PART-TIME</span><h3>Security Researcher / Pentester</h3><p>Conduct VAPT engagements, write technical reports, develop PoC exploits, mentor juniors. CEH, OSCP preferred.</p><div class="rc-skills"><span class="rsk">BURP SUITE</span><span class="rsk">METASPLOIT</span><span class="rsk">OWASP</span><span class="rsk">PYTHON</span></div></div>
+        <div class="rc r d1"><span class="rc-type">CONTRACT / FREELANCE</span><h3>Cybersecurity Trainer</h3><p>Deliver workshops on ethical hacking, VAPT, SOC operations, or cloud security to students and corporate teams.</p><div class="rc-skills"><span class="rsk">TRAINING</span><span class="rsk">COMMUNICATION</span><span class="rsk">CONTENT</span></div></div>
+        <div class="rc r d1"><span class="rc-type">FULL-TIME</span><h3>Full Stack Developer</h3><p>Build security dashboards, automation tools, and client-facing platforms. Security-minded development essential.</p><div class="rc-skills"><span class="rsk">REACT</span><span class="rsk">NODE.JS</span><span class="rsk">PYTHON</span><span class="rsk">AWS</span></div></div>
+        <div class="rc r d2"><span class="rc-type">FULL-TIME</span><h3>Business Development Executive</h3><p>Drive corporate training and VAPT deals across India. Strong B2B communication required.</p><div class="rc-skills"><span class="rsk">B2B SALES</span><span class="rsk">IT INDUSTRY</span><span class="rsk">CRM</span></div></div>
+        <div class="rc r d2"><span class="rc-type">INTERNSHIP</span><h3>Security Research Intern</h3><p>Learn under senior pentesters — recon, scanning, and report writing. Cybersecurity degree preferred.</p><div class="rc-skills"><span class="rsk">KALI LINUX</span><span class="rsk">NETWORKING</span></div></div>
+        <div class="rc r d3"><span class="rc-type">FREELANCE</span><h3>AI / Data Analytics Trainer</h3><p>Conduct workshops on Python, AI/ML, data analytics for student and corporate batches.</p><div class="rc-skills"><span class="rsk">PYTHON</span><span class="rsk">TENSORFLOW</span><span class="rsk">PANDAS</span></div></div>
       </div>
     </div>
   </section>
 
-  <section class="join-form-section">
-    <div class="jf-inner">
-      <span class="sec-label">Apply Now</span>
-      <h2 class="sec-h">Send Your <span style="color:var(--red)">Application</span></h2>
-      <p class="sec-sub">Fill the form below and we'll get back to you within 48 hours. All applications are reviewed personally.</p>
-      <form class="join-form" id="joinForm" action="https://formspree.io/f/mwvwzbgz" method="POST">
-        <div class="fgrid">
+  <section style="padding:80px 0;background:var(--ink2);">
+    <div style="max-width:780px;margin:0 auto;padding:0 48px;">
+      <span class="label">Apply Now</span>
+      <h3 class="display r" style="margin-bottom:8px;">Send your <em>application.</em></h3>
+      <p class="body-md r d1" style="max-width:480px;margin-bottom:32px;">We review all applications personally and respond within 48 hours.</p>
+      <form class="form-wrap" id="joinForm" action="https://formspree.io/f/mwvwzbgz" method="POST">
+        <div class="fgrid2">
           <div class="fg"><label>Full Name *</label><input type="text" name="name" placeholder="Your full name" required></div>
-          <div class="fg"><label>Email *</label><input type="email" name="email" placeholder="your@email.com" required></div>
+          <div class="fg"><label>Email *</label><input type="email" name="email" placeholder="you@email.com" required></div>
         </div>
-        <div class="fgrid">
-          <div class="fg"><label>Phone</label><input type="tel" name="phone" placeholder="+91 00000 00000"></div>
-          <div class="fg"><label>Role Applying For *</label>
+        <div class="fgrid2">
+          <div class="fg"><label>Phone</label><input type="tel" name="phone" placeholder="+1 000 000 0000"></div>
+          <div class="fg"><label>Role *</label>
             <select name="role" required>
               <option value="">Select a role</option>
               <option>Security Researcher / Pentester</option>
@@ -691,172 +1004,176 @@ footer{background:var(--dark2);border-top:1px solid var(--bdr);padding:64px 5% 2
             </select>
           </div>
         </div>
-        <div class="fg" style="margin-bottom:16px;"><label>LinkedIn / Portfolio URL</label><input type="url" name="portfolio" placeholder="https://linkedin.com/in/yourprofile"></div>
-        <div class="fg" style="margin-bottom:16px;"><label>Why HackRace? Tell us about yourself *</label><textarea name="message" placeholder="Share your experience, why you want to join HackRace, and what you can bring to the team..." required></textarea></div>
-        <input type="hidden" name="_subject" value="🚀 New HackRace Job Application">
+        <div class="fg"><label>LinkedIn / Portfolio</label><input type="url" name="portfolio" placeholder="https://linkedin.com/in/yourprofile"></div>
+        <div class="fg"><label>Why HackRace? *</label><textarea name="message" placeholder="Share your experience and what you'd bring to the team..." required></textarea></div>
+        <input type="hidden" name="_subject" value="HackRace Job Application">
         <button type="submit" class="submit-btn">Submit Application →</button>
-        <p style="text-align:center;font-size:12px;color:var(--muted);margin-top:12px;">We respond to all applications within 48 hours.</p>
+        <p style="text-align:center;font-size:11.5px;color:var(--fog);margin-top:12px;">All applications reviewed within 48 hours.</p>
       </form>
     </div>
   </section>
 </div>
 
-<!-- ============ CONTACT PAGE ============ -->
+<!-- ════ CONTACT PAGE ════ -->
 <div class="page" id="page-contact">
-  <section class="contact-hero">
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
     <div class="container">
-      <span class="sec-label">Get In Touch</span>
-      <h2 class="sec-h">Let's Work <span style="color:var(--red)">Together</span></h2>
-      <p class="sec-sub">First security audit or training session is always free. No commitment, no pressure — just a conversation.</p>
+      <span class="label">Contact</span>
+      <h2 class="display r">Let's work<br><em>together.</em></h2>
+      <p class="body-lg r d1" style="max-width:500px;margin-top:20px;">First security audit or training session is always free. No commitment, no pressure — just a conversation.</p>
     </div>
   </section>
-  <section class="contact-body">
-    <div class="contact-inner" style="max-width:1160px;margin:0 auto;">
-      <div>
-        <span class="sec-label">Contact Info</span>
-        <h3 style="font-family:'Fraunces',serif;font-size:28px;font-weight:900;margin-bottom:20px;">Ready when<br><span style="color:var(--red)">you are.</span></h3>
-        <p style="color:var(--muted);font-size:14px;line-height:1.85;margin-bottom:28px;">Reach out via WhatsApp, email, or the form. We work with companies, institutions, and individuals across India — remotely and on-site.</p>
-        <div class="ct-info-block"><div class="ct-ico">📱</div><div><div class="ct-label">WhatsApp / Call</div><div class="ct-value"><a href="https://wa.me/918511565780">+91 85115 65780</a></div></div></div>
-        <div class="ct-info-block"><div class="ct-ico">📱</div><div><div class="ct-label">WhatsApp / Call</div><div class="ct-value"><a href="https://wa.me/917027181375">+91 70271 81375</a></div></div></div>
-        <div class="ct-info-block"><div class="ct-ico">📧</div><div><div class="ct-label">Email</div><div class="ct-value"><a href="mailto:hello@hackrace.in">hello@hackrace.in</a></div></div></div>
-        <div class="ct-info-block"><div class="ct-ico">🏢</div><div><div class="ct-label">Operations</div><div class="ct-value">Pan-India · Remote & On-site</div></div></div>
-        <div class="ct-info-block"><div class="ct-ico">⏰</div><div><div class="ct-label">Working Hours</div><div class="ct-value">Mon–Sat · 10:00 AM – 7:00 PM</div></div></div>
-        <a href="https://wa.me/918511565780?text=Hi%20HackRace!" target="_blank" class="btn-red" style="margin-top:20px;">💬 WhatsApp Now</a>
+  <section style="padding:0 0 100px;">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="r-l">
+          <span class="label">Reach us</span>
+          <h3 style="font-family:'Instrument Serif',serif;font-size:34px;font-weight:400;margin-bottom:24px;line-height:1.1;">Ready when<br><em style="color:var(--red)">you are.</em></h3>
+          <p class="body-md" style="margin-bottom:32px;max-width:380px;">We work with companies, institutions, and individuals worldwide — remotely and on-site. WhatsApp is fastest.</p>
+          <div class="ct-info-item"><div class="ct-ico">📱</div><div><div class="ct-lbl">WhatsApp / Call</div><div class="ct-val"><a href="https://wa.me/918511565780">+91 85115 65780</a></div></div></div>
+          <div class="ct-info-item"><div class="ct-ico">📱</div><div><div class="ct-lbl">WhatsApp / Call</div><div class="ct-val"><a href="https://wa.me/917027181375">+91 70271 81375</a></div></div></div>
+          <div class="ct-info-item"><div class="ct-ico">📧</div><div><div class="ct-lbl">Email</div><div class="ct-val"><a href="mailto:hello@hackrace.in">hello@hackrace.in</a></div></div></div>
+          <div class="ct-info-item"><div class="ct-ico">🌐</div><div><div class="ct-lbl">Operations</div><div class="ct-val">Global · Remote & On-site</div></div></div>
+          <div class="ct-info-item"><div class="ct-ico">⏰</div><div><div class="ct-lbl">Response Time</div><div class="ct-val">Within 24 hours · Mon–Sat</div></div></div>
+          <a href="https://wa.me/918511565780?text=Hi%20HackRace%2C%20I%27d%20like%20a%20free%20audit" target="_blank" class="btn-primary" style="margin-top:28px;">💬 Chat on WhatsApp</a>
+        </div>
+        <div class="r-r">
+          <form class="form-wrap" id="contactForm" action="https://formspree.io/f/mwvwzbgz" method="POST">
+            <div class="form-title">Send a message.</div>
+            <div class="form-sub">We reply to all inquiries within 24 hours. Free consultation, always.</div>
+            <div class="fgrid2">
+              <div class="fg"><label>Full Name *</label><input type="text" name="name" placeholder="Your name" required></div>
+              <div class="fg"><label>Email *</label><input type="email" name="email" placeholder="you@email.com" required></div>
+            </div>
+            <div class="fgrid2">
+              <div class="fg"><label>Phone</label><input type="tel" name="phone" placeholder="+1 000 000 0000"></div>
+              <div class="fg"><label>Service</label>
+                <select name="service">
+                  <option value="">What do you need?</option>
+                  <option>VAPT / Penetration Testing</option>
+                  <option>Phishing Simulation</option>
+                  <option>Cloud Security Audit</option>
+                  <option>Skill Training / Workshop</option>
+                  <option>Corporate Training</option>
+                  <option>POSH Compliance</option>
+                  <option>Placement Support</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="fg"><label>Message</label><textarea name="message" placeholder="Tell us about your requirements..."></textarea></div>
+            <input type="hidden" name="_subject" value="HackRace Inquiry">
+            <button type="submit" class="submit-btn">Send Message →</button>
+            <p style="text-align:center;font-size:11.5px;color:var(--fog);margin-top:12px;">🔒 Your information is never shared.</p>
+          </form>
+        </div>
       </div>
-      <form class="contact-form" id="contactForm" action="https://formspree.io/f/mwvwzbgz" method="POST">
-        <h4 style="font-family:'Fraunces',serif;font-size:20px;font-weight:900;margin-bottom:6px;">Send a Message</h4>
-        <p style="color:var(--muted);font-size:13px;margin-bottom:24px;">We reply to all inquiries within 24 hours.</p>
-        <div class="fgrid">
-          <div class="fg"><label>Full Name *</label><input type="text" name="name" placeholder="Your name" required></div>
-          <div class="fg"><label>Email *</label><input type="email" name="email" placeholder="your@email.com" required></div>
-        </div>
-        <div class="fgrid">
-          <div class="fg"><label>Phone</label><input type="tel" name="phone" placeholder="+91 00000 00000"></div>
-          <div class="fg"><label>Service Needed</label>
-            <select name="service">
-              <option value="">Select a service</option>
-              <option>VAPT / Penetration Testing</option>
-              <option>SOC Training</option>
-              <option>Vulnerability Assessment</option>
-              <option>Web Development</option>
-              <option>Skill Training / Workshop</option>
-              <option>Corporate Training</option>
-              <option>POSH Compliance</option>
-              <option>Career / Placement Support</option>
-              <option>Other</option>
-            </select>
-          </div>
-        </div>
-        <div class="fg" style="margin-bottom:14px;"><label>Message</label><textarea name="message" placeholder="Tell us about your requirements..."></textarea></div>
-        <input type="hidden" name="_subject" value="🚀 New HackRace Lead">
-        <button type="submit" class="submit-btn">Send Message →</button>
-        <p style="text-align:center;font-size:11px;color:var(--muted);margin-top:12px;">🔒 Your information is secure and never shared.</p>
-      </form>
     </div>
   </section>
 </div>
 
 <!-- FOOTER -->
 <footer>
-  <div class="foot-grid">
-    <div class="foot-brand">
-      <div class="foot-logo"><div class="flm">H</div>HACKRACE</div>
-      <p>Enterprise cybersecurity, skill training, and digital development — delivering real outcomes across India.</p>
-      <div style="display:flex;gap:10px;margin-top:16px;">
-        <a href="https://wa.me/918511565780" style="width:34px;height:34px;background:var(--dark4);border:1px solid var(--bdr);border-radius:6px;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:14px;transition:.2s;" target="_blank">💬</a>
-        <a href="mailto:hello@hackrace.in" style="width:34px;height:34px;background:var(--dark4);border:1px solid var(--bdr);border-radius:6px;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:14px;transition:.2s;">📧</a>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="logo" onclick="nav('home')" style="cursor:none;">
+          <div class="logo-mark"><svg viewBox="0 0 18 18"><path d="M2 2h4v6h6V2h4v14h-4V10H6v6H2V2z"/></svg></div>
+          <span class="logo-name">HACK<b>RACE</b></span>
+        </div>
+        <p>Enterprise cybersecurity, skill training, and digital development — delivering real outcomes globally.</p>
+        <div class="foot-socials">
+          <a href="https://wa.me/918511565780" class="fsoc" target="_blank">💬</a>
+          <a href="mailto:hello@hackrace.in" class="fsoc">📧</a>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h5>Security</h5>
+        <a href="#" onclick="return nav('vapt')">VAPT Services</a>
+        <a href="#" onclick="return nav('vapt')">Penetration Testing</a>
+        <a href="#" onclick="return nav('vapt')">Bug Bounty</a>
+        <a href="#" onclick="return nav('vapt')">Phishing Simulation</a>
+        <a href="#" onclick="return nav('vapt')">Compliance Audits</a>
+      </div>
+      <div class="foot-col">
+        <h5>Training</h5>
+        <a href="#" onclick="return nav('training')">All Courses</a>
+        <a href="#" onclick="return nav('training')">Calendar</a>
+        <a href="#" onclick="return nav('corporate')">Corporate Programs</a>
+        <a href="#" onclick="return nav('join')">Join as Trainer</a>
+      </div>
+      <div class="foot-col">
+        <h5>Company</h5>
+        <a href="#" onclick="return nav('contact')">Contact</a>
+        <a href="#" onclick="return nav('join')">Careers</a>
+        <a href="mailto:hello@hackrace.in">hello@hackrace.in</a>
+        <a href="https://wa.me/918511565780">+91 85115 65780</a>
       </div>
     </div>
-    <div class="foot-col">
-      <h4>Security</h4>
-      <a href="#" onclick="showPage('vapt')">VAPT Services</a>
-      <a href="#" onclick="showPage('vapt')">Penetration Testing</a>
-      <a href="#" onclick="showPage('vapt')">Bug Bounty Support</a>
-      <a href="#" onclick="showPage('vapt')">Compliance Audits</a>
+    <div class="foot-bottom">
+      <p>© 2025 <span>HackRace</span>. All rights reserved.</p>
+      <p>Secured · Trained · <span>Built for the world.</span></p>
     </div>
-    <div class="foot-col">
-      <h4>Training</h4>
-      <a href="#" onclick="showPage('training')">All Courses</a>
-      <a href="#" onclick="showPage('training')">Training Calendar</a>
-      <a href="#" onclick="showPage('corporate')">Corporate Programs</a>
-      <a href="#" onclick="showPage('join')">Join as Trainer</a>
-    </div>
-    <div class="foot-col">
-      <h4>Company</h4>
-      <a href="#" onclick="showPage('contact')">Contact Us</a>
-      <a href="#" onclick="showPage('join')">Careers</a>
-      <a href="mailto:hello@hackrace.in">hello@hackrace.in</a>
-      <a href="https://wa.me/918511565780">+91 85115 65780</a>
-    </div>
-  </div>
-  <div class="foot-bot">
-    <p>© 2025 <span>HackRace</span>. All rights reserved.</p>
-    <p>Secured · Built · Trained — <span>Pan-India</span></p>
   </div>
 </footer>
 
-<!-- BROCHURE MODAL -->
+<!-- MODALS -->
 <div class="modal" id="modal-brochure">
   <div class="modal-box">
-    <button class="modal-close" onclick="closeModal('brochure')">✕</button>
-    <div style="font-size:36px;margin-bottom:12px;">📄</div>
-    <div class="modal-title">Download Our Brochure</div>
-    <div class="modal-sub">Get our company brochure with full details on VAPT services, training programs, pricing overview, and case studies. Sent instantly to your email.</div>
-    <form class="modal-form" id="brochureForm" action="https://formspree.io/f/mwvwzbgz" method="POST">
-      <div class="fg" style="margin-bottom:12px;"><label>Full Name *</label><input type="text" name="name" placeholder="Your name" required></div>
-      <div class="fg" style="margin-bottom:12px;"><label>Email *</label><input type="email" name="email" placeholder="your@email.com" required></div>
-      <div class="fg" style="margin-bottom:16px;"><label>Company / Institution</label><input type="text" name="company" placeholder="Optional"></div>
-      <input type="hidden" name="_subject" value="📄 Brochure Download Request">
-      <input type="hidden" name="message" value="User requested brochure download.">
+    <button class="modal-close" onclick="closeM('brochure')">✕</button>
+    <div class="modal-icon">📄</div>
+    <div class="modal-title">Download Brochure</div>
+    <div class="modal-sub">Full details on VAPT, training programs, and case studies — sent instantly to your inbox.</div>
+    <form id="brochureForm" action="https://formspree.io/f/mwvwzbgz" method="POST">
+      <div class="fg"><label>Full Name *</label><input type="text" name="name" placeholder="Your name" required></div>
+      <div class="fg"><label>Email *</label><input type="email" name="email" placeholder="you@email.com" required></div>
+      <div class="fg" style="margin-bottom:18px;"><label>Company</label><input type="text" name="company" placeholder="Optional"></div>
+      <input type="hidden" name="_subject" value="Brochure Request — HackRace">
+      <input type="hidden" name="message" value="Brochure download request.">
       <button type="submit" class="submit-btn">Get Brochure →</button>
     </form>
   </div>
 </div>
 
-<!-- SYLLABUS MODAL -->
 <div class="modal" id="modal-syllabus">
   <div class="modal-box">
-    <button class="modal-close" onclick="closeModal('syllabus')">✕</button>
-    <div style="font-size:36px;margin-bottom:12px;">📚</div>
-    <div class="modal-title" id="syllabus-title">Download Syllabus</div>
-    <div class="modal-sub">Enter your details and we'll send the complete syllabus PDF to your email instantly.</div>
-    <form class="modal-form" id="syllabusForm" action="https://formspree.io/f/mwvwzbgz" method="POST">
-      <div class="fg" style="margin-bottom:12px;"><label>Full Name *</label><input type="text" name="name" placeholder="Your name" required></div>
-      <div class="fg" style="margin-bottom:12px;"><label>Email *</label><input type="email" name="email" placeholder="your@email.com" required></div>
-      <div class="fg" style="margin-bottom:16px;"><label>Phone</label><input type="tel" name="phone" placeholder="+91 00000 00000"></div>
-      <input type="hidden" name="_subject" id="syllabus-subject" value="📚 Syllabus Download Request">
-      <input type="hidden" name="message" id="syllabus-msg" value="">
-      <button type="submit" class="submit-btn">Download Syllabus →</button>
+    <button class="modal-close" onclick="closeM('syllabus')">✕</button>
+    <div class="modal-icon">📚</div>
+    <div class="modal-title" id="syl-title">Download Syllabus</div>
+    <div class="modal-sub">Enter your details and we'll send the complete syllabus PDF to your email.</div>
+    <form id="syllabusForm" action="https://formspree.io/f/mwvwzbgz" method="POST">
+      <div class="fg"><label>Full Name *</label><input type="text" name="name" placeholder="Your name" required></div>
+      <div class="fg"><label>Email *</label><input type="email" name="email" placeholder="you@email.com" required></div>
+      <div class="fg" style="margin-bottom:18px;"><label>Phone</label><input type="tel" name="phone" placeholder="+1 000 000 0000"></div>
+      <input type="hidden" name="_subject" id="syl-sub" value="Syllabus Request">
+      <input type="hidden" name="message" id="syl-msg" value="">
+      <button type="submit" class="submit-btn">Send Syllabus →</button>
     </form>
   </div>
 </div>
 
 <!-- CHATBOT -->
 <div class="chat-float">
-  <div class="chat-window" id="chatWindow">
+  <div class="chat-window" id="chatWin">
     <div class="chat-hdr">
       <div class="chat-av">🤖</div>
-      <div>
-        <div class="chat-hdr-name">HackRace AI Assistant</div>
-        <div class="chat-hdr-status"><div class="sdot"></div>Online · Replies instantly</div>
-      </div>
+      <div><div class="chat-hdr-name">HackRace AI</div><div class="chat-hdr-st"><div class="sdot"></div>Online · Instant replies</div></div>
       <button class="chat-close" onclick="toggleChat()">✕</button>
     </div>
     <div class="chat-msgs" id="chatMsgs">
-      <div class="msg bot">👋 Hey! I'm the <strong>HackRace Assistant</strong>. Ask me anything about our cybersecurity services, training programs, pricing, or how to get started. I'm here to help!</div>
+      <div class="msg bot">Hey! I'm the HackRace AI. Ask me anything about our services, training, or how to get started with a free audit.</div>
     </div>
-    <div class="chat-quickies" id="chatQuickies">
-      <button class="cq" onclick="sendQ('What VAPT services do you offer?')">VAPT Services</button>
+    <div class="chat-quick" id="chatQ">
+      <button class="cq" onclick="sendQ('What VAPT services do you offer?')">VAPT</button>
       <button class="cq" onclick="sendQ('How much does penetration testing cost?')">Pricing</button>
       <button class="cq" onclick="sendQ('What training courses are available?')">Courses</button>
+      <button class="cq" onclick="sendQ('How do I get a free audit?')">Free Audit</button>
       <button class="cq" onclick="sendQ('Do you offer corporate training?')">Corporate</button>
-      <button class="cq" onclick="sendQ('How do I get started?')">Get Started</button>
-      <button class="cq" onclick="sendQ('Tell me about placement support')">Placement</button>
       <button class="cq" onclick="sendQ('What is POSH compliance?')">POSH</button>
-      <button class="cq" onclick="sendQ('How to contact HackRace?')">Contact</button>
     </div>
-    <div class="chat-input-area">
-      <textarea class="chat-input" id="chatInput" placeholder="Ask me anything..." rows="1" onkeydown="handleChatKey(event)"></textarea>
+    <div class="chat-input-row">
+      <textarea class="chat-inp" id="chatIn" placeholder="Ask anything..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat();}"></textarea>
       <button class="chat-send" onclick="sendChat()">➤</button>
     </div>
   </div>
@@ -864,207 +1181,242 @@ footer{background:var(--dark2);border-top:1px solid var(--bdr);padding:64px 5% 2
 </div>
 
 <script>
-// ===== SECURITY =====
-document.addEventListener('contextmenu',e=>e.preventDefault());
-document.addEventListener('keydown',e=>{
-  if(e.key==='F12'||e.keyCode===123)return e.preventDefault();
-  if(e.ctrlKey&&e.shiftKey&&['I','C','J','K'].includes(e.key))return e.preventDefault();
-  if(e.ctrlKey&&['u','U','s','S','a','A'].includes(e.key))return e.preventDefault();
-  if(e.metaKey&&['u','U'].includes(e.key))return e.preventDefault();
-});
-// DevTools detection
-setInterval(()=>{const t=new Date();debugger;if(new Date()-t>100){document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:monospace;color:#e63329;font-size:14px;background:#0a0806;">⛔ Developer tools are not permitted.</div>';}},1000);
+// ─── SECURITY: Block devtools & inspect ───
+(function(){
+  // Block right-click
+  document.addEventListener('contextmenu', e => e.preventDefault());
 
-// ===== CURSOR =====
-const cur=document.getElementById('cur'),curR=document.getElementById('cur-r');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-setInterval(()=>{rx+=(mx-rx)*.12;ry+=(my-ry)*.12;curR.style.left=rx+'px';curR.style.top=ry+'px';},14);
+  // Block keyboard shortcuts
+  document.addEventListener('keydown', e => {
+    const k = e.key;
+    if (k === 'F12') { e.preventDefault(); e.stopPropagation(); return false; }
+    if (e.ctrlKey && e.shiftKey && ['I','i','C','c','J','j','K','k','E','e'].includes(k)) { e.preventDefault(); return false; }
+    if (e.ctrlKey && ['u','U','s','S','a','A','p','P'].includes(k)) { e.preventDefault(); return false; }
+    if (e.metaKey && ['u','U','s','S'].includes(k)) { e.preventDefault(); return false; }
+  }, true);
 
-// ===== NAV SCROLL =====
-window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',scrollY>30);});
+  // Block drag
+  document.addEventListener('dragstart', e => e.preventDefault());
+  document.addEventListener('selectstart', e => e.preventDefault());
 
-// ===== MOBILE NAV =====
-function toggleMobileNav(){document.getElementById('navLinks').classList.toggle('open');}
+  // Devtools size detection
+  const threshold = 160;
+  let devopen = false;
+  setInterval(() => {
+    const w = window.outerWidth - window.innerWidth;
+    const h = window.outerHeight - window.innerHeight;
+    if (w > threshold || h > threshold) {
+      if (!devopen) {
+        devopen = true;
+        document.documentElement.innerHTML = '<body style="background:#080a0d;color:#e63329;font-family:monospace;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;font-size:14px;letter-spacing:1px;">⛔ &nbsp;DEVELOPER TOOLS NOT PERMITTED</body>';
+      }
+    } else { devopen = false; }
+  }, 800);
+})();
 
-// ===== SPA ROUTING =====
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
-  const pg=document.getElementById('page-'+id);
-  if(pg){pg.classList.add('active');}
-  const navA=document.getElementById('nav-'+id);
-  if(navA)navA.classList.add('active');
+// ─── CURSOR ───
+const cd = document.getElementById('cr-d'), cr = document.getElementById('cr-r');
+let mx = window.innerWidth/2, my = window.innerHeight/2, rx = mx, ry = my;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cd.style.left = mx+'px'; cd.style.top = my+'px'; });
+(function loop(){ rx += (mx-rx)*0.1; ry += (my-ry)*0.1; cr.style.left = rx+'px'; cr.style.top = ry+'px'; requestAnimationFrame(loop); })();
+
+// ─── PARTICLE CANVAS ───
+const cv = document.getElementById('heroCanvas');
+const ctx2 = cv.getContext('2d');
+function rsz() { cv.width = window.innerWidth; cv.height = window.innerHeight; }
+rsz(); window.addEventListener('resize', rsz);
+const pts = Array.from({length:70}, () => ({
+  x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight,
+  vx: (Math.random()-.5)*.25, vy: (Math.random()-.5)*.25,
+  r: Math.random()*1.2+.4
+}));
+function drawPts(){
+  ctx2.clearRect(0,0,cv.width,cv.height);
+  pts.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if(p.x<0||p.x>cv.width) p.vx*=-1;
+    if(p.y<0||p.y>cv.height) p.vy*=-1;
+    ctx2.beginPath(); ctx2.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx2.fillStyle='rgba(230,51,41,0.3)'; ctx2.fill();
+  });
+  for(let i=0;i<pts.length;i++) for(let j=i+1;j<pts.length;j++){
+    const d=Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y);
+    if(d<130){ctx2.beginPath();ctx2.moveTo(pts[i].x,pts[i].y);ctx2.lineTo(pts[j].x,pts[j].y);ctx2.strokeStyle=`rgba(230,51,41,${0.07*(1-d/130)})`;ctx2.lineWidth=.6;ctx2.stroke();}
+  }
+  requestAnimationFrame(drawPts);
+}
+drawPts();
+
+// ─── NAV ───
+window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 20));
+function mobileNav() { document.getElementById('navLinks').classList.toggle('open'); }
+
+// ─── SPA ───
+function nav(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  const na = document.getElementById('nav-'+id);
+  if(na) na.classList.add('active');
   document.getElementById('navLinks').classList.remove('open');
-  window.scrollTo({top:0,behavior:'smooth'});
-  if(id==='training')renderCourses('all');
+  window.scrollTo({top:0, behavior:'smooth'});
+  cv.style.display = id==='home' ? 'block' : 'none';
+  if(id==='training') renderCourses('all');
+  setTimeout(initReveal, 80);
   initCounters();
   return false;
 }
+cv.style.display = 'block';
 
-// ===== COUNTER ANIMATION =====
-function animCount(el){
-  const t=+el.dataset.t;if(!t||el.dataset.done)return;el.dataset.done='1';
-  let c=0;const step=t/50;const ti=setInterval(()=>{c+=step;if(c>=t){c=t;clearInterval(ti);}el.textContent=Math.floor(c)+'+';},20);
-}
-function initCounters(){setTimeout(()=>document.querySelectorAll('[data-t]').forEach(el=>animCount(el)),300);}
-window.addEventListener('load',initCounters);
-
-// ===== COURSES DATA =====
-const COURSES=[
-  {id:1,cat:'security',icon:'🛡️',bg:'#1a0d0c',title:'Ethical Hacking & VAPT',level:'int',levelTxt:'Intermediate',desc:'Master web app hacking, network pentesting, and professional report writing using industry tools.',dur:'5 Days',tools:'Burp Suite, Nmap, Metasploit'},
-  {id:2,cat:'security',icon:'🔍',bg:'#0d1218',title:'Bug Bounty Hunting',level:'adv',levelTxt:'Advanced',desc:'Find real vulnerabilities on HackerOne and Bugcrowd. Live hunting sessions, methodology, monetisation.',dur:'3 Days',tools:'Burp, Recon-ng, Custom Scripts'},
-  {id:3,cat:'security',icon:'🖥️',bg:'#100d1a',title:'SOC Analyst Training',level:'adv',levelTxt:'Advanced',desc:'Security Operations Center fundamentals — SIEM, alert triage, threat hunting, and incident response.',dur:'5 Days',tools:'Splunk, SIEM, Wireshark'},
-  {id:4,cat:'dev',icon:'🌐',bg:'#0d1a12',title:'Full Stack Web Dev',level:'beg',levelTxt:'Beginner',desc:'From HTML basics to deploying full-stack apps. React, Node.js, MongoDB — project-based learning.',dur:'5 Days',tools:'React, Node.js, MongoDB'},
-  {id:5,cat:'data',icon:'🤖',bg:'#0d1218',title:'AI & Machine Learning',level:'int',levelTxt:'Intermediate',desc:'Practical AI/ML with Python — supervised learning, neural networks, and real project deployment.',dur:'3 Days',tools:'TensorFlow, Pandas, Scikit-learn'},
-  {id:6,cat:'data',icon:'📊',bg:'#1a1208',title:'Data Analytics',level:'beg',levelTxt:'Beginner',desc:'Turn raw data into business insights. Excel, Python, and Power BI for data analysis and visualization.',dur:'2 Days',tools:'Python, Power BI, Excel'},
-  {id:7,cat:'dev',icon:'🐍',bg:'#0a1a0d',title:'Python for Cybersecurity',level:'beg',levelTxt:'Beginner',desc:'Write your own security tools — port scanners, scrapers, automation scripts. Hands-on Python focus.',dur:'2 Days',tools:'Python, Scapy, Requests'},
-  {id:8,cat:'security',icon:'☁️',bg:'#0a1018',title:'Cloud Security & AWS',level:'adv',levelTxt:'Advanced',desc:'AWS misconfigurations, IAM privilege escalation, S3 attacks, and cloud security best practices.',dur:'2 Days',tools:'AWS, CloudTrail, Pacu'},
-  {id:9,cat:'soft',icon:'🗣️',bg:'#1a120d',title:'Soft Skills & Communication',level:'beg',levelTxt:'Beginner',desc:'Professional communication, presentation, email etiquette, and interview readiness for tech roles.',dur:'1 Day',tools:'Hands-on Role Play'},
-  {id:10,cat:'data',icon:'🧠',bg:'#100d1a',title:'Generative AI & Prompt Engineering',level:'int',levelTxt:'Intermediate',desc:'Master ChatGPT, Claude, and open-source LLMs. Prompt engineering, AI automation, business use cases.',dur:'1 Day',tools:'GPT, Claude, Llama, LangChain'},
-  {id:11,cat:'soft',icon:'🚀',bg:'#1a0d10',title:'Entrepreneurship & Startup',level:'beg',levelTxt:'Beginner',desc:'From idea to execution — business model, funding, marketing, and building in tech. Real founders speak.',dur:'1 Day',tools:'Business Model Canvas'},
-  {id:12,cat:'dev',icon:'🔧',bg:'#0d1a1a',title:'DevOps & Cloud Deployment',level:'int',levelTxt:'Intermediate',desc:'CI/CD pipelines, Docker, Kubernetes, and cloud deployment on AWS. Industry-standard DevOps practices.',dur:'3 Days',tools:'Docker, K8s, GitHub Actions, AWS'},
-];
-
-function renderCourses(filter){
-  const grid=document.getElementById('coursesGrid');if(!grid)return;
-  const filtered=filter==='all'?COURSES:COURSES.filter(c=>c.cat===filter);
-  grid.innerHTML=filtered.map(c=>`
-    <div class="course-card">
-      <div class="course-thumb" style="background:${c.bg};">${c.icon}</div>
-      <div class="course-body">
-        <span class="course-level lv-${c.level}">${c.levelTxt.toUpperCase()}</span>
-        <h3>${c.title}</h3>
-        <p>${c.desc}</p>
-        <div class="course-meta"><span>⏱ ${c.dur}</span><span>🛠 ${c.tools}</span></div>
-        <div class="course-actions">
-          <button class="btn-dl" onclick="openSyllabusModal('${c.title}')">📥 Download Syllabus</button>
-          <button class="btn-info" onclick="showPage('contact')">Enquire</button>
-        </div>
-      </div>
-    </div>
-  `).join('');
-}
-renderCourses('all');
-
-function filterCourses(f,btn){
-  document.querySelectorAll('.cf').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderCourses(f);
-}
-
-// ===== MODALS =====
-function openModal(id){document.getElementById('modal-'+id).classList.add('open');}
-function closeModal(id){document.getElementById('modal-'+id).classList.remove('open');}
-document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
-
-function openSyllabusModal(title){
-  document.getElementById('syllabus-title').textContent='Download Syllabus: '+title;
-  document.getElementById('syllabus-subject').value='📚 Syllabus Request: '+title;
-  document.getElementById('syllabus-msg').value='User requested syllabus for: '+title;
-  openModal('syllabus');
-}
-
-// ===== FORM SUBMISSIONS =====
-function setupForm(formId,successMsg){
-  const form=document.getElementById(formId);if(!form)return;
-  form.addEventListener('submit',async e=>{
-    e.preventDefault();
-    const btn=form.querySelector('button[type=submit]');
-    btn.textContent='Sending...';btn.disabled=true;
-    try{
-      const res=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});
-      if(res.ok){alert('✅ '+successMsg);form.reset();
-        if(formId==='brochureForm'||formId==='syllabusForm'){closeModal(formId==='brochureForm'?'brochure':'syllabus');}
-      }else{alert('❌ Something went wrong. Please try WhatsApp or email.');}
-    }catch{alert('❌ Network error. Please contact us directly.');}
-    btn.textContent=btn.dataset.orig||'Submit';btn.disabled=false;
+// ─── REVEAL ───
+function initReveal(){
+  const els = document.querySelectorAll('.page.active .r, .page.active .r-l, .page.active .r-r');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('on'); });
+  }, {threshold: 0.08});
+  els.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if(rect.top < window.innerHeight - 40) el.classList.add('on');
+    else io.observe(el);
   });
 }
-['contactForm','joinForm','brochureForm','syllabusForm'].forEach(id=>{
-  const msgs={contactForm:'Message sent! We\'ll reply within 24 hours.',joinForm:'Application received! We\'ll be in touch within 48 hours.',brochureForm:'Brochure is on its way to your email!',syllabusForm:'Syllabus sent to your email!'};
-  setupForm(id,msgs[id]);
+window.addEventListener('load', initReveal);
+
+// ─── COUNTERS ───
+function initCounters(){
+  setTimeout(() => {
+    document.querySelectorAll('.page.active [data-t]').forEach(el => {
+      if(el.dataset.done) return; el.dataset.done='1';
+      const t = +el.dataset.t; let c = 0;
+      const ti = setInterval(() => { c += t/60; if(c>=t){c=t;clearInterval(ti);} el.textContent=Math.floor(c)+'+'; }, 18);
+    });
+  }, 400);
+}
+window.addEventListener('load', initCounters);
+
+// ─── COURSES ───
+const COURSES = [
+  {id:1,cat:'security',icon:'🛡️',bg:'#0f1218',title:'Ethical Hacking & VAPT',lv:'i',lxt:'Intermediate',desc:'Master web app hacking, network pentesting, and professional report writing.',dur:'5 Days',tools:'Burp Suite, Nmap, Metasploit'},
+  {id:2,cat:'security',icon:'🔍',bg:'#0f1218',title:'Bug Bounty Hunting',lv:'a',lxt:'Advanced',desc:'Find real vulnerabilities on HackerOne and Bugcrowd. Live hunting sessions.',dur:'3 Days',tools:'Burp, Recon-ng'},
+  {id:3,cat:'security',icon:'🖥️',bg:'#0f1218',title:'SOC Analyst Training',lv:'a',lxt:'Advanced',desc:'SOC fundamentals — SIEM, alert triage, threat hunting, incident response.',dur:'5 Days',tools:'Splunk, SIEM, Wireshark'},
+  {id:4,cat:'dev',icon:'🌐',bg:'#0d120f',title:'Full Stack Web Dev',lv:'b',lxt:'Beginner',desc:'HTML to full-stack apps. React, Node.js, MongoDB — project-based learning.',dur:'5 Days',tools:'React, Node.js, MongoDB'},
+  {id:5,cat:'data',icon:'🤖',bg:'#0f1218',title:'AI & Machine Learning',lv:'i',lxt:'Intermediate',desc:'Practical AI/ML with Python — supervised learning, neural networks, deployment.',dur:'3 Days',tools:'TensorFlow, Pandas'},
+  {id:6,cat:'data',icon:'📊',bg:'#12100a',title:'Data Analytics',lv:'b',lxt:'Beginner',desc:'Turn raw data into insights. Python and Power BI for analysis and visualization.',dur:'2 Days',tools:'Python, Power BI, Excel'},
+  {id:7,cat:'dev',icon:'🐍',bg:'#0d120f',title:'Python for Cybersecurity',lv:'b',lxt:'Beginner',desc:'Write your own security tools — port scanners, scrapers, automation scripts.',dur:'2 Days',tools:'Python, Scapy, Requests'},
+  {id:8,cat:'security',icon:'☁️',bg:'#0f1218',title:'Cloud Security & AWS',lv:'a',lxt:'Advanced',desc:'AWS misconfigs, IAM privilege escalation, S3 attacks, cloud security best practices.',dur:'2 Days',tools:'AWS, CloudTrail, Pacu'},
+  {id:9,cat:'soft',icon:'🗣️',bg:'#12100a',title:'Soft Skills & Communication',lv:'b',lxt:'Beginner',desc:'Professional communication, presentation, email etiquette, and interview readiness.',dur:'1 Day',tools:'Hands-on Role Play'},
+  {id:10,cat:'data',icon:'🧠',bg:'#0f1218',title:'Generative AI & Prompt Engineering',lv:'i',lxt:'Intermediate',desc:'Master LLMs. Prompt engineering, AI automation, and real business use cases.',dur:'1 Day',tools:'GPT, Claude, LangChain'},
+  {id:11,cat:'soft',icon:'🚀',bg:'#12100a',title:'Entrepreneurship & Startup',lv:'b',lxt:'Beginner',desc:'From idea to execution. Business model, funding, marketing, and building in tech.',dur:'1 Day',tools:'Business Model Canvas'},
+  {id:12,cat:'dev',icon:'🔧',bg:'#0d120f',title:'DevOps & Cloud Deployment',lv:'i',lxt:'Intermediate',desc:'CI/CD pipelines, Docker, Kubernetes, and AWS. Industry-standard DevOps practices.',dur:'3 Days',tools:'Docker, K8s, GitHub Actions'},
+];
+function renderCourses(f){
+  const g = document.getElementById('coursesGrid'); if(!g) return;
+  const cs = f==='all' ? COURSES : COURSES.filter(c=>c.cat===f);
+  g.innerHTML = cs.map(c=>`
+    <div class="cc">
+      <div class="cc-thumb" style="background:${c.bg}">${c.icon}</div>
+      <div class="cc-body">
+        <span class="cc-level lv-${c.lv}">${c.lxt.toUpperCase()}</span>
+        <h3>${c.title}</h3>
+        <p>${c.desc}</p>
+        <div class="cc-meta"><span>⏱ ${c.dur}</span><span>🛠 ${c.tools}</span></div>
+        <div class="cc-actions">
+          <button class="btn-syl" onclick="openSyl('${c.title}')">📥 Syllabus</button>
+          <button class="btn-enq" onclick="nav('contact')">Enquire</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+renderCourses('all');
+function filterC(f,btn){ document.querySelectorAll('.cf').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); renderCourses(f); }
+
+// ─── MODALS ───
+function modal(id){ document.getElementById('modal-'+id).classList.add('open'); }
+function closeM(id){ document.getElementById('modal-'+id).classList.remove('open'); }
+document.querySelectorAll('.modal').forEach(m => m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('open'); }));
+function openSyl(title){
+  document.getElementById('syl-title').textContent = 'Download Syllabus: '+title;
+  document.getElementById('syl-sub').value = 'Syllabus Request: '+title;
+  document.getElementById('syl-msg').value = 'Requested syllabus for: '+title;
+  modal('syllabus');
+}
+
+// ─── FORMS ───
+['contactForm','joinForm','brochureForm','syllabusForm'].forEach(id => {
+  const form = document.getElementById(id); if(!form) return;
+  const msgs = {contactForm:"Message sent! We'll reply within 24h.", joinForm:"Application received! We'll be in touch within 48h.", brochureForm:"Brochure on its way to your inbox!", syllabusForm:"Syllabus sent to your email!"};
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = form.querySelector('button[type=submit]');
+    const orig = btn.textContent; btn.textContent = 'Sending…'; btn.disabled = true;
+    try {
+      const res = await fetch(form.action, {method:'POST', body:new FormData(form), headers:{Accept:'application/json'}});
+      if(res.ok){ alert('✅ '+msgs[id]); form.reset(); if(id==='brochureForm') closeM('brochure'); if(id==='syllabusForm') closeM('syllabus'); }
+      else alert('❌ Something went wrong. Please WhatsApp or email us directly.');
+    } catch { alert('❌ Network error. Please contact: hello@hackrace.in'); }
+    btn.textContent = orig; btn.disabled = false;
+  });
 });
 
-// ===== AI CHATBOT =====
-let chatHistory=[{role:'user',content:`You are the HackRace AI Assistant, a smart and friendly assistant for HackRace — an Indian cybersecurity company. Here are the key facts about HackRace:
+// ─── AI CHATBOT ───
+const SYS = `You are the HackRace AI Assistant for HackRace — a global offensive security and training company.
 
-COMPANY: HackRace - cybersecurity, training & digital solutions company operating pan-India
+COMPANY: HackRace — cybersecurity, training & digital solutions, operating globally
 CONTACT: +91 85115 65780, +91 70271 81375, hello@hackrace.in
-HOURS: Monday-Saturday, 10am-7pm
+HOURS: Mon–Sat, 10am–7pm IST
 
 SERVICES:
-1. VAPT & Penetration Testing (web, mobile, API, network) - full-scope testing with CVSS-scored reports, PoC exploits, remediation roadmap, free retest
-2. Vulnerability Assessment - CVE tracking, risk scoring
-3. SOC Training - SIEM, Splunk, threat hunting, incident response
-4. Bug Bounty Support - programme setup, triage, researcher comms
-5. Compliance - ISO 27001, GDPR, POSH, custom audits
-6. Web Development - React, Node, full-stack, secure development
-7. Automation & Dashboards - Python, custom tools
-8. Cloud/DevOps - AWS, Docker, CI/CD
-9. Skill Training (14+ topics): Ethical Hacking, Python, AI/ML, Data Analytics, Web Dev, Digital Marketing, Bug Bounty, Cloud, GenAI, DevOps, Finance, Soft Skills
-10. Corporate Upskilling - custom programs for enterprise teams
-11. Placement Support - resume, mock interviews, direct referrals
-12. POSH Compliance - free first session, annual contracts
+1. VAPT & Penetration Testing (web, mobile, API, network) — CVSS reports, PoC exploits, free retest
+2. Phishing Simulation — free first demo for 10 employees
+3. SOC Training — Splunk, SIEM, threat hunting
+4. Bug Bounty support
+5. Compliance — ISO 27001, GDPR, POSH
+6. Web Development, Automation, Cloud/DevOps
+7. 14+ Training courses: Ethical Hacking, Python, AI/ML, Data Analytics, Web Dev, DevOps, Bug Bounty, Cloud, GenAI, Soft Skills
+8. Corporate upskilling — annual retainer model
+9. Placement Support
+10. POSH Compliance (legally required)
 
-PRICING: All first consultations/audits are FREE. VAPT pricing is custom based on scope. Training pricing varies by course.
+PRICING: First consultation/audit always FREE. VAPT custom quote. Training varies per course.
+HOW TO START: WhatsApp +91 85115 65780 or email hello@hackrace.in
 
-HOW TO GET STARTED: Contact via WhatsApp +91 85115 65780 or email hello@hackrace.in for a free consultation.
+Be concise, professional, and warm. Under 150 words. Use line breaks. Always offer a free consultation.`;
 
-Be conversational, helpful, and specific. If asked about pricing, always say the first consultation is free and we'll provide a custom quote. Always encourage users to reach out for a free consultation. Keep responses under 150 words unless more detail is genuinely needed. Use line breaks for readability. Be warm and professional.`},
-{role:'assistant',content:"👋 Hey! I'm the HackRace Assistant. Ask me anything about our cybersecurity services, training programs, pricing, or how to get started. I'm here to help!"}];
-
+let chatH = [];
 function toggleChat(){
-  const w=document.getElementById('chatWindow'),f=document.getElementById('chatFab');
-  const o=w.classList.toggle('open');
-  f.textContent=o?'✕':'🤖';
-  if(o)scrollChatToBottom();
+  const w = document.getElementById('chatWin'), f = document.getElementById('chatFab');
+  const o = w.classList.toggle('open');
+  f.textContent = o ? '✕' : '🤖';
+  if(o) scrollChat();
 }
-function scrollChatToBottom(){const m=document.getElementById('chatMsgs');m.scrollTop=m.scrollHeight;}
-
+function scrollChat(){ const m = document.getElementById('chatMsgs'); m.scrollTop = m.scrollHeight; }
 async function sendChat(){
-  const inp=document.getElementById('chatInput');
-  const msg=inp.value.trim();if(!msg)return;
+  const inp = document.getElementById('chatIn');
+  const msg = inp.value.trim(); if(!msg) return;
   inp.value='';
-  appendMsg('usr',msg);
-  document.getElementById('chatQuickies').style.display='none';
-  const typing=appendTyping();
-  chatHistory.push({role:'user',content:msg});
+  addMsg('usr', msg);
+  document.getElementById('chatQ').style.display = 'none';
+  const ty = addTyping();
+  chatH.push({role:'user', content:msg});
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:chatHistory[0].content,messages:chatHistory.slice(1)})});
-    const data=await res.json();
-    const reply=data.content?.[0]?.text||"Sorry, I had trouble responding. Please contact us directly at hello@hackrace.in or WhatsApp +91 85115 65780!";
-    typing.remove();
-    appendMsg('bot',reply);
-    chatHistory.push({role:'assistant',content:reply});
-  }catch{
-    typing.remove();
-    appendMsg('bot',"I'm having a technical issue. Please contact us directly:\n📱 +91 85115 65780\n📧 hello@hackrace.in");
-  }
+    const r = await fetch('https://api.anthropic.com/v1/messages', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({model:'claude-sonnet-4-20250514', max_tokens:300, system:SYS, messages:chatH})});
+    const d = await r.json();
+    const rep = d.content?.[0]?.text || "Please reach out directly:\n📱 +91 85115 65780\n📧 hello@hackrace.in";
+    ty.remove(); addMsg('bot', rep);
+    chatH.push({role:'assistant', content:rep});
+  } catch { ty.remove(); addMsg('bot','Technical issue. Please contact us:\n📱 +91 85115 65780\n📧 hello@hackrace.in'); }
 }
-
-function sendQ(q){
-  document.getElementById('chatInput').value=q;
-  sendChat();
+function sendQ(q){ document.getElementById('chatIn').value=q; sendChat(); }
+function addMsg(t,tx){
+  const m=document.getElementById('chatMsgs'),d=document.createElement('div');
+  d.className='msg '+t; d.innerHTML=tx.replace(/\n/g,'<br>');
+  m.appendChild(d); scrollChat(); return d;
 }
-
-function appendMsg(type,text){
-  const m=document.getElementById('chatMsgs');
-  const div=document.createElement('div');
-  div.className='msg '+type;
-  div.innerHTML=text.replace(/\n/g,'<br>');
-  m.appendChild(div);
-  scrollChatToBottom();
-  return div;
+function addTyping(){
+  const m=document.getElementById('chatMsgs'),d=document.createElement('div');
+  d.className='typing'; d.innerHTML='<div class="tdot"></div><div class="tdot"></div><div class="tdot"></div>';
+  m.appendChild(d); scrollChat(); return d;
 }
-function appendTyping(){
-  const m=document.getElementById('chatMsgs');
-  const div=document.createElement('div');
-  div.className='typing-ind';
-  div.innerHTML='<div class="tdot"></div><div class="tdot"></div><div class="tdot"></div>';
-  m.appendChild(div);scrollChatToBottom();return div;
-}
-function handleChatKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat();}}
 </script>
 </body>
 </html>
